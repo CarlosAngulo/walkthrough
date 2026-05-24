@@ -1,0 +1,11 @@
+[NX Daemon Server] - 2026-05-24T21:36:21.967Z - Started listening on: \\.\pipe\nx\C:\Users\acns_\AppData\Local\Temp\f9bc6ea5f60b6acabc26\d.sock
+[NX Daemon Server] - 2026-05-24T21:36:21.971Z - [WATCHER]: Subscribed to changes within: C:\Users\acns_\OneDrive\Documentos\projects\learning-with-vstour (native)
+[NX Daemon Server] - 2026-05-24T21:36:21.976Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2026-05-24T21:36:21.981Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2026-05-24T21:36:21.981Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2026-05-24T21:36:21.984Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2026-05-24T21:36:21.985Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2026-05-24T21:36:21.985Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 2.
+[NX Daemon Server] - 2026-05-24T21:36:21.986Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2026-05-24T21:36:21.986Z - [WATCHER]: Stopping the watcher for C:\Users\acns_\OneDrive\Documentos\projects\learning-with-vstour (sources)
+[NX Daemon Server] - 2026-05-24T21:36:21.987Z - [WATCHER]: Stopping the watcher for C:\Users\acns_\OneDrive\Documentos\projects\learning-with-vstour (outputs)

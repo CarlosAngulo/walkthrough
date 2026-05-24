@@ -13,8 +13,13 @@
     "useDefineForClassFields": false,
     "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/*"]
+      "@learning-engine/semantic-analyzer": ["packages/semantic-analyzer/src/index.ts"],
+      "@learning-engine/rules-engine": ["packages/rules-engine/src/index.ts"],
+      "@learning-engine/learning-state": ["packages/learning-state/src/index.ts"],
+      "@learning-engine/overlay-system": ["packages/overlay-system/src/index.ts"],
+      "@learning-engine/test-integration": ["packages/test-integration/src/index.ts"],
+      "@learning-engine/angular-signals-adapter": ["adapters/angular-signals/src/index.ts"]
     }
   },
-  "include": ["src/**/*"]
+  "exclude": ["node_modules", "dist"]
 }

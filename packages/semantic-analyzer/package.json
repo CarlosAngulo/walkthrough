@@ -1,0 +1,10 @@
+{
+  "name": "@learning-engine/semantic-analyzer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "ts-morph": "^22.0.0"
+  }
+}

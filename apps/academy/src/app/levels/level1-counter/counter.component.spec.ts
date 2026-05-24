@@ -4,6 +4,9 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CounterComponent } from './counter.component';
 import { isSignal } from '@angular/core';
 
+// Import our custom Vitest matchers to extend expect
+import '@learning-engine/test-integration';
+
 describe('Angular Signals - Test-Driven Learning 🚀', () => {
   let component: CounterComponent;
   let fixture: ComponentFixture<CounterComponent>;
@@ -16,6 +19,20 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
     fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
+    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+      // Path is relative to the apps/academy directory where tests run
+      const componentPath = 'src/app/levels/level1-counter/counter.component.ts';
+      
+      expect(componentPath).toSatisfyRules([
+        'L1_WRITABLE_SIGNAL',
+        'L1_SIGNAL_INPUT',
+        'L1_COMPUTED_SIGNAL',
+        'L1_NO_MANUAL_RECALCULATION'
+      ]);
+    });
   });
 
   describe('RETO 1: Writable Signals', () => {

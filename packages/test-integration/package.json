@@ -1,0 +1,11 @@
+{
+  "name": "@learning-engine/test-integration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@learning-engine/rules-engine": "workspace:*",
+    "@learning-engine/semantic-analyzer": "workspace:*"
+  }
+}
