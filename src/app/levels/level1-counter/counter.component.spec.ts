@@ -1,4 +1,4 @@
-import '../../test-setup';
+import '../../../test-setup';
 import { describe, it, expect } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CounterComponent } from './counter.component';
@@ -20,16 +20,13 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
 
   describe('RETO 1: Writable Signals', () => {
     it('debería declarar "counter" como un Writable Signal de Angular inicializado en 0', () => {
-      // 1. Verificar que existe la propiedad
       expect(component.counter).toBeDefined();
       
-      // 2. Verificar que es una señal de Angular
       const isSignalResult = isSignal(component.counter);
       expect(isSignalResult).withContext(
         '¡Oh no! "counter" debe ser un Signal de Angular. Asegúrate de inicializarlo usando la función: signal(0).'
       ).toBe(true);
 
-      // 3. Verificar que su valor inicial es 0
       expect(component.counter()).withContext(
         'El valor inicial de la señal "counter" debe ser 0.'
       ).toBe(0);
@@ -51,7 +48,6 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
     });
 
     it('debería reaccionar correctamente a los cambios en el input dinámicamente', () => {
-      // Para Signal Inputs, usamos fixture.componentRef.setInput para cambiar su valor reactivamente
       fixture.componentRef.setInput('step', 5);
       fixture.detectChanges();
 
@@ -72,7 +68,6 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
     });
 
     it('debería retornar el doble del valor de "counter" automáticamente', () => {
-      // Si el reto 1 está resuelto, podemos actualizar counter
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
         (component.counter as any).set(5);
         fixture.detectChanges();
@@ -96,18 +91,15 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
   describe('RETO 4: Mutación del Estado', () => {
     it('debería incrementar el valor de "counter" sumándole el valor de "step()" al llamar a increment()', () => {
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
-        // Inicializar a 10
         (component.counter as any).set(10);
         fixture.detectChanges();
 
-        // 1. Incrementar con step = 1 (por defecto)
         component.increment();
         fixture.detectChanges();
         expect(component.counter()).withContext(
           'Al llamar a increment() con step = 1, el counter debería pasar de 10 a 11.'
         ).toBe(11);
 
-        // 2. Cambiar step a 5 y volver a incrementar
         fixture.componentRef.setInput('step', 5);
         fixture.detectChanges();
 
@@ -123,18 +115,15 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
 
     it('debería decrementar el valor de "counter" restándole el valor de "step()" al llamar a decrement()', () => {
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
-        // Inicializar a 20
         (component.counter as any).set(20);
         fixture.detectChanges();
 
-        // 1. Decrementar con step = 1 (por defecto)
         component.decrement();
         fixture.detectChanges();
         expect(component.counter()).withContext(
           'Al llamar a decrement() con step = 1, el counter debería pasar de 20 a 19.'
         ).toBe(19);
 
-        // 2. Cambiar step a 7 y volver a decrementar
         fixture.componentRef.setInput('step', 7);
         fixture.detectChanges();
 

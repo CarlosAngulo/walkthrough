@@ -1,8 +1,8 @@
-# Angular Signals: Test-Driven Learning Academy 🚀
+# Angular Signals Academy: Test-Driven Learning 🚀
 
 ¡Bienvenido al repositorio de aprendizaje sobre reactividad moderna de **Angular Signals.** 
 
-Este proyecto utiliza a metodología **Test-Driven Learning (TDL)** combinada con la extensión **CodeTour** de VS Code.
+Este proyecto utiliza la metodología **Test-Driven Learning (TDL)** combinada con la extensión **CodeTour** de VS Code.
 
 ---
 
@@ -36,7 +36,7 @@ Asegúrate de tener instalado **Node.js** (v18+) y **pnpm** (nuestro gestor de p
 2. En la esquina inferior derecha, VS Code te sugerirá automáticamente instalar la extensión recomendada del proyecto: **CodeTour** (`vsls-contrib.codetour`). Haz clic en **Instalar** (o búscala manualmente en el panel de extensiones).
 
 ### 3. Instalar Dependencias
-Abre la terminal en VS Code y ejecuta el siguiente comando para instalar todos los paquetes y dependencias (incluyendo el motor de compilación especial compatible de TypeScript `~5.4.5`):
+Abre la terminal en VS Code y ejecuta el siguiente comando para instalar todos los paquetes y dependencias:
 ```bash
 pnpm install
 ```
@@ -52,7 +52,7 @@ Para ver la hermosa interfaz glassmorphism oscura de la aplicación en vivo y pr
 ```bash
 pnpm run dev
 ```
-*Abre tu navegador en **`http://localhost:5173/`**. Inicialmente, verás que la aplicación funciona usando la reactividad tradicional de Angular. Al hacer clic en los botones, las variables deberán funcionar normalmente.*
+*Abre tu navegador en **`http://localhost:5173/`**. Verás el **Dashboard de la Academy** con una barra lateral de navegación por niveles. Inicialmente, la aplicación funciona usando la reactividad tradicional de Angular.*
 
 ### Terminal 2: El Test Runner de Retroalimentación en Vivo (Vitest)
 Para ver tus pruebas fallando y validándose en tiempo real:
@@ -73,7 +73,7 @@ Una vez que tengas tu servidor levantado y tus tests corriendo:
 
 ---
 
-## 🗺️ Mapa de Aprendizaje del Tour
+## 🗺️ Mapa de Aprendizaje — Nivel 1: Writable Signals
 
 A lo largo del tour realizarás la siguiente transición tecnológica:
 
@@ -86,5 +86,40 @@ A lo largo del tour realizarás la siguiente transición tecnológica:
 | **Paso 5** | Reto 2 | **Signal Inputs** | Convierte `@Input()` en `input(1)` y adáptalo en el HTML y la clase. | **3/7 Pasando 🟢** |
 | **Paso 6** | Reto 3 | **Computed Signals** | Crea `doubleCounter` con `computed()` y borra el recalculo manual. | **5/7 Pasando 🟢** |
 | **Paso 7** | Reto Final | **update() Idiomático** | Moderniza la mutación de señales usando `.update(...)`. | **7/7 Pasando 🟢🏆** |
+
+---
+
+## 🧬 Roadmap de la Academy (Niveles 2 → 7)
+
+Este repositorio está diseñado como una **academia progresiva**. Cada nivel se implementa como un componente independiente accesible desde la barra lateral:
+
+| Nivel | Tema | Conceptos Clave |
+| :--- | :--- | :--- |
+| **Nivel 1** ⚡ | Writable Signals | `signal()`, `input()`, `computed()`, `.update()` |
+| **Nivel 2** 🧠 | Reactive Thinking | Computed chains, estado derivado declarativo |
+| **Nivel 3** 💾 | Effect Architecture | `effect()`, `onCleanup`, localStorage sync |
+| **Nivel 4** 🏗️ | Reactive Architecture | Services, `output()`, `BehaviorSubject` → `signal()`, `.asReadonly()` |
+| **Nivel 5** 🔄 | RxJS Boundaries | `toSignal()`, `toObservable()`, `rxResource()`, HttpClient |
+| **Nivel 6** 🗄️ | Signal Stores | DIY Signal Store → `@ngrx/signals` |
+| **Nivel 7** 🚀 | Zone-less Angular | `OnPush`, `provideZonelessChangeDetection()`, `afterRender` |
+
+---
+
+## 🔧 Herramientas Automáticas de Migración
+
+Angular proporciona schematics del CLI para migrar código existente automáticamente. Después de completar esta academia, puedes usarlos en tus proyectos profesionales:
+
+```bash
+# Migrar @Input() → input()
+ng generate @angular/core:signal-input-migration
+
+# Migrar @Output() → output()
+ng generate @angular/core:output-migration
+
+# Migrar @ViewChild/@ContentChild → viewChild()/contentChild()
+ng generate @angular/core:signal-queries-migration
+```
+
+---
 
 Sigue las instrucciones, confía en los tests, y aprende.

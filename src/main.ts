@@ -1,7 +1,8 @@
 import 'zone.js';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { CounterComponent } from './app/counter/counter.component';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
 
-bootstrapApplication(CounterComponent).catch((err) =>
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)
 );
