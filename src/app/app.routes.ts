@@ -13,8 +13,14 @@ export const routes: Routes = [
         (m) => m.CounterComponent
       ),
   },
+  {
+    path: 'nivel-2',
+    loadComponent: () =>
+      import('./levels/level2-state/task-filter.component').then(
+        (m) => m.TaskFilterComponent
+      ),
+  },
   // Rutas futuras:
-  // { path: 'nivel-2', loadComponent: () => import('./levels/level2-state/task-filter.component').then(m => m.TaskFilterComponent) },
   // { path: 'nivel-3', loadComponent: () => import('./levels/level3-effects/theme-panel.component').then(m => m.ThemePanelComponent) },
   // { path: 'nivel-4', loadComponent: () => import('./levels/level4-architecture/product-list.component').then(m => m.ProductListComponent) },
   // { path: 'nivel-5', loadComponent: () => import('./levels/level5-rxjs/github-search.component').then(m => m.GithubSearchComponent) },
