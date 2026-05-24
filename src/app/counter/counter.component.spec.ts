@@ -4,7 +4,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CounterComponent } from './counter.component';
 import { isSignal } from '@angular/core';
 
-describe('Angular Signals Academy - Test-Driven Learning 🚀', () => {
+describe('Angular Signals - Test-Driven Learning 🚀', () => {
   let component: CounterComponent;
   let fixture: ComponentFixture<CounterComponent>;
 

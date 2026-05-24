@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       setupFiles: [path.resolve(__dirname, 'src/test-setup.ts')],
       include: ['src/**/*.spec.ts'],
+      // Hides the stack trace frames completely to avoid terminal noise
+      onStackTrace(error) {
+        return false;
+      },
     },
   };
 });
