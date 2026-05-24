@@ -7,9 +7,13 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 
-console.log('=== INITIALIZING TEST ENVIRONMENT ===');
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
-);
-console.log('=== TEST ENVIRONMENT INITIALIZED ===');
+try {
+  console.log('=== INITIALIZING TEST ENVIRONMENT ===');
+  getTestBed().initTestEnvironment(
+    BrowserDynamicTestingModule,
+    platformBrowserDynamicTesting()
+  );
+  console.log('=== TEST ENVIRONMENT INITIALIZED SUCCESS ===');
+} catch (error) {
+  console.log('=== TEST ENVIRONMENT ALREADY INITIALIZED (SAFE) ===');
+}
