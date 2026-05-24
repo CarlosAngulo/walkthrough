@@ -1,0 +1,26 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Introducción a Angular Signals 🚀",
+  "steps": [
+    {
+      "file": "src/app/counter/counter.component.ts",
+      "line": 46,
+      "description": "### ¡Bienvenido a Angular Signals Academy! 🚀\n\nEn esta lección aprenderás sobre los **Writable Signals** (señales mutables). Las señales representan valores reactivos que Angular rastrea de forma extremadamente eficiente para saber con precisión cuándo actualizar el DOM.\n\n**Tu misión:**\nInicializa la propiedad `counter` como una señal mutable con el valor inicial de `0`.\n\n**Cómo resolverlo:**\nReemplaza `counter = null as any;` por:\n```typescript\ncounter = signal<number>(0);\n```\n\n*Nota:* Fíjate que `signal` ya está importado desde `@angular/core` en la línea 1."
+    },
+    {
+      "file": "src/app/counter/counter.component.ts",
+      "line": 55,
+      "description": "### Paso 2: Signal Inputs (Transformando el pasado) 🧬\n\nEn el Angular moderno, reemplazamos el decorador clásico `@Input()` por **Signal Inputs** reactivos usando la función `input()`. Esto nos permite integrar los parámetros de entrada del componente directamente en el grafo reactivo del framework.\n\n**Tu misión:**\nDeclara `step` como una señal de entrada (Signal Input) que reciba un número y tenga el valor por defecto de `1`.\n\n**Cómo resolverlo:**\nReemplaza `step = null as any;` por:\n```typescript\nstep = input<number>(1);\n```\n\nAl hacer esto, `step` pasará a ser una señal de lectura (`() => number`). ¡Y el test runner validará que reaccione dinámicamente!"
+    },
+    {
+      "file": "src/app/counter/counter.component.ts",
+      "line": 63,
+      "description": "### Paso 3: Computed Signals (Estado Derivado) ⚡\n\nLas **Computed Signals** son señales de solo lectura que calculan su valor dinámicamente a partir de otras señales. Lo maravilloso de `computed()` es que es reactivo y memorizado (cached): solo se evalúa de nuevo si la señal dependiente (`counter`) cambia.\n\n**Tu misión:**\nInicializa `doubleCounter` utilizando la función `computed()` para que devuelva el doble del valor de la señal `counter`.\n\n**Cómo resolverlo:**\nReemplaza `doubleCounter = null as any;` por:\n```typescript\ndoubleCounter = computed(() => this.counter() * 2);\n```\n\n*Pista:* Como `counter` es una señal, debes invocarla llamándola como función `this.counter()` para leer su valor actual reactivamente."
+    },
+    {
+      "file": "src/app/counter/counter.component.ts",
+      "line": 78,
+      "description": "### Paso 4: Mutar el Estado con Eventos 🖱️\n\nPara actualizar una **Writable Signal**, podemos usar el método `.set(newValue)` para forzar un valor, o `.update(fn)` para calcular el nuevo valor basándonos en el estado anterior. ¡Esta es la clave para la reactividad sin Zone.js!\n\n**Tu misión:**\nCompleta el método `increment()` para que sume el valor de la señal input `step()` al valor de la señal mutable `counter`.\n\n**Cómo resolverlo:**\nEscribe dentro de `increment()` la siguiente línea:\n```typescript\nthis.counter.update(current => current + this.step());\n```\n\n¡Y si quieres que tu suite de pruebas brille al 100% en verde, haz lo mismo con `decrement()` restando `this.step()`!"
+    }
+  ]
+}
