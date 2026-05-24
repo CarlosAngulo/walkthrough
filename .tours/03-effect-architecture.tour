@@ -1,0 +1,46 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "03. Effect Architecture (Side Effects)",
+  "steps": [
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "## ¡Bienvenido al Nivel 3: Effect Architecture! 💾\n\nEn este nivel, vamos a aprender sobre **efectos secundarios (Side Effects)** en Angular utilizando la función `effect()`.\n\n### El Problema (Anti-patrón)\nActualmente, este panel de tema guarda imperativamente las configuraciones en `localStorage` y actualiza manualmente el DOM (`.theme-preview-card`) cada vez que se llama a un Setter (`setTheme`, `setFontSize`, `setAccentColor`). ¡Esto es propenso a inconsistencias y duplica código innecesariamente!\n\n### El Reto\nVamos a refactorizar todo este componente para que use señales reactivas y un único `effect()` declarativo en el constructor. Este efecto sincronizará automáticamente el DOM y el localStorage ante cualquier cambio. También implementaremos un temporizador analítico que demuestra la utilidad de la función de limpieza `onCleanup`.\n\n¡Haz clic en **Next** para iniciar el primer reto!",
+      "line": 17
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "### RETO 1: Variables de Configuración como Signals ⚡\n\nEl primer paso es transformar nuestras propiedades de configuración en **Writable Signals**.\n\n1. Convierte `theme`, `fontSize` y `accentColor` en señales mutables usando la función `signal()`.\n2. Asegúrate de tipar y asignar sus valores por defecto:\n   - `theme` inicializado en `'dark'`\n   - `fontSize` inicializado en `16`\n   - `accentColor` inicializado en `'purple'`\n\n*Pista de código:*  \n```typescript\ntheme = signal<'dark' | 'light'>('dark');\nfontSize = signal<number>(16);\naccentColor = signal<'purple' | 'cyan' | 'pink'>('purple');\n```",
+      "line": 26
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "### RETO 2: Carga Inicial Elegante desde LocalStorage 📦\n\nPara que la aplicación recuerde las preferencias del usuario al recargar la página, debemos recuperar el JSON guardado en `localStorage`.\n\nUna excelente práctica con Signals es inicializar la señal **directamente** con el valor recuperado. Esto previene parpadeos en el renderizado inicial y simplifica el ciclo de vida del componente.\n\n1. Define un método privado utilitario como `getSavedPrefs` que intente leer la clave `'academy-theme-preferences'` de `localStorage`. Si existe, la parsea y retorna; si no, retorna los valores por defecto.\n2. Inicializa cada una de tus señales llamando a ese método.\n3. Una vez hecho esto, puedes **eliminar por completo** el código del método `ngOnInit` (ya no será necesario en absoluto).\n\n*Pistas de código en los comentarios del archivo para ver cómo estructurarlo de forma limpia.*",
+      "line": 36
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "### RETO 3: Sincronización Automática con `effect()` ⛓️\n\nEn Angular, los efectos secundarios se registran típicamente en el constructor mediante la función `effect()`.\n\nUn `effect()` observa automáticamente cualquier señal que sea leída en su interior. Cuando alguna de ellas cambia de valor, el efecto vuelve a ejecutarse en la siguiente fase de microtareas.\n\n1. Registra un `effect()` en este constructor.\n2. Dentro del efecto, lee tus señales `theme()`, `fontSize()` y `accentColor()` para registrar las dependencias reactivas.\n3. Añade la lógica para guardar el objeto con el estado actual en `localStorage` bajo la clave `'academy-theme-preferences'`.\n4. Añade la lógica de manipulación del DOM para setear las propiedades CSS `--preview-font-size` y los atributos de tema/acento en el Preview Card.\n\n*Pista de código:* Copia y adapta el código que te dejamos sugerido en los comentarios del constructor de este archivo.",
+      "line": 70
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "### RETO 4: Debounce y onCleanup para Recursos Eficientes 🧹\n\nUn caso de uso común de `onCleanup` es limpiar temporizadores (`setTimeout`), listeners de eventos o suscripciones activas antes de que el efecto se vuelva a disparar o el componente se destruya. Esto evita pérdidas de memoria y operaciones redundantes.\n\nAquí implementaremos un reporte de analíticas simulado con un *debounce* de 800ms:\n\n1. Dentro de un effect (puede ser un segundo efecto en el constructor), lee tus tres señales.\n2. Define un temporizador con `setTimeout` que incremente `this.analyticsLogCount` tras 800ms.\n3. El efecto recibe un callback `onCleanup` por parámetro. Regístralo llamando a `onCleanup(() => clearTimeout(timer))`.\n\nEsto cancelará los reportes pendientes si el usuario cambia muy rápido de configuración, enviando únicamente el estado final consolidado al cabo de 800ms de inactividad.\n\n*Pista de código:* Revisa la guía en los comentarios de este archivo.",
+      "line": 102
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.ts",
+      "description": "### RETO 5: Simplificar Setters 🧹\n\nDado que ahora tienes un `effect()` centralizado encargado de sincronizar tanto la memoria (`localStorage`) como la vista (`DOM`), tus setters ya no necesitan realizar tareas manuales ni imperativas.\n\n1. Modifica `setTheme()`, `setFontSize()` y `setAccentColor()` para que únicamente llamen al método `.set()` de su respectiva señal.\n2. **Elimina por completo** las llamadas a `this.saveToLocalStorage()` y `this.applyThemeStyles()` de cada método.\n3. **Borra** del archivo los métodos privados `saveToLocalStorage` y `applyThemeStyles` (líneas 169-185).\n\n¡La reactividad se encargará de todo automáticamente y tu código quedará limpio y elegante!",
+      "line": 127
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.html",
+      "description": "### RETO BONUS: Adaptar Enlaces en el Template HTML 🌐\n\nFinalmente, recuerda que en el template HTML de Angular, las señales son **funciones**. Para renderizar o comprobar sus valores en las directivas y propiedades del template, debes invocarlas ejecutándolas con paréntesis:\n\n1. Reemplaza `theme === 'dark'` por `theme() === 'dark'` (y también para `'light'`).\n2. Reemplaza `fontSize` por `fontSize()` en la comprobación del botón decremento y el badge central de visualización.\n3. Reemplaza `accentColor === 'purple'` por `accentColor() === 'purple'` (y repite para `'cyan'` y `'pink'`).\n\n¡Al terminar todos estos retos, la suite de pruebas pasará completamente a verde!",
+      "line": 1
+    },
+    {
+      "file": "src/app/levels/level3-effects/theme-panel.component.spec.ts",
+      "description": "### ¡Verificación TDL! 🧪\n\n1. Abre tu consola y corre: `pnpm run test`\n2. Vitest ejecutará las pruebas unitarias tradicionales, los tests de analítica debounce con temporizadores simulados (`vi.advanceTimersByTime`) y los estrictos **tests arquitectónicos** (que garantizan que no hagas updates cíclicos ni computed dentro de efectos).\n\n¡Cuando todas las pruebas de este nivel se pinten de **GREEN**, habrás dominado oficialmente la arquitectura de efectos en Angular! 🚀",
+      "line": 1
+    }
+  ]
+}

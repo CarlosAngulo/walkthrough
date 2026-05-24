@@ -51,9 +51,9 @@ interface Level {
           <div class="progress-info">
             <span class="progress-label">Progreso General</span>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 28%"></div>
+              <div class="progress-fill" style="width: 43%"></div>
             </div>
-            <span class="progress-text">2 / 7 Niveles</span>
+            <span class="progress-text">3 / 7 Niveles</span>
           </div>
         </div>
       </aside>
@@ -335,7 +335,7 @@ export class AppComponent {
       path: '/nivel-2',
       title: '2. Reactive Thinking',
       subtitle: 'Computed chains & derived state',
-      status: 'active',
+      status: 'done',
       emoji: '🧠',
     },
     {
@@ -343,7 +343,7 @@ export class AppComponent {
       path: '/nivel-3',
       title: '3. Effect Architecture',
       subtitle: 'effect(), onCleanup, localStorage',
-      status: 'locked',
+      status: 'active',
       emoji: '💾',
     },
     {
