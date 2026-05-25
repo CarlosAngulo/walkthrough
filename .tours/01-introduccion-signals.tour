@@ -8,32 +8,32 @@
       "description": "### ¡Bienvenido a Test-Driven Learning 🚀. Angular Signals.\n\nAntes de empezar a tocar el código, es muy importante que leas con atención este **README.md**.\n\nAquí entenderás:\n- Qué es **Test-Driven Learning (TDL)**.\n- Cómo instalar la extensión de **CodeTour** si aún no lo has hecho.\n- Cómo iniciar las terminales en paralelo para ver tus pruebas pasar en tiempo real usando `pnpm`.\n\nUna vez que tengas tu servidor de desarrollo levantado con `pnpm run dev` y tu test runner corriendo con `pnpm run test`, haz clic en **Next** (Siguiente) para iniciar tu camino hacia los Signals."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 19,
       "description": "### Paso 2: Exploración del Estado Tradicional 🗺️\n\nEntendamos primero cómo está estructurado el componente en su estado inicial:\n\nActualmente, la propiedad `counter` es una variable primitiva clásica (`counter = 0`). Observa que se muestra en el template usando la interpolación estándar `{{ counter }}` en la línea 11.\n\n*Prueba la aplicación en tu navegador:* Si haces clic en los botones de la interfaz, verás que funciona perfectamente. ¿Cómo ocurre esto? ¡Pasemos al siguiente paso para descubrirlo! (Este paso no requiere modificar código)."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 38,
       "description": "### Paso 3: La Reactividad Manual del Pasado 🕰️\n\nMira los métodos `increment()` y `decrement()` en este bloque.\n\nAquí incrementamos `this.counter` sumándole `this.step`. Además, recalculamos **manualmente** el estado derivado `this.doubleCounter` en ambos métodos para reflejar los cambios en el template.\n\nEn el Angular tradicional, somos responsables de actualizar manualmente el estado derivado en cada método de interacción, lo cual es propenso a errores y poco escalable. ¡Los Signals resolverán esto de forma automática! (Este paso no requiere modificar código)."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 19,
       "description": "### Paso 4: Reto 1 - Tu Primer Writable Signal ⚡\n\n¡Es hora de empezar a migrar hacia el futuro!\n\n**Tu reto:**\n1. Transforma la propiedad `counter` de un número clásico a una señal mutable:\n   ```typescript\n   counter = signal<number>(0);\n   ```\n2. Ve a la plantilla HTML en la línea 11 y actualízala para leer la señal llamándola como función: `{{ counter() }}`.\n3. Como `counter` es ahora una señal, actualiza los métodos de mutación abajo. Reemplaza `this.counter += this.step;` en `increment()` por:\n   ```typescript\n   this.counter.set(this.counter() + this.step);\n   ```\n   Y haz lo mismo en `decrement()` restando `this.step`.\n\n**Tip del Learning Engine 💡:** El motor de aprendizaje interactivo validará tanto tu código TypeScript como el HTML. Si olvidas actualizar el template a `counter()`, el tooltip te guiará con una pista precisa en tiempo real.\n\n**Verificación de Aprendizaje (TDL):**\nGuarda los cambios y mira tu terminal de pruebas. ¡El primer test unitario (`RETO 1: Writable Signals`) cambiará a **verde/aprobado**! Y si abres el navegador, verás que la aplicación sigue funcionando perfectamente."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 26,
       "description": "### Paso 5: Reto 2 - De Input Clásico a Signal Input 🧬\n\nAngular moderno introduce los **Signal Inputs**, permitiendo integrar los parámetros de entrada del componente directamente en la corriente reactiva.\n\n**Tu reto:**\n1. Transforma `step = 1;` en un Signal Input reactivo:\n   ```typescript\n   step = input<number>(1);\n   ```\n2. En la plantilla HTML, actualiza todas las referencias a `step` para llamarla como señal: `{{ step() }}` (en la interpolación de texto de la línea 23 y en los textos de los botones en las líneas 28 y 29).\n3. En tus métodos `increment()` y `decrement()`, lee la señal de entrada llamándola como función: `this.step()`.\n\n**Tip del Learning Engine 💡:** Al igual que con el counter, si olvidas invocar `step()` en el template o en los textos de los botones del HTML, el sistema te lo notificará dinámicamente con una indicación en amarillo/rojo.\n\n**Verificación:**\nGuarda los cambios. ¡Revisa tu suite de pruebas de Vitest! Los tests de `RETO 2` se pondrán en **verde** y la aplicación continuará respondiendo de manera impecable."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 33,
       "description": "### Paso 6: Reto 3 - Computed Signals (Estado Derivado) ⚙️\n\nCon **Computed Signals**, definimos el estado derivado de forma declarativa, reactiva y memorizada (cached), sin necesidad de recálculos manuales.\n\n**Tu reto:**\n1. Transforma `doubleCounter = 0;` en una señal computada dependiente de `counter`:\n   ```typescript\n   doubleCounter = computed(() => this.counter() * 2);\n   ```\n2. En la plantilla HTML (línea 16), lee la señal computada: `{{ doubleCounter() }}`.\n3. **¡Y ahora limpia el código!** En `increment()` y `decrement()`, elimina por completo las asignaciones manuales a `this.doubleCounter`.\n\n**Tip del Learning Engine 💡:** Si el TypeScript está correcto pero el HTML no invoca `doubleCounter()`, el motor de reglas semánticas te mantendrá el reto en pendiente y te mostrará la guía visual flotante.\n\n**Verificación:**\n¡Mira la suite de pruebas! El reto 3 cambiará a **verde**. Observa cómo la aplicación funciona de forma impecable y el valor del doble se recalcula automáticamente sin que intervengas en los métodos."
     },
     {
-      "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
       "line": 38,
       "description": "### Paso 7: Reto Final - Mutar Señales de Forma Idiomática 🏆\n\nPara actualizar una señal mutable basándote en su valor anterior, la mejor práctica en Angular es usar el método `.update()` en lugar de `.set()`.\n\n**Tu reto:**\nActualiza los métodos `increment()` y `decrement()` utilizando el método reactivo `.update()`.\n\n- En `increment()`:\n  ```typescript\n  this.counter.update(current => current + this.step());\n  ```\n- En `decrement()`:\n  ```typescript\n  this.counter.update(current => current - this.step());\n  ```\n\n**Victoria:**\nGuarda los cambios. ¡Toda tu suite de pruebas unitarias en Vitest brillará en **100% verde**! Has completado con éxito la migración completa del componente a la reactividad moderna de Angular. ¡Felicidades, arquitecto!"
     }

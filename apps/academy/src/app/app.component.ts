@@ -122,7 +122,12 @@ interface Level {
               <p>Para ver el estado de tus retos en esta pantalla en tiempo real, ejecuta el comando de pruebas en tu terminal:</p>
               <div class="cmd-box">
                 <code>pnpm test:l1</code>
-                <button class="btn-copy-mock" (click)="triggerTestPing()">Ejecutar</button>
+                <div class="cmd-actions">
+                  <button class="btn-copy" [class.success]="isCopied()" (click)="copyCommand('pnpm test:l1')" title="Copiar comando">
+                    {{ isCopied() ? '✓ Copiado' : '📋 Copiar' }}
+                  </button>
+                  <button class="btn-copy-mock" (click)="triggerTestPing()">Verificar</button>
+                </div>
               </div>
               <small class="empty-hint">El reporter transmitirá los resultados al instante mediante WebSockets al guardar archivos.</small>
             </div>
@@ -649,7 +654,7 @@ interface Level {
       color: #c084fc;
       font-size: 0.65rem;
       font-weight: 700;
-      padding: 0.2rem 0.5rem;
+      padding: 0.25rem 0.55rem;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -658,6 +663,39 @@ interface Level {
     .btn-copy-mock:hover {
       background: rgba(168, 85, 247, 0.25);
       border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .cmd-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #9ca3af;
+      font-size: 0.62rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-copy.success {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.3);
+      color: #4ade80;
     }
 
     .empty-hint {
@@ -756,12 +794,21 @@ interface Level {
 export class AppComponent implements OnInit, OnDestroy {
   academyState = signal<LearningState>(learningStateStore.getState());
   private unsubscribeState?: () => void;
-  activeLevelPath = '/nivel-1';
+  isCopied = signal(false);
   courseMetadata = COURSE_METADATA;
   
   testResults = this.learningEngineService.testResults;
 
   constructor(private learningEngineService: LearningEngineService) {}
+
+  copyCommand(text: string) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.isCopied.set(true);
+        setTimeout(() => this.isCopied.set(false), 2000);
+      });
+    }
+  }
 
   ngOnInit() {
     this.unsubscribeState = learningStateStore.subscribe(state => {
