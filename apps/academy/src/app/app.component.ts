@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, effect } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { learningStateStore, LearningState } from '@learning-engine/learning-state';
 import { overlaySystem } from '@learning-engine/overlay-system';
+import { LearningEngineService } from './services/learning-engine.service';
 
 interface Level {
   number: number;
@@ -395,42 +396,32 @@ export class AppComponent implements OnInit, OnDestroy {
   private unsubscribeState?: () => void;
   activeLevelPath = '/nivel-1';
 
+  constructor(private learningEngineService: LearningEngineService) {
+    // Reactively unlock achievements and levels when the service signals validation success!
+    effect(() => {
+      const isValid = this.learningEngineService.isValid();
+      if (isValid) {
+        learningStateStore.addAchievement(
+          'L1_SIGNALS',
+          'Writable Signals Master ⚡',
+          'Declaraste con éxito writable, input y computed signals.',
+          '⚡'
+        );
+        learningStateStore.completeLevel('nivel-1');
+      }
+    });
+  }
+
   ngOnInit() {
     this.unsubscribeState = learningStateStore.subscribe(state => {
       this.academyState.set({ ...state });
     });
-
-    // Establish Vite HMR WebSocket handshake in dev mode
-    if ((import.meta as any).hot) {
-      const hot = (import.meta as any).hot;
-      
-      // Delay slightly to ensure angular app is bootstraped and anchors are in DOM
-      setTimeout(() => {
-        hot.send('learning-engine:ping');
-      }, 500);
-
-      hot.on('learning-engine:status', (data: any) => {
-        overlaySystem.update(data.evaluations);
-        
-        if (data.isValid) {
-          // Add achievement and mark level 1 completed
-          learningStateStore.addAchievement(
-            'L1_SIGNALS',
-            'Writable Signals Master ⚡',
-            'Declaraste con éxito writable, input y computed signals.',
-            '⚡'
-          );
-          learningStateStore.completeLevel('nivel-1');
-        }
-      });
-    }
   }
 
   ngOnDestroy() {
     if (this.unsubscribeState) {
       this.unsubscribeState();
     }
-    overlaySystem.destroy();
   }
 
   get completedCount() {

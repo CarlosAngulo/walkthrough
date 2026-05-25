@@ -174,6 +174,7 @@ export class OverlaySystem {
   }
 
   update(evaluations: RuleEvaluation[]) {
+    console.log('Updating overlays with evaluations:', evaluations);
     if (typeof document === 'undefined') return;
     this.clear();
 
@@ -200,6 +201,7 @@ export class OverlaySystem {
   }
 
   private createIndicator(target: HTMLElement, ev: RuleEvaluation) {
+    console.log('Creating indicator for', ev.ruleId, 'on anchor:', ev.anchor);
     target.classList.add('learning-anchor-wrapper');
 
     const dot = document.createElement('div');

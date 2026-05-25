@@ -50,7 +50,7 @@ export function analyzeFile(filePath: string): AnalysisResult {
   // If the file is already in the project, reload it from disk to get latest changes
   let sourceFile = project.getSourceFile(absolutePath);
   if (sourceFile) {
-    sourceFile.reloadSync();
+    sourceFile.refreshFromFileSystemSync();
   } else {
     sourceFile = project.addSourceFileAtPath(absolutePath);
   }
