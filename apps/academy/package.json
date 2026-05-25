@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "vitest"
+    "test": "vitest",
+    "test:l1": "vitest counter",
+    "test:l2": "vitest task-filter",
+    "test:l3": "vitest theme-panel"
   },
   "dependencies": {
     "@learning-engine/learning-state": "workspace:*",

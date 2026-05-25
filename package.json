@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "pnpm --filter academy dev",
     "build": "pnpm --filter academy build",
-    "test": "pnpm --filter academy test"
+    "test": "pnpm --filter academy test",
+    "test:l1": "pnpm --filter academy test:l1",
+    "test:l2": "pnpm --filter academy test:l2",
+    "test:l3": "pnpm --filter academy test:l3"
   },
   "dependencies": {
     "@angular/common": "^19.0.0",

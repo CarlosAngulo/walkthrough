@@ -82,6 +82,84 @@ interface Level {
       <main class="content-viewport">
         <router-outlet />
       </main>
+
+      <!-- ─── Panel Lateral de Unit Tests en Tiempo Real 🧪 ─── -->
+      <aside class="test-panel-sidebar">
+        <div class="test-header">
+          <div class="test-title-row">
+            <span class="test-icon">🧪</span>
+            <div>
+              <h2 class="test-title">Pruebas Unitarias</h2>
+              <span class="test-subtitle">Feedback de Vitest</span>
+            </div>
+          </div>
+          <span class="status-indicator" [class]="getGlobalTestStatus()">
+            {{ getGlobalTestStatusLabel() }}
+          </span>
+        </div>
+
+        <!-- Barra de Progreso del Nivel -->
+        @if (hasTestResults()) {
+          <div class="test-progress-box">
+            <div class="progress-header">
+              <span>Retos Aprobados</span>
+              <strong>{{ getPassedTestsCount() }} / {{ getTotalTestsCount() }}</strong>
+            </div>
+            <div class="test-progress-bar">
+              <div class="test-progress-fill" [style.width.%]="getTestsProgressPercentage()"></div>
+            </div>
+          </div>
+        }
+
+        <!-- Listado de Tests -->
+        <div class="test-list-container">
+          @if (!hasTestResults()) {
+            <!-- Estado Vacío: Esperando por Vitest -->
+            <div class="tests-empty-state">
+              <div class="empty-glow-icon">🔬</div>
+              <h3>Test Runner Inactivo</h3>
+              <p>Para ver el estado de tus retos en esta pantalla en tiempo real, ejecuta el comando de pruebas en tu terminal:</p>
+              <div class="cmd-box">
+                <code>pnpm test:l1</code>
+                <button class="btn-copy-mock" (click)="triggerTestPing()">Ejecutar</button>
+              </div>
+              <small class="empty-hint">El reporter transmitirá los resultados al instante mediante WebSockets al guardar archivos.</small>
+            </div>
+          } @else {
+            @for (file of testResults(); track file.filepath) {
+              <div class="test-file-card">
+                <div class="file-header">
+                  <span class="file-icon">📄</span>
+                  <span class="file-name">{{ file.name }}</span>
+                </div>
+                <div class="file-tasks">
+                  @for (task of file.tasks; track task.name) {
+                    <div class="task-row" [class]="task.status">
+                      <div class="task-status-indicator">
+                        @if (task.status === 'pass') {
+                          <span class="task-chk">🟢</span>
+                        } @else if (task.status === 'fail') {
+                          <span class="task-chk">🔴</span>
+                        } @else {
+                          <span class="task-chk">⚪</span>
+                        }
+                      </div>
+                      <div class="task-details">
+                        <div class="task-name-text">{{ task.name }}</div>
+                        @if (task.status === 'fail' && task.error) {
+                          <div class="task-error-box">
+                            {{ task.error }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </aside>
     </div>
   `,
   styles: [`
@@ -97,6 +175,7 @@ interface Level {
       width: 100%;
       background-color: #0c0d14;
       color: #f3f4f6;
+      overflow: hidden;
     }
 
     /* ─── Sidebar ─── */
@@ -389,12 +468,296 @@ interface Level {
         padding: 1rem;
       }
     }
+
+    /* ─── Test Panel Sidebar Styles (Glassmorphism & Rich Aesthetics) ─── */
+    .test-panel-sidebar {
+      width: 320px;
+      min-width: 320px;
+      height: 100vh;
+      background: rgba(12, 13, 20, 0.85);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.25rem;
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+    }
+
+    .test-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .test-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .test-icon {
+      font-size: 1.6rem;
+      filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.4));
+    }
+
+    .test-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f3f4f6;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .test-subtitle {
+      font-size: 0.65rem;
+      color: #9ca3af;
+      font-weight: 500;
+    }
+
+    .status-indicator {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .status-indicator.pass {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+    }
+
+    .status-indicator.fail {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+
+    .status-indicator.pending {
+      background: rgba(156, 163, 175, 0.1);
+      border: 1px solid rgba(156, 163, 175, 0.2);
+      color: #9ca3af;
+    }
+
+    /* ─── Test Progress Box ─── */
+    .test-progress-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.75rem 0.9rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #e5e7eb;
+      margin-bottom: 0.4rem;
+    }
+
+    .progress-header strong {
+      font-family: 'Outfit', sans-serif;
+      color: #a855f7;
+    }
+
+    .test-progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .test-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #6366f1);
+      border-radius: 99px;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ─── Test Empty State ─── */
+    .tests-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .empty-glow-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.3));
+      animation: pulse-glow 2s infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+
+    .tests-empty-state h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f3f4f6;
+      margin-bottom: 0.5rem;
+    }
+
+    .tests-empty-state p {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      line-height: 1.4;
+      margin-bottom: 1.5rem;
+    }
+
+    .cmd-box {
+      display: flex;
+      align-items: center;
+      background: rgba(12, 13, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.4rem 0.65rem;
+      border-radius: 8px;
+      width: 100%;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .cmd-box code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: #38bdf8;
+    }
+
+    .btn-copy-mock {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy-mock:hover {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .empty-hint {
+      font-size: 0.6rem;
+      color: #4b5563;
+      line-height: 1.3;
+    }
+
+    /* ─── Test Cards ─── */
+    .test-file-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .file-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .file-icon {
+      font-size: 1rem;
+    }
+
+    .file-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .file-tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .task-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.25rem 0;
+    }
+
+    .task-status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .task-chk {
+      font-size: 0.85rem;
+    }
+
+    .task-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-name-text {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #d1d5db;
+      line-height: 1.35;
+    }
+
+    .task-row.pass .task-name-text {
+      color: #f3f4f6;
+    }
+
+    .task-row.fail .task-name-text {
+      color: #fca5a5;
+    }
+
+    .task-error-box {
+      background: rgba(239, 68, 68, 0.08);
+      border-left: 2px solid #f87171;
+      padding: 0.4rem 0.5rem;
+      border-radius: 2px 4px 4px 2px;
+      font-size: 0.65rem;
+      color: #fca5a5;
+      margin-top: 0.35rem;
+      line-height: 1.35;
+      font-family: system-ui, sans-serif;
+      word-break: break-word;
+    }
   `],
 })
 export class AppComponent implements OnInit, OnDestroy {
   academyState = signal<LearningState>(learningStateStore.getState());
   private unsubscribeState?: () => void;
   activeLevelPath = '/nivel-1';
+  
+  testResults = this.learningEngineService.testResults;
 
   constructor(private learningEngineService: LearningEngineService) {
     // Reactively unlock achievements and levels when the service signals validation success!
@@ -435,6 +798,64 @@ export class AppComponent implements OnInit, OnDestroy {
       const total = Object.keys(this.academyState().progress).length;
       return (this.completedCount() / total) * 100;
     });
+  }
+
+  // Helper getters for Vitest sidebar integration
+  hasTestResults(): boolean {
+    const results = this.testResults();
+    return results && results.length > 0 && results.some(f => f.tasks.length > 0);
+  }
+
+  getTotalTestsCount(): number {
+    let count = 0;
+    this.testResults().forEach(f => {
+      count += f.tasks.length;
+    });
+    return count;
+  }
+
+  getPassedTestsCount(): number {
+    let count = 0;
+    this.testResults().forEach(f => {
+      count += f.tasks.filter(t => t.status === 'pass').length;
+    });
+    return count;
+  }
+
+  getTestsProgressPercentage(): number {
+    const total = this.getTotalTestsCount();
+    if (total === 0) return 0;
+    return (this.getPassedTestsCount() / total) * 100;
+  }
+
+  getGlobalTestStatus(): 'pass' | 'fail' | 'pending' {
+    if (!this.hasTestResults()) return 'pending';
+    
+    let hasFail = false;
+    let hasPass = false;
+    
+    this.testResults().forEach(f => {
+      f.tasks.forEach(t => {
+        if (t.status === 'fail') hasFail = true;
+        if (t.status === 'pass') hasPass = true;
+      });
+    });
+
+    if (hasFail) return 'fail';
+    if (hasPass) return 'pass';
+    return 'pending';
+  }
+
+  getGlobalTestStatusLabel(): string {
+    const status = this.getGlobalTestStatus();
+    if (status === 'pass') return 'Aprobado';
+    if (status === 'fail') return 'Fallando';
+    return 'Inactivo';
+  }
+
+  triggerTestPing() {
+    // Force a fresh refresh request to seed WebSocket ping
+    this.learningEngineService.triggerRefresh();
   }
 
   get levels(): Level[] {

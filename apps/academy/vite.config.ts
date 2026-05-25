@@ -33,9 +33,66 @@ function learningEnginePlugin() {
   return {
     name: 'vite-plugin-learning-engine',
     configureServer(server: any) {
+      let latestTestResults: any[] = [];
+
+      // Save Vite dev server port so the Vitest custom reporter knows where to send POSTs
+      const writePort = () => {
+        if (server.httpServer) {
+          const address = server.httpServer.address();
+          if (address && typeof address === 'object') {
+            const actualPort = address.port;
+            const p = path.resolve(__dirname, '.vite-port');
+            fs.writeFileSync(p, actualPort.toString());
+            console.log(`[Learning Engine Plugin] Wrote actual Vite port ${actualPort} to ${p}`);
+            return;
+          }
+        }
+        const port = server.config.server.port || 5173;
+        const p = path.resolve(__dirname, '.vite-port');
+        fs.writeFileSync(p, port.toString());
+        console.log(`[Learning Engine Plugin] Wrote configured Vite port ${port} to ${p}`);
+      };
+
+      if (server.httpServer) {
+        server.httpServer.once('listening', writePort);
+      } else {
+        writePort();
+      }
+
       // 1. Globally mounted middleware for HTTP API
       server.middlewares.use((req: any, res: any, next: any) => {
         const url = req.url || '';
+
+        // Handle POST from Vitest custom reporter
+        if (req.method === 'POST' && url === '/api/learning-engine/test-results') {
+          let body = '';
+          req.on('data', (chunk: any) => { body += chunk; });
+          req.on('end', () => {
+            try {
+              latestTestResults = JSON.parse(body);
+              console.log('[Learning Engine Plugin] Received test results. Broadcasting via WS...');
+              // Broadcast test results to all browser instances
+              server.ws.send('learning-engine:test-results', latestTestResults);
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: true }));
+            } catch (e: any) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: e.message }));
+            }
+          });
+          return;
+        }
+
+        // Handle GET request for initial test results load
+        if (url === '/api/learning-engine/test-results') {
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate'
+          });
+          res.end(JSON.stringify(latestTestResults));
+          return;
+        }
+
         if (url === '/api/learning-engine/status' || url.startsWith('/api/learning-engine/status?')) {
           try {
             const evaluation = runAnalysis();
@@ -61,17 +118,19 @@ function learningEnginePlugin() {
         try {
           const evaluation = runAnalysis();
           server.ws.send('learning-engine:status', evaluation);
+          // Also push latest test results on ping
+          server.ws.send('learning-engine:test-results', latestTestResults);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] WS ping error:', e);
         }
       });
 
       // 3. On server start, proactively send initial status after a short delay
-      //    This ensures clients that connect after a page refresh get data via WS too
       setTimeout(() => {
         try {
           const evaluation = runAnalysis();
           server.ws.send('learning-engine:status', evaluation);
+          server.ws.send('learning-engine:test-results', latestTestResults);
           console.log('[Learning Engine Plugin] Initial WS status broadcast sent.');
         } catch (e: any) {
           console.error('[Learning Engine Plugin] Initial broadcast error:', e);
@@ -116,6 +175,7 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true,
       environment: 'jsdom',
+      reporters: ['basic', './custom-reporter.js'], // Console reporting + custom WS streaming
       setupFiles: [path.resolve(__dirname, 'src/test-setup.ts')],
       include: ['src/**/*.spec.ts'],
       onStackTrace(error) {
