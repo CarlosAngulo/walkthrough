@@ -33,7 +33,7 @@ interface Level {
           @for (level of levels; track level.path) {
             <a
               [routerLink] class="level-card"
-              [class.active]="activeLevelPath === level.path"
+              [class.active]="activeLevelPath() === level.path"
               [class.is-locked]="level.status === 'locked'"
               [routerLink]="level.status !== 'locked' ? level.path : null"
             >
@@ -121,9 +121,9 @@ interface Level {
               <h3>Test Runner Inactivo</h3>
               <p>Para ver el estado de tus retos en esta pantalla en tiempo real, ejecuta el comando de pruebas en tu terminal:</p>
               <div class="cmd-box">
-                <code>pnpm test:l1</code>
+                <code>{{ activeTestCommand() }}</code>
                 <div class="cmd-actions">
-                  <button class="btn-copy" [class.success]="isCopied()" (click)="copyCommand('pnpm test:l1')" title="Copiar comando">
+                  <button class="btn-copy" [class.success]="isCopied()" (click)="copyCommand(activeTestCommand())" title="Copiar comando">
                     {{ isCopied() ? '✓ Copiado' : '📋 Copiar' }}
                   </button>
                   <button class="btn-copy-mock" (click)="triggerTestPing()">Verificar</button>
@@ -797,7 +797,27 @@ export class AppComponent implements OnInit, OnDestroy {
   isCopied = signal(false);
   courseMetadata = COURSE_METADATA;
   
-  testResults = this.learningEngineService.testResults;
+  activeLevelNumber = computed(() => {
+    const levelKey = this.learningEngineService.activeLevel();
+    const found = this.courseMetadata.levels.find(l => l.statusKey === levelKey);
+    return found ? found.number : 1;
+  });
+
+  activeTestCommand = computed(() => {
+    return `pnpm test:l${this.activeLevelNumber()}`;
+  });
+
+  activeLevelPath = computed(() => {
+    const levelKey = this.learningEngineService.activeLevel();
+    const found = this.courseMetadata.levels.find(l => l.statusKey === levelKey);
+    return found ? found.path : '/nivel-1';
+  });
+
+  testResults = computed(() => {
+    const results = this.learningEngineService.testResults();
+    const num = this.activeLevelNumber();
+    return results.filter(file => file.filepath.includes(`level${num}`));
+  });
 
   constructor(private learningEngineService: LearningEngineService) {}
 

@@ -19,7 +19,7 @@ export interface TestFileResult {
 export class LearningEngineService {
   evaluations = signal<RuleEvaluation[]>([]);
   isValid = signal<boolean>(false);
-  activeLevel = 'nivel-1';
+  activeLevel = signal<string>('nivel-1');
   
   /** Structure list of Vitest unit test results streamed in real-time */
   testResults = signal<TestFileResult[]>([]);
@@ -104,8 +104,8 @@ export class LearningEngineService {
       });
   }
 
-  triggerRefresh(level: string = this.activeLevel) {
-    this.activeLevel = level;
+  triggerRefresh(level: string = this.activeLevel()) {
+    this.activeLevel.set(level);
     this.fetchStatusWithRetry(level, 2, 500);
     this.fetchTestResultsWithRetry(2, 500);
     
