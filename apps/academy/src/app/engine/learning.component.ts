@@ -8,6 +8,7 @@ import { overlaySystem } from '@learning-engine/overlay-system';
 export abstract class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
   protected learningEngineService = inject(LearningEngineService);
   protected abstract level: string;
+  protected abstract onLevelCompleted(): void;
   private isViewInitialized = false;
   private pendingEvaluations: any[] | null = null;
 
@@ -24,6 +25,14 @@ export abstract class LearningComponent implements OnInit, AfterViewInit, OnDest
       } else {
         this.pendingEvaluations = evaluations;
         console.log('[LearningComponent] Storing evaluations until view initializes...');
+      }
+    });
+
+    // Reactively unlock achievements and levels when the service signals validation success!
+    effect(() => {
+      const isValid = this.learningEngineService.isValid();
+      if (isValid && this.learningEngineService.activeLevel === this.level) {
+        this.onLevelCompleted();
       }
     });
   }

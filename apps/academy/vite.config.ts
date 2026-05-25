@@ -28,11 +28,20 @@ const LEVEL2_RULES = [
   'L2_COMPLETED_COUNT_COMPUTED'
 ];
 
+const LEVEL3_RULES = [
+  'L3_THEME_SIGNAL',
+  'L3_FONT_SIZE_SIGNAL',
+  'L3_ACCENT_COLOR_SIGNAL'
+];
+
 function runAnalysis(level: string = 'nivel-1') {
   let filePath = '';
   let rules = [];
 
-  if (level === 'nivel-2') {
+  if (level === 'nivel-3') {
+    filePath = path.resolve(__dirname, 'src/app/course/level3-effects/theme-panel.component.ts');
+    rules = LEVEL3_RULES;
+  } else if (level === 'nivel-2') {
     filePath = path.resolve(__dirname, 'src/app/course/level2-state/task-filter.component.ts');
     rules = LEVEL2_RULES;
   } else {
@@ -174,6 +183,14 @@ function learningEnginePlugin() {
         try {
           const analysis = analyzeFile(file);
           const evaluation = evaluateRules(analysis, LEVEL2_RULES);
+          server.ws.send('learning-engine:status', evaluation);
+        } catch (e: any) {
+          console.error('[Learning Engine Plugin] HMR error:', e);
+        }
+      } else if (file.endsWith('theme-panel.component.ts')) {
+        try {
+          const analysis = analyzeFile(file);
+          const evaluation = evaluateRules(analysis, LEVEL3_RULES);
           server.ws.send('learning-engine:status', evaluation);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] HMR error:', e);

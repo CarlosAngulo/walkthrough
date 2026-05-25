@@ -68,24 +68,21 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
 
   protected override level = 'nivel-3';
 
+  protected onLevelCompleted() {
+    learningStateStore.addAchievement(
+      'L3_EFFECTS',
+      'Side Effect Architect 💾',
+      'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
+      '💾'
+    );
+    learningStateStore.completeLevel('nivel-3');
+  }
+
   // ==========================================
   // RETO 3: Effect() para Sincronizar Estado
   // ==========================================
   constructor() {
     super();
-    // Reactively unlock achievements and levels when the service signals validation success!
-    effect(() => {
-      const isValid = this.learningEngineService.isValid();
-      if (isValid && this.learningEngineService.activeLevel === 'nivel-3') {
-        learningStateStore.addAchievement(
-          'L3_EFFECTS',
-          'Side Effect Architect 💾',
-          'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
-          '💾'
-        );
-        learningStateStore.completeLevel('nivel-3');
-      }
-    });
 
     // TODO: Registra un effect() en este constructor. Los efectos observan automáticamente
     // cualquier señal leída en su interior y se ejecutan cada vez que cambien.

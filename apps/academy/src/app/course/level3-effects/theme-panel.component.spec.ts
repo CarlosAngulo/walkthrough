@@ -6,9 +6,24 @@ import { isSignal } from '@angular/core';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+// Import our custom Vitest matchers to extend expect
+import '@learning-engine/test-integration';
+
 describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
   let component: ThemePanelComponent;
   let fixture: ComponentFixture<ThemePanelComponent>;
+
+  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
+    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+      const componentPath = 'src/app/course/level3-effects/theme-panel.component.ts';
+      
+      expect(componentPath).toSatisfyRules([
+        'L3_THEME_SIGNAL',
+        'L3_FONT_SIZE_SIGNAL',
+        'L3_ACCENT_COLOR_SIGNAL'
+      ]);
+    });
+  });
 
   beforeEach(() => {
     // Limpiar localStorage antes de cada test
