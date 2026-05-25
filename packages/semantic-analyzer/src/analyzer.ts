@@ -1,5 +1,6 @@
 import { Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export interface PropertyAnalysis {
   name: string;
@@ -23,6 +24,7 @@ export interface AnalysisResult {
   properties: PropertyAnalysis[];
   methods: MethodAnalysis[];
   imports: ImportAnalysis[];
+  templateContent?: string;
 }
 
 // Global project instance to reuse TS compiler state
@@ -59,8 +61,15 @@ export function analyzeFile(filePath: string): AnalysisResult {
     filePath: absolutePath,
     properties: [],
     methods: [],
-    imports: []
+    imports: [],
+    templateContent: ''
   };
+
+  // Resolve template URL if it is a component
+  const htmlPath = absolutePath.replace(/\.ts$/, '.html');
+  if (fs.existsSync(htmlPath)) {
+    result.templateContent = fs.readFileSync(htmlPath, 'utf8');
+  }
 
   // 1. Analyze Imports
   sourceFile.getImportDeclarations().forEach(imp => {
