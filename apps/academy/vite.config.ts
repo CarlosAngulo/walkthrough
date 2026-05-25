@@ -21,7 +21,7 @@ const LEVEL1_RULES = [
 ];
 
 function runAnalysis() {
-  const filePath = path.resolve(__dirname, 'src/app/levels/level1-counter/counter.component.ts');
+  const filePath = path.resolve(__dirname, 'src/app/course/level1-counter/counter.component.ts');
   if (!fs.existsSync(filePath)) {
     throw new Error(`[Learning Engine] File not found: ${filePath}`);
   }

@@ -1,5 +1,6 @@
-import { Component, signal, computed, input } from '@angular/core';
-import { LearningComponent } from '../learning.component';
+import { Component, signal, computed, input, effect } from '@angular/core';
+import { LearningComponent } from '../../engine/learning.component';
+import { learningStateStore } from '@learning-engine/learning-state';
 
 @Component({
   selector: 'app-counter',
@@ -10,6 +11,22 @@ import { LearningComponent } from '../learning.component';
   }
 })
 export class CounterComponent extends LearningComponent {
+  constructor() {
+    super();
+    // Reactively unlock achievements and levels when the service signals validation success!
+    effect(() => {
+      const isValid = this.learningEngineService.isValid();
+      if (isValid) {
+        learningStateStore.addAchievement(
+          'L1_SIGNALS',
+          'Writable Signals Master ⚡',
+          'Declaraste con éxito writable, input y computed signals.',
+          '⚡'
+        );
+        learningStateStore.completeLevel('nivel-1');
+      }
+    });
+  }
   // ==========================================
   // RETO 1: Writable Signals
   // ==========================================

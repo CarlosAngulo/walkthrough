@@ -24,7 +24,7 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
   describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
     it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
       // Path is relative to the apps/academy directory where tests run
-      const componentPath = 'src/app/levels/level1-counter/counter.component.ts';
+      const componentPath = 'src/app/course/level1-counter/counter.component.ts';
       
       expect(componentPath).toSatisfyRules([
         'L1_WRITABLE_SIGNAL',

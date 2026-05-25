@@ -1,12 +1,12 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, inject, effect } from '@angular/core';
-import { LearningEngineService } from '../services/learning-engine.service';
+import { LearningEngineService } from './services/learning-engine.service';
 import { overlaySystem } from '@learning-engine/overlay-system';
 
 @Component({
   template: ''
 })
 export abstract class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
-  private learningEngineService = inject(LearningEngineService);
+  protected learningEngineService = inject(LearningEngineService);
   private isViewInitialized = false;
   private pendingEvaluations: any[] | null = null;
 

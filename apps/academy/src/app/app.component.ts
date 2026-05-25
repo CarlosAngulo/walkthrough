@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, signal, computed, effect } from '@angular
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { learningStateStore, LearningState } from '@learning-engine/learning-state';
 import { overlaySystem } from '@learning-engine/overlay-system';
-import { LearningEngineService } from './services/learning-engine.service';
+import { LearningEngineService } from './engine/services/learning-engine.service';
+import { COURSE_METADATA } from './course/course-config';
 
 interface Level {
   number: number;
@@ -21,10 +22,10 @@ interface Level {
     <div class="academy-layout">
       <aside class="sidebar">
         <div class="brand">
-          <span class="brand-logo">🧬</span>
+          <span class="brand-logo">{{ courseMetadata.logo }}</span>
           <div class="brand-text">
-            <h1 class="brand-title">Signals Academy</h1>
-            <span class="brand-sub">Test-Driven Learning</span>
+            <h1 class="brand-title">{{ courseMetadata.title }}</h1>
+            <span class="brand-sub">{{ courseMetadata.subtitle }}</span>
           </div>
         </div>
 
@@ -74,7 +75,7 @@ interface Level {
             <div class="progress-bar">
               <div class="progress-fill" [style.width.%]="progressPercentage()"></div>
             </div>
-            <span class="progress-text">{{ completedCount() }} / 7 Niveles ({{ academyState().score }} pts)</span>
+            <span class="progress-text">{{ completedCount() }} / {{ courseMetadata.levels.length }} Niveles ({{ academyState().score }} pts)</span>
           </div>
         </div>
       </aside>
@@ -756,24 +757,11 @@ export class AppComponent implements OnInit, OnDestroy {
   academyState = signal<LearningState>(learningStateStore.getState());
   private unsubscribeState?: () => void;
   activeLevelPath = '/nivel-1';
+  courseMetadata = COURSE_METADATA;
   
   testResults = this.learningEngineService.testResults;
 
-  constructor(private learningEngineService: LearningEngineService) {
-    // Reactively unlock achievements and levels when the service signals validation success!
-    effect(() => {
-      const isValid = this.learningEngineService.isValid();
-      if (isValid) {
-        learningStateStore.addAchievement(
-          'L1_SIGNALS',
-          'Writable Signals Master ⚡',
-          'Declaraste con éxito writable, input y computed signals.',
-          '⚡'
-        );
-        learningStateStore.completeLevel('nivel-1');
-      }
-    });
-  }
+  constructor(private learningEngineService: LearningEngineService) {}
 
   ngOnInit() {
     this.unsubscribeState = learningStateStore.subscribe(state => {
@@ -795,8 +783,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get progressPercentage() {
     return computed(() => {
-      const total = Object.keys(this.academyState().progress).length;
-      return (this.completedCount() / total) * 100;
+      const total = COURSE_METADATA.levels.length;
+      return total > 0 ? (this.completedCount() / total) * 100 : 0;
     });
   }
 
@@ -860,63 +848,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get levels(): Level[] {
     const storeProgress = this.academyState().progress;
-    return [
-      {
-        number: 1,
-        path: '/nivel-1',
-        title: '1. Writable Signals',
-        subtitle: 'signal(), input(), computed()',
-        status: storeProgress['nivel-1'] || 'locked',
-        emoji: '⚡',
-      },
-      {
-        number: 2,
-        path: '/nivel-2',
-        title: '2. Reactive Thinking',
-        subtitle: 'Computed chains & derived state',
-        status: storeProgress['nivel-2'] || 'locked',
-        emoji: '🧠',
-      },
-      {
-        number: 3,
-        path: '/nivel-3',
-        title: '3. Effect Architecture',
-        subtitle: 'effect(), onCleanup, localStorage',
-        status: storeProgress['nivel-3'] || 'locked',
-        emoji: '💾',
-      },
-      {
-        number: 4,
-        path: '/nivel-4',
-        title: '4. Reactive Architecture',
-        subtitle: 'Services, output(), asReadonly()',
-        status: storeProgress['nivel-4'] || 'locked',
-        emoji: '🏗️',
-      },
-      {
-        number: 5,
-        path: '/nivel-5',
-        title: '5. RxJS Boundaries',
-        subtitle: 'toSignal(), toObservable()',
-        status: storeProgress['nivel-5'] || 'locked',
-        emoji: '🔄',
-      },
-      {
-        number: 6,
-        path: '/nivel-6',
-        title: '6. Signal Stores',
-        subtitle: 'DIY Store + @ngrx/signals',
-        status: storeProgress['nivel-6'] || 'locked',
-        emoji: '🗄️',
-      },
-      {
-        number: 7,
-        path: '/nivel-7',
-        title: '7. Zone-less Angular',
-        subtitle: 'OnPush, zoneless, afterRender',
-        status: storeProgress['nivel-7'] || 'locked',
-        emoji: '🚀',
-      },
-    ];
+    return this.courseMetadata.levels.map(l => ({
+      number: l.number,
+      path: l.path,
+      title: l.title,
+      subtitle: l.subtitle,
+      status: (storeProgress[l.statusKey] || 'locked') as 'done' | 'active' | 'locked' | 'completed',
+      emoji: l.emoji
+    }));
   }
 }

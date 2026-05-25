@@ -9,21 +9,21 @@ export const routes: Routes = [
   {
     path: 'nivel-1',
     loadComponent: () =>
-      import('./levels/level1-counter/counter.component').then(
+      import('./course/level1-counter/counter.component').then(
         (m) => m.CounterComponent
       ),
   },
   {
     path: 'nivel-2',
     loadComponent: () =>
-      import('./levels/level2-state/task-filter.component').then(
+      import('./course/level2-state/task-filter.component').then(
         (m) => m.TaskFilterComponent
       ),
   },
   {
     path: 'nivel-3',
     loadComponent: () =>
-      import('./levels/level3-effects/theme-panel.component').then(
+      import('./course/level3-effects/theme-panel.component').then(
         (m) => m.ThemePanelComponent
       ),
   },
