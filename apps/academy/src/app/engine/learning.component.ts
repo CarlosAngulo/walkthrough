@@ -7,6 +7,7 @@ import { overlaySystem } from '@learning-engine/overlay-system';
 })
 export abstract class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
   protected learningEngineService = inject(LearningEngineService);
+  protected abstract level: string;
   private isViewInitialized = false;
   private pendingEvaluations: any[] | null = null;
 
@@ -46,7 +47,7 @@ export abstract class LearningComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit() {
     // Force the Vite plugin to trigger a fresh AST evaluation on startup
-    this.learningEngineService.triggerRefresh();
+    this.learningEngineService.triggerRefresh(this.level);
   }
 
   ngAfterViewInit() {

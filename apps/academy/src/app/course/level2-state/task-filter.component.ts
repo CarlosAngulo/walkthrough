@@ -1,4 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
+import { LearningComponent } from '../../engine/learning.component';
+import { learningStateStore } from '@learning-engine/learning-state';
 
 export interface Task {
   title: string;
@@ -13,7 +15,25 @@ export interface Task {
     class: 'block-task-filter'
   }
 })
-export class TaskFilterComponent {
+export class TaskFilterComponent extends LearningComponent {
+  protected override level = 'nivel-2';
+
+  constructor() {
+    super();
+    // Reactively unlock achievements and levels when the service signals validation success!
+    effect(() => {
+      const isValid = this.learningEngineService.isValid();
+      if (isValid && this.learningEngineService.activeLevel === 'nivel-2') {
+        learningStateStore.addAchievement(
+          'L2_COMPUTED',
+          'Reactive Thinker 🧠',
+          'Dominaste las cadenas computadas y el estado derivado reactivo.',
+          '🧠'
+        );
+        learningStateStore.completeLevel('nivel-2');
+      }
+    });
+  }
   // ==========================================
   // RETO 1: Lista de Tareas como Signal
   // ==========================================

@@ -1,4 +1,6 @@
 import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { LearningComponent } from '../../engine/learning.component';
+import { learningStateStore } from '@learning-engine/learning-state';
 
 interface ThemePreferences {
   theme: 'dark' | 'light';
@@ -14,7 +16,7 @@ interface ThemePreferences {
     class: 'block-theme-panel'
   }
 })
-export class ThemePanelComponent implements OnInit {
+export class ThemePanelComponent extends LearningComponent implements OnInit {
   // ==========================================
   // RETO 1: Variables de Configuración como Signals
   // ==========================================
@@ -64,10 +66,27 @@ export class ThemePanelComponent implements OnInit {
     }
   }
 
+  protected override level = 'nivel-3';
+
   // ==========================================
   // RETO 3: Effect() para Sincronizar Estado
   // ==========================================
   constructor() {
+    super();
+    // Reactively unlock achievements and levels when the service signals validation success!
+    effect(() => {
+      const isValid = this.learningEngineService.isValid();
+      if (isValid && this.learningEngineService.activeLevel === 'nivel-3') {
+        learningStateStore.addAchievement(
+          'L3_EFFECTS',
+          'Side Effect Architect 💾',
+          'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
+          '💾'
+        );
+        learningStateStore.completeLevel('nivel-3');
+      }
+    });
+
     // TODO: Registra un effect() en este constructor. Los efectos observan automáticamente
     // cualquier señal leída en su interior y se ejecutan cada vez que cambien.
     // Tu efecto debe realizar dos acciones secundarias críticas:

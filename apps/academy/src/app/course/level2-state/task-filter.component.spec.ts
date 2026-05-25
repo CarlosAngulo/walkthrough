@@ -6,6 +6,9 @@ import { isSignal } from '@angular/core';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+// Import our custom Vitest matchers to extend expect
+import '@learning-engine/test-integration';
+
 describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
   let component: TaskFilterComponent;
   let fixture: ComponentFixture<TaskFilterComponent>;
@@ -18,6 +21,20 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
     fixture = TestBed.createComponent(TaskFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
+    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+      const componentPath = 'src/app/course/level2-state/task-filter.component.ts';
+      
+      expect(componentPath).toSatisfyRules([
+        'L2_TASKS_SIGNAL',
+        'L2_FILTER_SIGNAL',
+        'L2_FILTERED_TASKS_COMPUTED',
+        'L2_PENDING_COUNT_COMPUTED',
+        'L2_COMPLETED_COUNT_COMPUTED'
+      ]);
+    });
   });
 
   describe('RETO 1: Lista de Tareas como Signal', () => {

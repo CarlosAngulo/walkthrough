@@ -20,13 +20,31 @@ const LEVEL1_RULES = [
   'L1_NO_MANUAL_RECALCULATION'
 ];
 
-function runAnalysis() {
-  const filePath = path.resolve(__dirname, 'src/app/course/level1-counter/counter.component.ts');
+const LEVEL2_RULES = [
+  'L2_TASKS_SIGNAL',
+  'L2_FILTER_SIGNAL',
+  'L2_FILTERED_TASKS_COMPUTED',
+  'L2_PENDING_COUNT_COMPUTED',
+  'L2_COMPLETED_COUNT_COMPUTED'
+];
+
+function runAnalysis(level: string = 'nivel-1') {
+  let filePath = '';
+  let rules = [];
+
+  if (level === 'nivel-2') {
+    filePath = path.resolve(__dirname, 'src/app/course/level2-state/task-filter.component.ts');
+    rules = LEVEL2_RULES;
+  } else {
+    filePath = path.resolve(__dirname, 'src/app/course/level1-counter/counter.component.ts');
+    rules = LEVEL1_RULES;
+  }
+
   if (!fs.existsSync(filePath)) {
     throw new Error(`[Learning Engine] File not found: ${filePath}`);
   }
   const analysis = analyzeFile(filePath);
-  return evaluateRules(analysis, LEVEL1_RULES);
+  return evaluateRules(analysis, rules);
 }
 
 function learningEnginePlugin() {
@@ -34,6 +52,7 @@ function learningEnginePlugin() {
     name: 'vite-plugin-learning-engine',
     configureServer(server: any) {
       let latestTestResults: any[] = [];
+      let currentActiveLevel = 'nivel-1';
 
       // Save Vite dev server port so the Vitest custom reporter knows where to send POSTs
       const writePort = () => {
@@ -95,7 +114,10 @@ function learningEnginePlugin() {
 
         if (url === '/api/learning-engine/status' || url.startsWith('/api/learning-engine/status?')) {
           try {
-            const evaluation = runAnalysis();
+            const parsedUrl = new URL(url, 'http://localhost');
+            const level = parsedUrl.searchParams.get('level') || currentActiveLevel;
+            currentActiveLevel = level;
+            const evaluation = runAnalysis(level);
             res.writeHead(200, {
               'Content-Type': 'application/json',
               'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -114,9 +136,11 @@ function learningEnginePlugin() {
       });
 
       // 2. WebSocket ping handler
-      server.ws.on('learning-engine:ping', () => {
+      server.ws.on('learning-engine:ping', (data: any) => {
         try {
-          const evaluation = runAnalysis();
+          const level = data?.level || currentActiveLevel;
+          currentActiveLevel = level;
+          const evaluation = runAnalysis(level);
           server.ws.send('learning-engine:status', evaluation);
           // Also push latest test results on ping
           server.ws.send('learning-engine:test-results', latestTestResults);
@@ -128,7 +152,7 @@ function learningEnginePlugin() {
       // 3. On server start, proactively send initial status after a short delay
       setTimeout(() => {
         try {
-          const evaluation = runAnalysis();
+          const evaluation = runAnalysis(currentActiveLevel);
           server.ws.send('learning-engine:status', evaluation);
           server.ws.send('learning-engine:test-results', latestTestResults);
           console.log('[Learning Engine Plugin] Initial WS status broadcast sent.');
@@ -142,6 +166,14 @@ function learningEnginePlugin() {
         try {
           const analysis = analyzeFile(file);
           const evaluation = evaluateRules(analysis, LEVEL1_RULES);
+          server.ws.send('learning-engine:status', evaluation);
+        } catch (e: any) {
+          console.error('[Learning Engine Plugin] HMR error:', e);
+        }
+      } else if (file.endsWith('task-filter.component.ts')) {
+        try {
+          const analysis = analyzeFile(file);
+          const evaluation = evaluateRules(analysis, LEVEL2_RULES);
           server.ws.send('learning-engine:status', evaluation);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] HMR error:', e);

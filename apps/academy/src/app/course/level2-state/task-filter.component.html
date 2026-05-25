@@ -21,7 +21,7 @@
     </div>
 
     <!-- Barra de filtros -->
-    <div class="filters-bar">
+    <div class="filters-bar" data-learning-anchor="filters-bar">
       <!-- TODO: Reto 2 - Cuando 'filter' sea una señal, recuerda llamarla como función: filter() === 'all' -->
       <button 
         class="btn-filter" 
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Lista de tareas -->
-    <div class="task-list">
+    <div class="task-list" data-learning-anchor="task-list">
       <!-- TODO: Reto 3 - Cuando 'filteredTasks' sea una computada, recórrela llamando a la función: filteredTasks() -->
       @for (task of filteredTasks; track task.title; let idx = $index) {
         <div class="task-item" [class.is-completed]="task.completed">

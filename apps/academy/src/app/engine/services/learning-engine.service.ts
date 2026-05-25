@@ -19,6 +19,7 @@ export interface TestFileResult {
 export class LearningEngineService {
   evaluations = signal<RuleEvaluation[]>([]);
   isValid = signal<boolean>(false);
+  activeLevel = 'nivel-1';
   
   /** Structure list of Vitest unit test results streamed in real-time */
   testResults = signal<TestFileResult[]>([]);
@@ -41,7 +42,7 @@ export class LearningEngineService {
     }
 
     // 2. Initial Load: Fetch status and test results from the HTTP API with retry logic
-    this.fetchStatusWithRetry(3, 1000);
+    this.fetchStatusWithRetry('nivel-1', 3, 1000);
     this.fetchTestResultsWithRetry(3, 1000);
   }
 
@@ -55,12 +56,12 @@ export class LearningEngineService {
   /**
    * Fetch AST rules status with automatic retry on failure
    */
-  private fetchStatusWithRetry(retriesLeft: number, delayMs: number) {
+  private fetchStatusWithRetry(level: string, retriesLeft: number, delayMs: number) {
     if (typeof window === 'undefined' || (typeof process !== 'undefined' && process.env?.['VITEST'])) {
       return;
     }
 
-    fetch('/api/learning-engine/status')
+    fetch(`/api/learning-engine/status?level=${level}`)
       .then(response => {
         if (!response.ok) throw new Error(`HTTP Status Error: ${response.status}`);
         return response.json();
@@ -71,7 +72,7 @@ export class LearningEngineService {
       .catch(err => {
         if (retriesLeft > 0) {
           setTimeout(() => {
-            this.fetchStatusWithRetry(retriesLeft - 1, delayMs * 1.5);
+            this.fetchStatusWithRetry(level, retriesLeft - 1, delayMs * 1.5);
           }, delayMs);
         }
       });
@@ -103,12 +104,13 @@ export class LearningEngineService {
       });
   }
 
-  triggerRefresh() {
-    this.fetchStatusWithRetry(2, 500);
+  triggerRefresh(level: string = this.activeLevel) {
+    this.activeLevel = level;
+    this.fetchStatusWithRetry(level, 2, 500);
     this.fetchTestResultsWithRetry(2, 500);
     
     if (typeof window !== 'undefined' && (import.meta as any).hot) {
-      (import.meta as any).hot.send('learning-engine:ping');
+      (import.meta as any).hot.send('learning-engine:ping', { level });
     }
   }
 }

@@ -11,6 +11,8 @@ import { learningStateStore } from '@learning-engine/learning-state';
   }
 })
 export class CounterComponent extends LearningComponent {
+  protected override level = 'nivel-1';
+
   constructor() {
     super();
     // Reactively unlock achievements and levels when the service signals validation success!
@@ -32,7 +34,7 @@ export class CounterComponent extends LearningComponent {
   // ==========================================
   // TODO: Transforma esta propiedad en una Writable Signal con el valor inicial de 0.
   // Pista: Reemplázalo por: counter = signal<number>(0);
-  counter = 0;
+  counter =  signal<number>(0);
 
   // ==========================================
   // RETO 2: Signal Inputs (Transformación)
