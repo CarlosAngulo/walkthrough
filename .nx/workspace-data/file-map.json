@@ -43,63 +43,181 @@
   },
   "nxJsonPlugins": [],
   "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".tours/01-introduccion-signals.tour",
+        "hash": "1234382930893328256"
+      },
+      {
+        "file": ".tours/04-reactive-architecture.tour",
+        "hash": "11349344837675926732"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "6261653100408681663"
+      },
+      {
+        "file": ".vscode/recommendations.json",
+        "hash": "5921770779518954270"
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "hash": "10533489573391750135"
+      },
+      {
+        "file": "README.md",
+        "hash": "7804879624126206186"
+      },
+      {
+        "file": "nx.json",
+        "hash": "2037536134835431986"
+      },
+      {
+        "file": ".tours/02-reactive-thinking.tour",
+        "hash": "11915968904285991386"
+      },
+      {
+        "file": ".tours/03-effect-architecture.tour",
+        "hash": "13773710983236171418"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "17411548093760210032"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "17701440914948794470"
+      },
+      {
+        "file": "package.json",
+        "hash": "5727907025590520060"
+      }
+    ],
     "projectFileMap": {
+      "@learning-engine/rules-engine": [
+        {
+          "file": "packages/rules-engine/package.json",
+          "hash": "8654285835004864123",
+          "deps": [
+            "@learning-engine/semantic-analyzer"
+          ]
+        },
+        {
+          "file": "packages/rules-engine/src/engine.ts",
+          "hash": "3253438670926450249"
+        },
+        {
+          "file": "packages/rules-engine/src/index.ts",
+          "hash": "14827743159380446293"
+        },
+        {
+          "file": "packages/rules-engine/tsconfig.json",
+          "hash": "10901017298531159803"
+        }
+      ],
       "academy": [
+        {
+          "file": "apps/academy/.vite-port",
+          "hash": "8746881692241833228"
+        },
+        {
+          "file": "apps/academy/custom-reporter.js",
+          "hash": "11318593512035747384"
+        },
         {
           "file": "apps/academy/index.html",
           "hash": "2614921383226145953"
         },
         {
           "file": "apps/academy/package.json",
-          "hash": "9115163186651059935"
+          "hash": "8559812349910816200",
+          "deps": [
+            "@learning-engine/rules-engine",
+            "@learning-engine/semantic-analyzer",
+            "@learning-engine/test-integration",
+            "@learning-engine/learning-state",
+            "@learning-engine/overlay-system"
+          ]
         },
         {
           "file": "apps/academy/src/app/app.component.ts",
-          "hash": "10911457171091238764"
+          "hash": "10824897291406426302"
         },
         {
           "file": "apps/academy/src/app/app.config.ts",
-          "hash": "13638830644134796995"
+          "hash": "2433525144969506506"
         },
         {
           "file": "apps/academy/src/app/app.routes.ts",
-          "hash": "17862576681392520199"
+          "hash": "13917599306876842718"
         },
         {
-          "file": "apps/academy/src/app/levels/level1-counter/counter.component.html",
-          "hash": "10772575092364943934"
+          "file": "apps/academy/src/app/course/course-config.ts",
+          "hash": "3987241923935864257"
         },
         {
-          "file": "apps/academy/src/app/levels/level1-counter/counter.component.spec.ts",
-          "hash": "18421436737107701722"
+          "file": "apps/academy/src/app/course/level1-counter/counter.component.html",
+          "hash": "6037399111034333227"
         },
         {
-          "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
-          "hash": "13837742483720863972"
+          "file": "apps/academy/src/app/course/level1-counter/counter.component.spec.ts",
+          "hash": "7458864153949555297"
         },
         {
-          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.html",
-          "hash": "9535287401186752041"
+          "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+          "hash": "9210176488294328245"
         },
         {
-          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.spec.ts",
-          "hash": "3030179203248433410"
+          "file": "apps/academy/src/app/course/level2-state/task-filter.component.html",
+          "hash": "16272240403527547915"
         },
         {
-          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.ts",
-          "hash": "16740945169704516325"
+          "file": "apps/academy/src/app/course/level2-state/task-filter.component.spec.ts",
+          "hash": "12656269640604279533"
         },
         {
-          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.html",
-          "hash": "18119519506330257355"
+          "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
+          "hash": "6880415788165778999"
         },
         {
-          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.spec.ts",
-          "hash": "2448671646617610557"
+          "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.html",
+          "hash": "11756304336607431977"
         },
         {
-          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.ts",
-          "hash": "18353597067040892858"
+          "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.spec.ts",
+          "hash": "9567078738168423095"
+        },
+        {
+          "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.ts",
+          "hash": "10249018143071890588"
+        },
+        {
+          "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+          "hash": "15451172297078497507"
+        },
+        {
+          "file": "apps/academy/src/app/course/level4-architecture/product-list.component.html",
+          "hash": "8816840703188606726"
+        },
+        {
+          "file": "apps/academy/src/app/course/level4-architecture/product-list.component.spec.ts",
+          "hash": "3315315392508127279"
+        },
+        {
+          "file": "apps/academy/src/app/course/level4-architecture/product-list.component.ts",
+          "hash": "2525296844627265648"
+        },
+        {
+          "file": "apps/academy/src/app/engine/learning.component.ts",
+          "hash": "5160844872538131371"
+        },
+        {
+          "file": "apps/academy/src/app/engine/services/learning-engine.service.ts",
+          "hash": "16423207298393396076"
+        },
+        {
+          "file": "apps/academy/src/custom-reporter.ts",
+          "hash": "4225111184914932768"
         },
         {
           "file": "apps/academy/src/main.ts",
@@ -127,55 +245,106 @@
         },
         {
           "file": "apps/academy/vite.config.ts",
-          "hash": "11530694613346520906"
+          "hash": "10587405241732598684"
+        },
+        {
+          "file": "apps/academy/vite.config.ts.timestamp-1779716865161-f4057a19a10a9.mjs",
+          "hash": "3244421341483603138"
+        }
+      ],
+      "@learning-engine/overlay-system": [
+        {
+          "file": "packages/overlay-system/package.json",
+          "hash": "12638261898048222874"
+        },
+        {
+          "file": "packages/overlay-system/src/index.ts",
+          "hash": "12183192970615877002"
+        },
+        {
+          "file": "packages/overlay-system/src/overlay.ts",
+          "hash": "10740687993922113364"
+        },
+        {
+          "file": "packages/overlay-system/tsconfig.json",
+          "hash": "10901017298531159803"
+        }
+      ],
+      "@learning-engine/test-integration": [
+        {
+          "file": "packages/test-integration/package.json",
+          "hash": "15614312683969401621",
+          "deps": [
+            "@learning-engine/rules-engine",
+            "@learning-engine/semantic-analyzer"
+          ]
+        },
+        {
+          "file": "packages/test-integration/src/index.ts",
+          "hash": "3562213528508115809"
+        },
+        {
+          "file": "packages/test-integration/src/matchers.ts",
+          "hash": "14028902186771207181"
+        },
+        {
+          "file": "packages/test-integration/tsconfig.json",
+          "hash": "10901017298531159803"
+        }
+      ],
+      "@learning-engine/angular-signals-adapter": [
+        {
+          "file": "adapters/angular-signals/package.json",
+          "hash": "13800628759284879626"
+        },
+        {
+          "file": "adapters/angular-signals/src/index.ts",
+          "hash": "3942621513266002068"
+        },
+        {
+          "file": "adapters/angular-signals/tsconfig.json",
+          "hash": "10901017298531159803"
+        }
+      ],
+      "@learning-engine/learning-state": [
+        {
+          "file": "packages/learning-state/package.json",
+          "hash": "7444922743227151308"
+        },
+        {
+          "file": "packages/learning-state/src/index.ts",
+          "hash": "9213866612561153436"
+        },
+        {
+          "file": "packages/learning-state/src/state.ts",
+          "hash": "6178603159557982355"
+        },
+        {
+          "file": "packages/learning-state/tsconfig.json",
+          "hash": "10901017298531159803"
+        }
+      ],
+      "@learning-engine/semantic-analyzer": [
+        {
+          "file": "packages/semantic-analyzer/package.json",
+          "hash": "155692203021136528",
+          "deps": [
+            "npm:ts-morph"
+          ]
+        },
+        {
+          "file": "packages/semantic-analyzer/src/analyzer.ts",
+          "hash": "18087797049169959640"
+        },
+        {
+          "file": "packages/semantic-analyzer/src/index.ts",
+          "hash": "15540919126735427757"
+        },
+        {
+          "file": "packages/semantic-analyzer/tsconfig.json",
+          "hash": "10901017298531159803"
         }
       ]
-    },
-    "nonProjectFiles": [
-      {
-        "file": ".gitignore",
-        "hash": "17701440914948794470"
-      },
-      {
-        "file": ".tours/02-reactive-thinking.tour",
-        "hash": "15122925811254041070"
-      },
-      {
-        "file": ".tours/03-effect-architecture.tour",
-        "hash": "14403037023196239087"
-      },
-      {
-        "file": ".tours/introduccion-signals.tour",
-        "hash": "13837692404993983109"
-      },
-      {
-        "file": ".vscode/recommendations.json",
-        "hash": "5921770779518954270"
-      },
-      {
-        "file": "README.md",
-        "hash": "7804879624126206186"
-      },
-      {
-        "file": "nx.json",
-        "hash": "2037536134835431986"
-      },
-      {
-        "file": "package.json",
-        "hash": "4988717751278647653"
-      },
-      {
-        "file": "pnpm-lock.yaml",
-        "hash": "2974103822045388675"
-      },
-      {
-        "file": "pnpm-workspace.yaml",
-        "hash": "10533489573391750135"
-      },
-      {
-        "file": "tsconfig.json",
-        "hash": "17411548093760210032"
-      }
-    ]
+    }
   }
 }

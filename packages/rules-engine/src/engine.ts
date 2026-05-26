@@ -490,13 +490,131 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
   }
 };
 
+// Rules catalog for Level 4 Reactive Architecture
+export const L4_RULES: Record<string, PedagogicalRule> = {
+  L4_SERVICE_PRIVATE_ITEMS: (analysis) => {
+    const privateProp = analysis.properties.find(p => p.name === '_items');
+    if (!privateProp) {
+      return {
+        ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'No se detectó la propiedad privada "_items" en tu clase CartService.',
+        hint: 'Declara la señal mutable como privada usando: private _items = signal<CartItem[]>([]);'
+      };
+    }
+    if (privateProp.type !== 'signal') {
+      return {
+        ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'La propiedad privada "_items" debe ser una Writable Signal.',
+        hint: 'Usa la función signal(): private _items = signal<CartItem[]>([]);'
+      };
+    }
+    return {
+      ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
+      success: true,
+      anchor: 'cart-summary',
+      message: '¡Excelente! "_items" es una señal writable privada inmaculada.'
+    };
+  },
+
+  L4_SERVICE_READONLY_ITEMS: (analysis) => {
+    const publicProp = analysis.properties.find(p => p.name === 'items');
+    if (!publicProp) {
+      return {
+        ruleId: 'L4_SERVICE_READONLY_ITEMS',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'No se detectó la propiedad pública "items" en tu clase CartService.',
+        hint: 'Asegúrate de exponer la propiedad pública "items" para los componentes.'
+      };
+    }
+    const isReadonlyInit = publicProp.initializerText?.includes('asReadonly') || false;
+    if (!isReadonlyInit) {
+      return {
+        ruleId: 'L4_SERVICE_READONLY_ITEMS',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'La propiedad pública "items" debe ser expuesta como una señal de solo lectura.',
+        hint: 'Asigna la propiedad pública de esta manera para evitar mutaciones directas: items = this._items.asReadonly();'
+      };
+    }
+    return {
+      ruleId: 'L4_SERVICE_READONLY_ITEMS',
+      success: true,
+      anchor: 'cart-summary',
+      message: '¡Perfecto! El estado expuesto "items" está protegido con asReadonly() para garantizar la inmutabilidad.'
+    };
+  },
+
+  L4_PRODUCT_LIST_OUTPUT: (analysis) => {
+    const outputProp = analysis.properties.find(p => p.name === 'productAdded');
+    if (!outputProp) {
+      return {
+        ruleId: 'L4_PRODUCT_LIST_OUTPUT',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'No se detectó la propiedad "productAdded" en tu componente ProductListComponent.',
+        hint: 'Conserva el emisor de agregaciones "productAdded" para notificar clicks.'
+      };
+    }
+    const usesOutputAPI = outputProp.initializerText?.includes('output(') || outputProp.initializerText?.includes('output<') || false;
+    if (!usesOutputAPI) {
+      return {
+        ruleId: 'L4_PRODUCT_LIST_OUTPUT',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'La propiedad "productAdded" debe declararse utilizando el nuevo API de eventos output().',
+        hint: 'Reemplaza "@Output() productAdded = new EventEmitter..." por "productAdded = output<Product>();" importando "output" desde "@angular/core".'
+      };
+    }
+    return {
+      ruleId: 'L4_PRODUCT_LIST_OUTPUT',
+      success: true,
+      anchor: 'cart-summary',
+      message: '¡Increíble! Utilizas el API de eventos moderno output() basado en señales.'
+    };
+  },
+
+  L4_PRODUCT_LIST_INJECTION: (analysis) => {
+    const diProp = analysis.properties.find(p => p.name === 'cartService');
+    if (!diProp) {
+      return {
+        ruleId: 'L4_PRODUCT_LIST_INJECTION',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'No se detectó el servicio "cartService" inyectado en ProductListComponent.',
+        hint: 'Inyecta la propiedad pública o protegida cartService en tu componente.'
+      };
+    }
+    const usesInject = diProp.initializerText?.includes('inject(') || false;
+    if (!usesInject) {
+      return {
+        ruleId: 'L4_PRODUCT_LIST_INJECTION',
+        success: false,
+        anchor: 'cart-summary',
+        message: 'Debes inyectar el "cartService" de forma declarativa usando el API inject().',
+        hint: 'Reemplaza la inyección tradicional del constructor por: cartService = inject(CartService); y remueve el constructor.'
+      };
+    }
+    return {
+      ruleId: 'L4_PRODUCT_LIST_INJECTION',
+      success: true,
+      anchor: 'cart-summary',
+      message: '¡Excelente! Utilizas la inyección de dependencias funcional con inject() de forma elegante.'
+    };
+  }
+};
+
 export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): RulesEvaluationResult {
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
 
   ruleIds.forEach(id => {
     // Resolve rule from corresponding catalog
-    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id];
+    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id];
     if (rule) {
       const evaluation = rule(analysis);
       evaluations.push(evaluation);

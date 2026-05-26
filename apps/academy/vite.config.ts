@@ -34,7 +34,30 @@ const LEVEL3_RULES = [
   'L3_ACCENT_COLOR_SIGNAL'
 ];
 
+const LEVEL4_RULES = [
+  'L4_SERVICE_PRIVATE_ITEMS',
+  'L4_SERVICE_READONLY_ITEMS',
+  'L4_PRODUCT_LIST_OUTPUT',
+  'L4_PRODUCT_LIST_INJECTION'
+];
+
 function runAnalysis(level: string = 'nivel-1') {
+  if (level === 'nivel-4') {
+    const servicePath = path.resolve(__dirname, 'src/app/course/level4-architecture/cart.service.ts');
+    const componentPath = path.resolve(__dirname, 'src/app/course/level4-architecture/product-list.component.ts');
+    if (!fs.existsSync(servicePath) || !fs.existsSync(componentPath)) {
+      throw new Error(`[Learning Engine] Level 4 files not found!`);
+    }
+    const serviceAnalysis = analyzeFile(servicePath);
+    const componentAnalysis = analyzeFile(componentPath);
+    const serviceEval = evaluateRules(serviceAnalysis, ['L4_SERVICE_PRIVATE_ITEMS', 'L4_SERVICE_READONLY_ITEMS']);
+    const componentEval = evaluateRules(componentAnalysis, ['L4_PRODUCT_LIST_OUTPUT', 'L4_PRODUCT_LIST_INJECTION']);
+    return {
+      isValid: serviceEval.isValid && componentEval.isValid,
+      evaluations: [...serviceEval.evaluations, ...componentEval.evaluations]
+    };
+  }
+
   let filePath = '';
   let rules = [];
 
@@ -191,6 +214,13 @@ function learningEnginePlugin() {
         try {
           const analysis = analyzeFile(file);
           const evaluation = evaluateRules(analysis, LEVEL3_RULES);
+          server.ws.send('learning-engine:status', evaluation);
+        } catch (e: any) {
+          console.error('[Learning Engine Plugin] HMR error:', e);
+        }
+      } else if (file.endsWith('cart.service.ts') || file.endsWith('product-list.component.ts')) {
+        try {
+          const evaluation = runAnalysis('nivel-4');
           server.ws.send('learning-engine:status', evaluation);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] HMR error:', e);

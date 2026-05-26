@@ -1,5 +1,107 @@
 {
   "nodes": {
+    "@learning-engine/semantic-analyzer": {
+      "name": "@learning-engine/semantic-analyzer",
+      "type": "lib",
+      "data": {
+        "root": "packages/semantic-analyzer",
+        "sourceRoot": "packages/semantic-analyzer",
+        "name": "@learning-engine/semantic-analyzer",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
+    "@learning-engine/test-integration": {
+      "name": "@learning-engine/test-integration",
+      "type": "lib",
+      "data": {
+        "root": "packages/test-integration",
+        "sourceRoot": "packages/test-integration",
+        "name": "@learning-engine/test-integration",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
+    "@learning-engine/angular-signals-adapter": {
+      "name": "@learning-engine/angular-signals-adapter",
+      "type": "lib",
+      "data": {
+        "root": "adapters/angular-signals",
+        "sourceRoot": "adapters/angular-signals",
+        "name": "@learning-engine/angular-signals-adapter",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
+    "@learning-engine/learning-state": {
+      "name": "@learning-engine/learning-state",
+      "type": "lib",
+      "data": {
+        "root": "packages/learning-state",
+        "sourceRoot": "packages/learning-state",
+        "name": "@learning-engine/learning-state",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
+    "@learning-engine/overlay-system": {
+      "name": "@learning-engine/overlay-system",
+      "type": "lib",
+      "data": {
+        "root": "packages/overlay-system",
+        "sourceRoot": "packages/overlay-system",
+        "name": "@learning-engine/overlay-system",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
+    "@learning-engine/rules-engine": {
+      "name": "@learning-engine/rules-engine",
+      "type": "lib",
+      "data": {
+        "root": "packages/rules-engine",
+        "sourceRoot": "packages/rules-engine",
+        "name": "@learning-engine/rules-engine",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {}
+        },
+        "targets": {},
+        "implicitDependencies": []
+      }
+    },
     "academy": {
       "name": "academy",
       "type": "lib",
@@ -15,7 +117,11 @@
             "NPM Scripts": [
               "dev",
               "build",
-              "test"
+              "test",
+              "test:l1",
+              "test:l2",
+              "test:l3",
+              "test:l4"
             ]
           }
         },
@@ -63,6 +169,54 @@
             "configurations": {},
             "parallelism": true,
             "cache": true
+          },
+          "test:l1": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l1"
+            },
+            "metadata": {
+              "scriptContent": "vitest counter",
+              "runCommand": "pnpm run test:l1"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l2": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l2"
+            },
+            "metadata": {
+              "scriptContent": "vitest task-filter",
+              "runCommand": "pnpm run test:l2"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l3": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l3"
+            },
+            "metadata": {
+              "scriptContent": "vitest theme-panel",
+              "runCommand": "pnpm run test:l3"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l4": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l4"
+            },
+            "metadata": {
+              "scriptContent": "vitest product-list",
+              "runCommand": "pnpm run test:l4"
+            },
+            "configurations": {},
+            "parallelism": true
           }
         },
         "implicitDependencies": []
@@ -5157,7 +5311,62 @@
     }
   },
   "dependencies": {
-    "academy": [],
+    "@learning-engine/semantic-analyzer": [
+      {
+        "source": "@learning-engine/semantic-analyzer",
+        "target": "npm:ts-morph",
+        "type": "static"
+      }
+    ],
+    "@learning-engine/test-integration": [
+      {
+        "source": "@learning-engine/test-integration",
+        "target": "@learning-engine/rules-engine",
+        "type": "static"
+      },
+      {
+        "source": "@learning-engine/test-integration",
+        "target": "@learning-engine/semantic-analyzer",
+        "type": "static"
+      }
+    ],
+    "@learning-engine/angular-signals-adapter": [],
+    "@learning-engine/learning-state": [],
+    "@learning-engine/overlay-system": [],
+    "@learning-engine/rules-engine": [
+      {
+        "source": "@learning-engine/rules-engine",
+        "target": "@learning-engine/semantic-analyzer",
+        "type": "static"
+      }
+    ],
+    "academy": [
+      {
+        "source": "academy",
+        "target": "@learning-engine/rules-engine",
+        "type": "static"
+      },
+      {
+        "source": "academy",
+        "target": "@learning-engine/semantic-analyzer",
+        "type": "static"
+      },
+      {
+        "source": "academy",
+        "target": "@learning-engine/test-integration",
+        "type": "static"
+      },
+      {
+        "source": "academy",
+        "target": "@learning-engine/learning-state",
+        "type": "static"
+      },
+      {
+        "source": "academy",
+        "target": "@learning-engine/overlay-system",
+        "type": "static"
+      }
+    ],
     "npm:@ampproject/remapping": [
       {
         "source": "npm:@ampproject/remapping",

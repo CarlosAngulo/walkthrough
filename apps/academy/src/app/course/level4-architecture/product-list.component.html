@@ -1,0 +1,84 @@
+<div class="product-lab-container">
+  <div class="card">
+    <h1 class="title">Test-Driven Learning 🏗️</h1>
+    <p class="subtitle">Angular Signals — Reactive Architecture</p>
+
+    <div class="lab-layout">
+      <!-- Sección Izquierda: Catálogo de Cursos/Productos -->
+      <div class="catalog-panel">
+        <label class="control-label">Catálogo de Productos</label>
+        <div class="products-grid">
+          @for (prod of products; track prod.id) {
+            <div class="product-item-card">
+              <div class="product-details">
+                <span class="product-name">{{ prod.name }}</span>
+                <span class="product-price">{{ prod.price | currency }}</span>
+              </div>
+              <button class="btn-add-product" (click)="addToCart(prod)">
+                Añadir al Carrito 🛒
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Sección Derecha: Resumen de Carrito -->
+      <div class="cart-panel" data-learning-anchor="cart-summary">
+        <div class="cart-header">
+          <label class="control-label">Resumen de Compras</label>
+          <!-- TODO: Reto 3 - Cuando clearCart() limpie el estado, se verá reflejado aquí -->
+          <button class="btn-clear" (click)="clearCart()" [disabled]="cartService.items.length === 0">
+            Limpiar 🗑️
+          </button>
+        </div>
+
+        <div class="cart-summary-box">
+          <div class="summary-row">
+            <span>Cursos Seleccionados:</span>
+            <!-- TODO: Reto 3 - Evalúa totalCount como una Computed Signal: cartService.totalCount() -->
+            <strong class="summary-badge">{{ cartService.totalCount }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total a Pagar:</span>
+            <!-- TODO: Reto 3 - Evalúa totalPrice como una Computed Signal: cartService.totalPrice() -->
+            <strong class="price-badge">{{ cartService.totalPrice | currency }}</strong>
+          </div>
+        </div>
+
+        <!-- Detalle de Items del Carrito -->
+        <div class="cart-items-list">
+          <!-- TODO: Reto 2 - Cuando items sea un Signal de solo lectura, llámalo como función: cartService.items() -->
+          @if (cartService.items.length === 0) {
+            <div class="cart-empty-message">
+              <span>🛒 El carrito está vacío</span>
+              <p>Haz clic en "Añadir al Carrito" para cargar tu plan de aprendizaje.</p>
+            </div>
+          } @else {
+            @for (item of cartService.items; track item.product.id) {
+              <div class="cart-item-row">
+                <div class="item-name-qty">
+                  <span class="item-qty">{{ item.quantity }}x</span>
+                  <span class="item-title">{{ item.product.name }}</span>
+                </div>
+                <div class="item-actions">
+                  <span class="item-subtotal">{{ (item.product.price * item.quantity) | currency }}</span>
+                  <button class="btn-remove-item" (click)="removeFromCart(item.product.id)" title="Quitar item">
+                    ✕
+                  </button>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Informativo TDL -->
+    <div class="educational-footer">
+      <div class="badge-tdl">TDL METODOLOGÍA</div>
+      <p>
+        Actualmente, el componente y el servicio usan inyección clásica, eventos basados en RxJS y mutan directamente el estado. Tu reto es desacoplar el estado en un servicio de solo lectura empleando <code>asReadonly()</code>, actualizar la UI declarativamente con <code>computed()</code> y emitir agregaciones empleando el nuevo API <code>output()</code> de Angular.
+      </p>
+    </div>
+  </div>
+</div>
