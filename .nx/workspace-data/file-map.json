@@ -1,0 +1,181 @@
+{
+  "version": "6.0",
+  "nxVersion": "19.8.4",
+  "deps": {
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/router": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "@angular/platform-browser-dynamic": "^19.0.0",
+    "rxjs": "^7.8.1",
+    "zone.js": "^0.15.0",
+    "@analogjs/vite-plugin-angular": "^1.12.0",
+    "@analogjs/vitest-angular": "^1.12.0",
+    "@angular/build": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "jsdom": "^24.0.0",
+    "nx": "19.8.4",
+    "ts-morph": "^22.0.0",
+    "typescript": "~5.6.0",
+    "vite": "^6.0.0",
+    "vitest": "^2.0.0"
+  },
+  "pathMappings": {
+    "@learning-engine/semantic-analyzer": [
+      "packages/semantic-analyzer/src/index.ts"
+    ],
+    "@learning-engine/rules-engine": [
+      "packages/rules-engine/src/index.ts"
+    ],
+    "@learning-engine/learning-state": [
+      "packages/learning-state/src/index.ts"
+    ],
+    "@learning-engine/overlay-system": [
+      "packages/overlay-system/src/index.ts"
+    ],
+    "@learning-engine/test-integration": [
+      "packages/test-integration/src/index.ts"
+    ],
+    "@learning-engine/angular-signals-adapter": [
+      "adapters/angular-signals/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "academy": [
+        {
+          "file": "apps/academy/index.html",
+          "hash": "2614921383226145953"
+        },
+        {
+          "file": "apps/academy/package.json",
+          "hash": "9115163186651059935"
+        },
+        {
+          "file": "apps/academy/src/app/app.component.ts",
+          "hash": "10911457171091238764"
+        },
+        {
+          "file": "apps/academy/src/app/app.config.ts",
+          "hash": "13638830644134796995"
+        },
+        {
+          "file": "apps/academy/src/app/app.routes.ts",
+          "hash": "17862576681392520199"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level1-counter/counter.component.html",
+          "hash": "10772575092364943934"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level1-counter/counter.component.spec.ts",
+          "hash": "18421436737107701722"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level1-counter/counter.component.ts",
+          "hash": "13837742483720863972"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.html",
+          "hash": "9535287401186752041"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.spec.ts",
+          "hash": "3030179203248433410"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level2-state/task-filter.component.ts",
+          "hash": "16740945169704516325"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.html",
+          "hash": "18119519506330257355"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.spec.ts",
+          "hash": "2448671646617610557"
+        },
+        {
+          "file": "apps/academy/src/app/levels/level3-effects/theme-panel.component.ts",
+          "hash": "18353597067040892858"
+        },
+        {
+          "file": "apps/academy/src/main.ts",
+          "hash": "1934004268045789658"
+        },
+        {
+          "file": "apps/academy/src/styles.css",
+          "hash": "4262549206358161930"
+        },
+        {
+          "file": "apps/academy/src/test-setup.ts",
+          "hash": "12811446397510327623"
+        },
+        {
+          "file": "apps/academy/tsconfig.app.json",
+          "hash": "17467729567937485113"
+        },
+        {
+          "file": "apps/academy/tsconfig.json",
+          "hash": "1317707455616555344"
+        },
+        {
+          "file": "apps/academy/tsconfig.spec.json",
+          "hash": "6685020122404191677"
+        },
+        {
+          "file": "apps/academy/vite.config.ts",
+          "hash": "11530694613346520906"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".gitignore",
+        "hash": "17701440914948794470"
+      },
+      {
+        "file": ".tours/02-reactive-thinking.tour",
+        "hash": "15122925811254041070"
+      },
+      {
+        "file": ".tours/03-effect-architecture.tour",
+        "hash": "14403037023196239087"
+      },
+      {
+        "file": ".tours/introduccion-signals.tour",
+        "hash": "13837692404993983109"
+      },
+      {
+        "file": ".vscode/recommendations.json",
+        "hash": "5921770779518954270"
+      },
+      {
+        "file": "README.md",
+        "hash": "7804879624126206186"
+      },
+      {
+        "file": "nx.json",
+        "hash": "2037536134835431986"
+      },
+      {
+        "file": "package.json",
+        "hash": "4988717751278647653"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "2974103822045388675"
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "hash": "10533489573391750135"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "17411548093760210032"
+      }
+    ]
+  }
+}

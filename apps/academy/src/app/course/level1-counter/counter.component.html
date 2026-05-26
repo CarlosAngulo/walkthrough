@@ -1,0 +1,31 @@
+<div class="counter-container">
+  <div class="card">
+    <h1 class="title">Test-Driven Learning 🚀</h1>
+    <p class="subtitle">Angular Signals</p>
+    
+    <div class="stats-grid">
+      <div class="stat-box" data-learning-anchor="counter-value">
+        <span class="stat-label">Writable Signal (counter)</span>
+        <!-- TODO: Reto 1 - Cuando counter sea una señal, llámala como función: counter() -->
+        <span class="stat-value highlight">{{ counter }}</span>
+      </div>
+      <div class="stat-box" data-learning-anchor="double-value">
+        <span class="stat-label">Computed Signal (doubleCounter)</span>
+        <!-- TODO: Reto 3 - Cuando doubleCounter sea una señal computada, llámala como función: doubleCounter() -->
+        <span class="stat-value secondary">{{ doubleCounter }}</span>
+      </div>
+    </div>
+
+    <div class="input-info" data-learning-anchor="step-input">
+      <span class="badge">Signal Input (step)</span>
+      <!-- TODO: Reto 2 - Cuando step sea una señal de entrada, llámala como función: step() -->
+      <p>Valor de incremento activo: <strong>{{ step }}</strong></p>
+    </div>
+
+    <div class="button-group">
+      <!-- TODO: Reto 2 - Recuerda actualizar el texto de los botones a step() -->
+      <button class="btn btn-primary" (click)="increment()">Incrementar (+{{ step }})</button>
+      <button class="btn btn-outline" (click)="decrement()">Decrementar (-{{ step }})</button>
+    </div>
+  </div>
+</div>
