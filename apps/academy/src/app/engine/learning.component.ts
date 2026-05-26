@@ -31,7 +31,7 @@ export abstract class LearningComponent implements OnInit, AfterViewInit, OnDest
     // Reactively unlock achievements and levels when the service signals validation success!
     effect(() => {
       const isValid = this.learningEngineService.isValid();
-      if (isValid && this.learningEngineService.activeLevel === this.level) {
+      if (isValid && this.learningEngineService.activeLevel() === this.level) {
         this.onLevelCompleted();
       }
     });

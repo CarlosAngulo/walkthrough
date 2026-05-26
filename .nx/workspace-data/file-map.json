@@ -58,24 +58,42 @@
           "hash": "5250682420865906588"
         }
       ],
-      "@learning-engine/semantic-analyzer": [
+      "@learning-engine/overlay-system": [
         {
-          "file": "packages/semantic-analyzer/package.json",
-          "hash": "14248130702134734100",
+          "file": "packages/overlay-system/package.json",
+          "hash": "12414371533509928570"
+        },
+        {
+          "file": "packages/overlay-system/src/index.ts",
+          "hash": "16312705158591122630"
+        },
+        {
+          "file": "packages/overlay-system/src/overlay.ts",
+          "hash": "9148554269684459347"
+        },
+        {
+          "file": "packages/overlay-system/tsconfig.json",
+          "hash": "5250682420865906588"
+        }
+      ],
+      "@learning-engine/rules-engine": [
+        {
+          "file": "packages/rules-engine/package.json",
+          "hash": "3222305034886764134",
           "deps": [
-            "npm:ts-morph"
+            "@learning-engine/semantic-analyzer"
           ]
         },
         {
-          "file": "packages/semantic-analyzer/src/analyzer.ts",
-          "hash": "7145421517522472734"
+          "file": "packages/rules-engine/src/engine.ts",
+          "hash": "16630647617076643139"
         },
         {
-          "file": "packages/semantic-analyzer/src/index.ts",
-          "hash": "14084345897362349785"
+          "file": "packages/rules-engine/src/index.ts",
+          "hash": "9024474806668963656"
         },
         {
-          "file": "packages/semantic-analyzer/tsconfig.json",
+          "file": "packages/rules-engine/tsconfig.json",
           "hash": "5250682420865906588"
         }
       ],
@@ -101,6 +119,27 @@
           "hash": "5250682420865906588"
         }
       ],
+      "@learning-engine/semantic-analyzer": [
+        {
+          "file": "packages/semantic-analyzer/package.json",
+          "hash": "14248130702134734100",
+          "deps": [
+            "npm:ts-morph"
+          ]
+        },
+        {
+          "file": "packages/semantic-analyzer/src/analyzer.ts",
+          "hash": "7145421517522472734"
+        },
+        {
+          "file": "packages/semantic-analyzer/src/index.ts",
+          "hash": "14084345897362349785"
+        },
+        {
+          "file": "packages/semantic-analyzer/tsconfig.json",
+          "hash": "5250682420865906588"
+        }
+      ],
       "@learning-engine/learning-state": [
         {
           "file": "packages/learning-state/package.json",
@@ -116,24 +155,6 @@
         },
         {
           "file": "packages/learning-state/tsconfig.json",
-          "hash": "5250682420865906588"
-        }
-      ],
-      "@learning-engine/overlay-system": [
-        {
-          "file": "packages/overlay-system/package.json",
-          "hash": "12414371533509928570"
-        },
-        {
-          "file": "packages/overlay-system/src/index.ts",
-          "hash": "16312705158591122630"
-        },
-        {
-          "file": "packages/overlay-system/src/overlay.ts",
-          "hash": "9148554269684459347"
-        },
-        {
-          "file": "packages/overlay-system/tsconfig.json",
           "hash": "5250682420865906588"
         }
       ],
@@ -252,27 +273,6 @@
         {
           "file": "apps/academy/vite.config.ts",
           "hash": "1133456835943059340"
-        }
-      ],
-      "@learning-engine/rules-engine": [
-        {
-          "file": "packages/rules-engine/package.json",
-          "hash": "3222305034886764134",
-          "deps": [
-            "@learning-engine/semantic-analyzer"
-          ]
-        },
-        {
-          "file": "packages/rules-engine/src/engine.ts",
-          "hash": "16630647617076643139"
-        },
-        {
-          "file": "packages/rules-engine/src/index.ts",
-          "hash": "9024474806668963656"
-        },
-        {
-          "file": "packages/rules-engine/tsconfig.json",
-          "hash": "5250682420865906588"
         }
       ]
     },

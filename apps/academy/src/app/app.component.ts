@@ -75,7 +75,10 @@ interface Level {
             <div class="progress-bar">
               <div class="progress-fill" [style.width.%]="progressPercentage()"></div>
             </div>
-            <span class="progress-text">{{ completedCount() }} / {{ courseMetadata.levels.length }} Niveles ({{ academyState().score }} pts)</span>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="progress-text">{{ completedCount() }} / {{ courseMetadata.levels.length }} Niveles ({{ academyState().score }} pts)</span>
+              <button class="btn-reset" (click)="resetProgress()">Reiniciar</button>
+            </div>
           </div>
         </div>
       </aside>
@@ -413,6 +416,24 @@ interface Level {
     .progress-text {
       font-size: 0.72rem;
       color: #9ca3af;
+    }
+
+    .btn-reset {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      font-size: 0.65rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .btn-reset:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
     }
 
     /* ─── Main Viewport ─── */
@@ -827,6 +848,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isCopied.set(true);
         setTimeout(() => this.isCopied.set(false), 2000);
       });
+    }
+  }
+
+  resetProgress() {
+    if (confirm('¿Estás seguro de que deseas reiniciar todo tu progreso y logros?')) {
+      learningStateStore.reset();
+      this.learningEngineService.triggerRefresh();
     }
   }
 

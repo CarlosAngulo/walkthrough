@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, NgZone, inject } from '@angular/core';
 import { RuleEvaluation } from '@learning-engine/overlay-system';
 
 export interface TestTaskResult {
@@ -17,6 +17,8 @@ export interface TestFileResult {
   providedIn: 'root'
 })
 export class LearningEngineService {
+  private ngZone = inject(NgZone);
+
   evaluations = signal<RuleEvaluation[]>([]);
   isValid = signal<boolean>(false);
   activeLevel = signal<string>('nivel-1');
@@ -37,7 +39,9 @@ export class LearningEngineService {
       // Listen to Vitest unit test results streamed from our custom reporter
       hot.on('learning-engine:test-results', (data: TestFileResult[]) => {
         console.log('[Learning Engine] WebSocket test results push received:', data);
-        this.testResults.set(data || []);
+        this.ngZone.run(() => {
+          this.testResults.set(data || []);
+        });
       });
     }
 
@@ -47,10 +51,12 @@ export class LearningEngineService {
   }
 
   private applyEvaluations(data: any) {
-    const evals = data?.evaluations || [];
-    const valid = data?.isValid || false;
-    this.evaluations.set(evals);
-    this.isValid.set(valid);
+    this.ngZone.run(() => {
+      const evals = data?.evaluations || [];
+      const valid = data?.isValid || false;
+      this.evaluations.set(evals);
+      this.isValid.set(valid);
+    });
   }
 
   /**
@@ -105,6 +111,10 @@ export class LearningEngineService {
   }
 
   triggerRefresh(level: string = this.activeLevel()) {
+    // Reset AST validation and evaluations state to prevent cross-level state leak
+    this.isValid.set(false);
+    this.evaluations.set([]);
+
     this.activeLevel.set(level);
     this.fetchStatusWithRetry(level, 2, 500);
     this.fetchTestResultsWithRetry(2, 500);

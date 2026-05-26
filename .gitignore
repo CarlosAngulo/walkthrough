@@ -8,10 +8,14 @@ dist/
 .vite/
 .vitest/
 *.tsbuildinfo
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
 
 # Nx (Monorepo Cache)
 .nx/cache
 .nx/workspace-state.json
+file-map.json
+daemon.log
 
 # Logs locales y depuración
 npm-debug.log*
