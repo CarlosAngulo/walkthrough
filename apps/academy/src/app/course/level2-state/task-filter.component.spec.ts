@@ -223,24 +223,23 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
       const code = readFileSync(filePath, 'utf-8');
 
       // Buscar reasignaciones de filteredTasks en métodos (fuera de la declaración de la clase)
-      // En la versión final, solo debe aparecer la declaración: "filteredTasks = computed(...)"
-      // Buscamos cuántas veces aparece "filteredTasks =" o "filteredTasks=" en todo el archivo.
-      const filteredTasksMatches = code.match(/filteredTasks\s*=/g) || [];
+      // Buscamos si aparece "this.filteredTasks =" o "this.filteredTasks=" (asignaciones manuales).
+      const filteredTasksMatches = code.match(/this\.filteredTasks\s*=/g) || [];
       expect(filteredTasksMatches.length).withContext(
         '¡Alerta de Arquitectura! "filteredTasks" solo debe ser asignada una vez en su declaración usando computed(). No debes realizar asignaciones manuales del tipo "this.filteredTasks = ..." en tus métodos.'
-      ).toBeLessThanOrEqual(1);
+      ).toBe(0);
 
       // Buscar reasignaciones de pendingCount
-      const pendingCountMatches = code.match(/pendingCount\s*=/g) || [];
+      const pendingCountMatches = code.match(/this\.pendingCount\s*=/g) || [];
       expect(pendingCountMatches.length).withContext(
         '¡Alerta de Arquitectura! "pendingCount" solo debe ser declarada una vez usando computed(). No debes asignarle valores manualmente.'
-      ).toBeLessThanOrEqual(1);
+      ).toBe(0);
 
       // Buscar reasignaciones de completedCount
-      const completedCountMatches = code.match(/completedCount\s*=/g) || [];
+      const completedCountMatches = code.match(/this\.completedCount\s*=/g) || [];
       expect(completedCountMatches.length).withContext(
         '¡Alerta de Arquitectura! "completedCount" solo debe ser declarada una vez usando computed(). No debes asignarle valores manualmente.'
-      ).toBeLessThanOrEqual(1);
+      ).toBe(0);
     });
 
     it('no debería llamar a setFilter ni realizar recálculos imperativos en los métodos de mutación', () => {
