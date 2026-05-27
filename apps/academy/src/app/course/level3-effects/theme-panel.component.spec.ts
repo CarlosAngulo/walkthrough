@@ -240,7 +240,12 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       let cyclicCallsCount = 0;
 
       for (const line of lines) {
-        if (line.includes('constructor(') || line.includes('constructor ()')) {
+        if (
+          line.includes('constructor(') || 
+          line.includes('constructor ()') || 
+          line.includes('setupThemeEffects(') || 
+          line.includes('setupThemeEffects ()')
+        ) {
           insideConstructor = true;
         }
         if (insideConstructor) {
@@ -282,7 +287,12 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       let computedInsideConstructor = false;
 
       for (const line of lines) {
-        if (line.includes('constructor(') || line.includes('constructor ()')) {
+        if (
+          line.includes('constructor(') || 
+          line.includes('constructor ()') || 
+          line.includes('setupThemeEffects(') || 
+          line.includes('setupThemeEffects ()')
+        ) {
           insideConstructor = true;
         }
         if (insideConstructor) {

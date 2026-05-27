@@ -13,6 +13,14 @@ export abstract class LearningComponent implements OnInit, AfterViewInit, OnDest
   private pendingEvaluations: any[] | null = null;
 
   constructor() {
+    this.setupReactiveEffects();
+  }
+
+  /**
+   * Configures core reactive effects to synchronise rule evaluations with the overlay system
+   * and automatically complete a level when the semantic analysis engine reports success.
+   */
+  private setupReactiveEffects() {
     // Reactively update DOM overlays whenever AST rule evaluations change
     effect(() => {
       const evaluations = this.learningEngineService.evaluations();
@@ -55,6 +63,13 @@ export abstract class LearningComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnInit() {
+    this.initializeLearningEngine();
+  }
+
+  /**
+   * Refreshes the active level within the learning engine, prompting a fresh semantic evaluation.
+   */
+  private initializeLearningEngine() {
     // Force the Vite plugin to trigger a fresh AST evaluation on startup
     this.learningEngineService.triggerRefresh(this.level);
   }

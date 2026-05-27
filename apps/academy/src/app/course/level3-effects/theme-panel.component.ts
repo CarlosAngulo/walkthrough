@@ -74,6 +74,10 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
+    this.loadSavedPreferences();
+  }
+
+  private loadSavedPreferences() {
     // Actualmente recuperamos y actualizamos de forma manual imperativa al iniciar:
     const saved = localStorage.getItem('academy-theme-preferences');
     if (saved) {
@@ -89,13 +93,16 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     }
   }
 
-  // ==========================================
-  // RETO 3: Effect() para Sincronizar Estado
-  // ==========================================
   constructor() {
     super();
+    this.setupThemeEffects();
+  }
 
-    // TODO: Registra un effect() en este constructor. Los efectos observan automáticamente
+  private setupThemeEffects() {
+    // ==========================================
+    // RETO 3: Effect() para Sincronizar Estado
+    // ==========================================
+    // TODO: Registra un effect() en este método. Los efectos observan automáticamente
     // cualquier señal leída en su interior y se ejecutan cada vez que cambien.
     // Tu efecto debe realizar dos acciones secundarias críticas:
     // 1. Serializar el estado actual completo ({ theme, fontSize, accentColor })
