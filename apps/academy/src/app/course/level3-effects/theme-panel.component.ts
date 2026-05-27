@@ -51,6 +51,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   // Si decides usar este enfoque elegante, ¡puedes borrar el código de ngOnInit!
 
   ngOnInit() {
+    super.ngOnInit();
     // Actualmente recuperamos y actualizamos de forma manual imperativa al iniciar:
     const saved = localStorage.getItem('academy-theme-preferences');
     if (saved) {
