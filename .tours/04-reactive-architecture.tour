@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "04. Reactive Architecture (Services & outputs)",
+  "steps": [
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+      "description": "## ¡Bienvenido al Nivel 4: Reactive Architecture! 🏗️\n\nEn este nivel vamos a aprender a estructurar **aplicaciones desacopladas y escalables** utilizando:\n- **Servicios de Estado Reactivos:** Almacenaremos el estado centralizado en un servicio inyectable.\n- **Encapsulación de Estado:** Protegeremos las señales mutables para que los componentes no puedan editarlas directamente, exponiéndolas de solo lectura con `.asReadonly()`.\n- **Signal Outputs:** Emitiremos notificaciones de eventos mediante el nuevo API `output()` de Angular.\n\n¡Haz clic en **Next** para iniciar el primer reto!",
+      "line": 13
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+      "description": "### RETO 1: Estado Privado Reactivo con Signals ⚡\n\nEn una arquitectura reactiva saludable, el estado de escritura vive de forma privada en el servicio.\n\n1. Convierte `_itemsList` en una **Writable Signal** privada e inicialízala en un array vacío: `_items = signal<CartItem[]>([]);`.\n2. Respeta el prefijo de guión bajo `_items` para marcarlo como privado.\n\n*Pista de código:*  \n```typescript\nprivate _items = signal<CartItem[]>([]);\n```",
+      "line": 18
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+      "description": "### RETO 2: Exposición Segura de Solo Lectura 🛡️\n\nSi expusiéramos `_items` directamente como Writable Signal, cualquier componente podría alterarla llamando a `.set()` o `.update()`, lo cual rompe el flujo unidireccional de datos.\n\n1. Expón una propiedad pública llamada `items` y asígnale el valor de tu señal interna convertida a solo lectura mediante `.asReadonly()`.\n2. **Elimina por completo** el getter tradicional `get items()` de abajo.\n\n*Pista de código:*  \n```typescript\nitems = this._items.asReadonly();\n```",
+      "line": 27
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+      "description": "### RETO 3: Estado Derivado con Computed Signals 📊\n\nLos contadores totales de productos (`totalCount`) y el precio acumulado (`totalPrice`) son cálculos que dependen del array original de items del carrito.\n\n1. Transforma `totalCount` en un Computed Signal reactivo que sume el total de la cantidad de productos.\n2. Transforma `totalPrice` en un Computed Signal reactivo que sume el subtotal de precio por cantidad de todos los cursos.\n\n*Pistas de código:*  \n```typescript\ntotalCount = computed(() => this.items().reduce((acc, item) => acc + item.quantity, 0));\ntotalPrice = computed(() => this.items().reduce((acc, item) => acc + (item.product.price * item.quantity), 0));\n```",
+      "line": 36
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/cart.service.ts",
+      "description": "### RETO 4: Mutación Inmutable de Estado 🧹\n\nEn Angular reactivo, debemos evitar mutar arrays directamente con `.push()` o `.splice()` ya que rompe la inmutabilidad y dificulta la detección de cambios.\n\n1. Refactora `addToCart()`, `removeFromCart()`, y `clearCart()` para actualizar la señal mutable privada `this._items` empleando `.update()` y `.set()` inmutablemente.\n2. **Elimina por completo** el método privado `recalculateTotals()`, ya que nuestras señales computadas se actualizarán solas automáticamente.\n\n*Nota:* Tienes todas las pistas y códigos inmutables sugeridos comentados paso a paso debajo de cada método.",
+      "line": 47
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/product-list.component.ts",
+      "description": "### RETO 5: Señales de Salida con output() 📣\n\nAngular moderno introduce el API `output()`, que es más ligero, tipado de forma segura en tiempo de compilación y no arrastra dependencias de RxJS.\n\n1. Reemplaza `@Output() productAdded = new EventEmitter<Product>();` por la moderna declaración basada en señales:\n   ```typescript\n   productAdded = output<Product>();\n   ```\n2. Recuerda importar `output` desde `@angular/core` y remover las dependencias de `Output` y `EventEmitter`.",
+      "line": 38
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/product-list.component.ts",
+      "description": "### RETO 6: Inyección de Dependencias Moderna 🏗️\n\nLa inyección en el constructor tradicional de Angular añade código boilerplate y dificulta la herencia.\n\n1. Reemplaza la inicialización en el constructor por la función declarativa de inyección moderna:\n   ```typescript\n   cartService = inject(CartService);\n   ```\n2. **Elimina por completo** el constructor de abajo (ya no hará falta declarar ni llamar a `super()`).",
+      "line": 45
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/product-list.component.html",
+      "description": "### RETO BONUS: Actualizar Enlaces en el Template HTML 🌐\n\nFinalmente, abre el template HTML y actualiza todas las referencias a los métodos y propiedades del servicio del carrito, ya que ahora son **Signals (funciones)**:\n\n1. En el botón de limpiar, actualiza `cartService.items.length` por `cartService.items().length`.\n2. En la visualización de totales, actualiza `cartService.totalCount` y `cartService.totalPrice` por sus correspondientes llamadas de función: `cartService.totalCount()` y `cartService.totalPrice()`.\n3. En el `@if` y el bucle `@for` del carrito, actualiza `cartService.items` para invocarlo como señal: `cartService.items()`.\n\n¡Al completar esto, la suite estará lista para pasar a verde!",
+      "line": 1
+    },
+    {
+      "file": "apps/academy/src/app/course/level4-architecture/product-list.component.spec.ts",
+      "description": "### ¡Verificación TDL! 🧪\n\n1. Abre tu terminal y ejecuta: `pnpm test:l4`\n2. Vitest validará la inmutabilidad de tu estado, los recálculos declarativos, el flujo unidireccional con `.asReadonly()` y el análisis estricto AST semántico.\n\n¡Cuando todas las pruebas brillen en **GREEN**, habrás dominado los pilares de la arquitectura reactiva moderna en Angular! 🚀",
+      "line": 1
+    }
+  ]
+}

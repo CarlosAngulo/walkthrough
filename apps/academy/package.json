@@ -9,7 +9,8 @@
     "test": "vitest",
     "test:l1": "vitest counter",
     "test:l2": "vitest task-filter",
-    "test:l3": "vitest theme-panel"
+    "test:l3": "vitest theme-panel",
+    "test:l4": "vitest product-list"
   },
   "dependencies": {
     "@learning-engine/learning-state": "workspace:*",

@@ -120,7 +120,8 @@
               "test",
               "test:l1",
               "test:l2",
-              "test:l3"
+              "test:l3",
+              "test:l4"
             ]
           }
         },
@@ -201,6 +202,18 @@
             "metadata": {
               "scriptContent": "vitest theme-panel",
               "runCommand": "pnpm run test:l3"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l4": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l4"
+            },
+            "metadata": {
+              "scriptContent": "vitest product-list",
+              "runCommand": "pnpm run test:l4"
             },
             "configurations": {},
             "parallelism": true
