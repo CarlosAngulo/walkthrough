@@ -11,6 +11,10 @@ import { learningStateStore } from '@learning-engine/learning-state';
   }
 })
 export class CounterComponent extends LearningComponent {
+  // ==========================================
+  // Configuración del Nivel y Recompensa
+  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // ==========================================
   protected override level = 'nivel-1';
 
   protected onLevelCompleted() {
@@ -20,8 +24,12 @@ export class CounterComponent extends LearningComponent {
       'Declaraste con éxito writable, input y computed signals.',
       '⚡'
     );
-    learningStateStore.completeLevel('nivel-1');
+    learningStateStore.completeLevel(this.level);
   }
+  // ==========================================
+  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
+  // ==========================================
+
   // ==========================================
   // RETO 1: Writable Signals
   // ==========================================

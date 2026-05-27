@@ -16,6 +16,10 @@ export interface Task {
   }
 })
 export class TaskFilterComponent extends LearningComponent {
+  // ==========================================
+  // Configuración del Nivel y Recompensa
+  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // ==========================================
   protected override level = 'nivel-2';
 
   protected onLevelCompleted() {
@@ -25,8 +29,12 @@ export class TaskFilterComponent extends LearningComponent {
       'Dominaste las cadenas computadas y el estado derivado reactivo.',
       '🧠'
     );
-    learningStateStore.completeLevel('nivel-2');
+    learningStateStore.completeLevel(this.level);
   }
+  // ==========================================
+  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
+  // ==========================================
+  
   // ==========================================
   // RETO 1: Lista de Tareas como Signal
   // ==========================================

@@ -17,6 +17,28 @@ interface ThemePreferences {
   }
 })
 export class ThemePanelComponent extends LearningComponent implements OnInit {
+  
+
+  // ==========================================
+  // Configuración del Nivel y Recompensa
+  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // ==========================================
+  protected override level = 'nivel-3';
+
+  protected onLevelCompleted() {
+    learningStateStore.addAchievement(
+      'L3_EFFECTS',
+      'Side Effect Architect 💾',
+      'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
+      '💾'
+    );
+    learningStateStore.completeLevel(this.level);
+  }
+
+  // ==========================================
+  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
+  // ==========================================
+  
   // ==========================================
   // RETO 1: Variables de Configuración como Signals
   // ==========================================
@@ -65,18 +87,6 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
         console.error('Error cargando preferencias:', e);
       }
     }
-  }
-
-  protected override level = 'nivel-3';
-
-  protected onLevelCompleted() {
-    learningStateStore.addAchievement(
-      'L3_EFFECTS',
-      'Side Effect Architect 💾',
-      'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
-      '💾'
-    );
-    learningStateStore.completeLevel('nivel-3');
   }
 
   // ==========================================
