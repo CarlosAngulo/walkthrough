@@ -4,7 +4,12 @@
   "steps": [
     {
       "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.ts",
-      "description": "## ¡Bienvenido al Nivel 3: Effect Architecture! 💾\n\nEn este nivel, vamos a aprender sobre **efectos secundarios (Side Effects)** en Angular utilizando la función `effect()`.\n\n### El Problema (Anti-patrón)\nActualmente, este panel de tema guarda imperativamente las configuraciones en `localStorage` y actualiza manualmente el DOM (`.theme-preview-card`) cada vez que se llama a un Setter (`setTheme`, `setFontSize`, `setAccentColor`). ¡Esto es propenso a inconsistencias y duplica código innecesariamente!\n\n### El Reto\nVamos a refactorizar todo este componente para que use señales reactivas y un único `effect()` declarativo en el constructor. Este efecto sincronizará automáticamente el DOM y el localStorage ante cualquier cambio. También implementaremos un temporizador analítico que demuestra la utilidad de la función de limpieza `onCleanup`.\n\n¡Haz clic en **Next** para iniciar el primer reto!",
+      "description": "## ¡Bienvenido al Nivel 3: Effect Architecture! 💾\n\nEn este nivel, vamos a aprender sobre **efectos secundarios (Side Effects)** en Angular utilizando la función `effect()`.\n\nAntes que nada, es muy importante que sigas estas instrucciones:\n\n✔️ Tómate un tiempo para analizar todo el código del componente, tanto el archivo .ts como su template.\n\n✔️ Revisa igualmente la aplicación corriendo en el nivel 3. Juega con el listado de tareas agrega, elimina tareas y cambia el estado de los filtros.\n\n✔️ Ejecuta los unit tests del nivel 3 con el comando `ng test:l3`.\n\n Después de haberlo analizado, puedes hacer clic en **Next** para continuar con las instrucciones",
+      "line": 11
+    },
+    {
+      "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.ts",
+      "description": "## El Problema (Anti-patrón)\nActualmente, este panel de tema guarda imperativamente las configuraciones en `localStorage` y actualiza manualmente el DOM (`.theme-preview-card`) cada vez que se llama a un Setter (`setTheme`, `setFontSize`, `setAccentColor`). ¡Esto es propenso a inconsistencias y duplica código innecesariamente!\n\n### El Reto\nVamos a refactorizar todo este componente para que use señales reactivas y un único `effect()` declarativo en el constructor. Este efecto sincronizará automáticamente el DOM y el localStorage ante cualquier cambio. También implementaremos un temporizador analítico que demuestra la utilidad de la función de limpieza `onCleanup`.\n\n¡Haz clic en **Next** para iniciar el primer reto!",
       "line": 19
     },
     {

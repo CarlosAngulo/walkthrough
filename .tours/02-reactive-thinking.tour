@@ -15,17 +15,17 @@
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 1: Lista de Tareas como Signal ⚡\n\nEl primer paso es transformar la propiedad `tasks` en una **Writable Signal**.\n\n1. Reemplaza la declaración tradicional de `tasks` por una señal mutable `signal<Task[]>([...])` con los mismos tres elementos por defecto.\n2. Asegúrate de inicializarla con `signal<Task[]>([...])`.\n\nComo siempre, no te preocupes porque la aplicación deje de funcionar, ya que el código está en desarrollo.\n\n *Pista de código:*  \n```typescript\ntasks = signal<Task[]>([\n  { title: 'Aprender Signals Básicos ⚡', completed: true },\n  { title: 'Dominar Computed & Derived State 🧠', completed: false },\n  { title: 'Explorar Arquitectura de Effects 💾', completed: false }\n]);\n```",
-      "line": 45
-    },
-    {
-      "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
-      "description": "### RETO 2: Filtro Activo como Signal 🔍\n\nAhora, el filtro seleccionado (`'all' | 'pending' | 'completed'`) también debe ser reactivo para que cualquier cambio notifique automáticamente a las señales computadas que crearemos después.\n\n1. Transforma `filter` en un **Writable Signal** de tipo `'all' | 'pending' | 'completed'` inicializada en `'all'`.\n\n*Pista de código:*  \n```typescript\nfilter = signal<'all' | 'pending' | 'completed'>('all');\n```",
       "line": 52
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
+      "description": "### RETO 2: Filtro Activo como Signal 🔍\n\nAhora, el filtro seleccionado (`'all' | 'pending' | 'completed'`) también debe ser reactivo para que cualquier cambio notifique automáticamente a las señales computadas que crearemos después.\n\n1. Transforma `filter` en un **Writable Signal** de tipo `'all' | 'pending' | 'completed'` inicializada en `'all'`.\n\n*Pista de código:*  \n```typescript\nfilter = signal<'all' | 'pending' | 'completed'>('all');\n```",
+      "line": 59
+    },
+    {
+      "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 3: Computed Signal para Tareas Filtradas ⛓️\n\nAquí empieza la magia reactiva. En lugar de calcular las tareas filtradas manualmente en cada acción, declararemos `filteredTasks` como un **Computed Signal**.\n\nUn `computed()` de Angular lee señales de forma automática, registra sus dependencias y se vuelve a calcular **solo** cuando alguna de ellas cambia.\n\n1. Transforma `filteredTasks` en un Computed Signal.\n2. Dentro del computed, lee las señales `this.filter()` y `this.tasks()` para realizar el filtrado y retornar el resultado.\n\n*Pista de código:*  \n```typescript\nfilteredTasks = computed(() => {\n  const currentFilter = this.filter();\n  const allTasks = this.tasks();\n  if (currentFilter === 'all') return allTasks;\n  return allTasks.filter(t => currentFilter === 'completed' ? t.completed : !t.completed);\n});\n```",
-      "line": 69
+      "line": 77
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.html",
@@ -35,22 +35,22 @@
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 4: Computed Signals para Estadísticas (Counts) 📊\n\nLos contadores de tareas pendientes y completadas son típicamente estado derivado del array original de tareas. No debemos recalcularlos a mano.\n\n1. Transforma `pendingCount` en una Computed Signal que cuente cuántas tareas tienen `completed` como `false`.\n2. Transforma `completedCount` en una Computed Signal que cuente cuántas tareas tienen `completed` como `true`.\n3. Ya que ambas variables ahora son signals, actualiza su llamado en el template.\n\n*Pistas de código:*  \n```typescript\npendingCount = computed(() => this.tasks().filter(t => !t.completed).length);\ncompletedCount = computed(() => this.tasks().filter(t => t.completed).length);\n```",
-      "line": 82
+      "line": 89
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 5.1: Inmutabilidad al Agregar Tareas ➕\n\nAhora que todo nuestro estado derivado se calcula automáticamente de forma reactiva y declarativa, ¡podemos deshacernos del molesto código imperativo!\n\nAnteriormente, al mutar directamente un array con `.push()`, Angular no se enteraba fácilmente de los cambios, por lo que estabas forzado a llamar manualmente a `this.setFilter()` para recalcular los contadores y las tareas filtradas de forma imperativa (diciéndole paso a paso al programa qué hacer).\n\nCon Signals, **declaramos qué es el estado** y las computadas reaccionan solas. Por ello, debemos evitar mutar el array existente y en su lugar proveer un nuevo array inmutable.\n\n1. **`addTask`**: Reemplaza el `.push()` usando `.update()` con el operador spread `[...list, newTask]`.\n2. **¡Borra por completo!** la llamada imperativa a `this.setFilter(this.filter)`. Al actualizar la señal original `tasks`, la señal computada `filteredTasks` e incluso las estadísticas se actualizarán automáticamente sin que muevas un dedo.\n\n*Pista de código:*  \n```typescript\nthis.tasks.update((tasks) => [...tasks, { title: title.trim(), completed: false }]);\n```",
-      "line": 87
+      "line": 100
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 5.2: Conmutar y Eliminar Tareas de forma Inmutable 🔄\n\nAl igual que al añadir, cuando modificamos o eliminamos una tarea debemos actualizar nuestra señal inmutablemente. Ya no necesitamos decirle al sistema paso a paso cómo recalcular todo; solo debemos actualizar la fuente de la verdad (`tasks()`).\n\n1. **`toggleTask`**: Usa el método `.update()` mapeando las tareas inmutablemente con `.map()` para cambiar la propiedad `completed` en la tarea seleccionada.\n2. **`removeTask`**: Usa el método `.update()` filtrando el array inmutablemente con `.filter()` para descartar la tarea que coincida con el índice dado.\n3. **¡Borra por completo!** cualquier llamada a `this.setFilter()` en ambos métodos. Como `filteredTasks` y los contadores son **Computed Signals**, se actualizarán en el milisegundo exacto en que `tasks` cambie. ¡Reactividad declarativa pura!\n\n*Pistas de código:* Mira las pistas comentadas dentro de cada uno de los métodos en el código.",
-      "line": 98
+      "line": 110
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.ts",
       "description": "### RETO 5.3: El método setFilter 🧹\n\nFinalmente, limpiemos el método que solía controlar toda la orquestación imperativa de nuestro componente.\n\nAntes, `setFilter()` hacía todo el trabajo pesado: asignaba el nuevo filtro, filtraba manualmente las tareas, y volvía a recorrer el array entero para contar las tareas pendientes y completadas. ¡Un caos de código imperativo!\n\nAhora, dado que `filter` es un **Writable Signal**, y todo lo demás es derivado mediante `computed()`, este método se reduce a una sola línea de código declarativo.\n\n1. **`setFilter`**: Simplemente actualiza la señal del filtro usando `this.filter.set(f)`.\n2. **¡Elimina absolutamente todos los cálculos manuales e imperativos!** que había debajo en este método. Al actualizar la señal de origen `filter`, la señal `filteredTasks` se recalculará automáticamente gracias al computed que declaraste en el Reto 3.\n\n*Pista de código:*  \n```typescript\nsetFilter(f: 'all' | 'pending' | 'completed') {\n  this.filter.set(f);\n}\n```",
-      "line": 118
+      "line": 146
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.html",
@@ -59,7 +59,7 @@
     },
     {
       "file": "apps/academy/src/app/course/level2-state/task-filter.component.spec.ts",
-      "description": "### ¡Es Hora de Validar! 🧪\n\n1. Abre una terminal y corre: `pnpm run test`\n2. Observa cómo Vitest verifica que hayas completado todos los retos de forma impecable y con la arquitectura limpia solicitada.\n\n¡Cuando todas las pruebas del Nivel 2 pasen a **GREEN**, habrás completado exitosamente esta lección de pensamiento reactivo! 🚀",
+      "description": "### ¡Es Hora de Validar! 🧪\n\n1. Ya debes tener corriendo los tests del nivel 2: `pnpm test:l2`.\n2. Observa cómo Vitest verifica que hayas completado todos los retos de forma impecable y con la arquitectura limpia solicitada.\n\n¡Cuando todas las pruebas del Nivel 2 pasen a **GREEN**, habrás completado exitosamente esta lección de pensamiento reactivo! 🚀",
       "line": 1
     }
   ]
