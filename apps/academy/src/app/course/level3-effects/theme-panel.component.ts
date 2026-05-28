@@ -86,7 +86,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
         this.theme = prefs.theme;
         this.fontSize = prefs.fontSize;
         this.accentColor = prefs.accentColor;
-        this.applyThemeStyles();
+        this.applyThemeStyles(prefs.theme, prefs.fontSize, prefs.accentColor);
       } catch (e) {
         console.error('Error cargando preferencias:', e);
       }
@@ -107,7 +107,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     // Tu efecto debe realizar dos acciones secundarias críticas:
     // 1. Serializar el estado actual completo ({ theme, fontSize, accentColor })
     //    y guardarlo en localStorage con la clave 'academy-theme-preferences'.
-    // 2. Sincronizar el DOM aplicando los estilos al card de vista previa usando variables CSS.
+    // 2. Sincronizar el DOM llamando a `this.applyThemeStyles(currentTheme, currentSize, currentAccent)`.
     //
     // Pista de código:
     // effect(() => {
@@ -119,16 +119,11 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     //   const prefs = { theme: currentTheme, fontSize: currentSize, accentColor: currentAccent };
     //   localStorage.setItem('academy-theme-preferences', JSON.stringify(prefs));
     //
-    //   // Sincronizar el DOM (Vista Previa)
-    //   const cardEl = document.querySelector('.theme-preview-card') as HTMLElement;
-    //   if (cardEl) {
-    //     cardEl.style.setProperty('--preview-font-size', `${currentSize}px`);
-    //     cardEl.setAttribute('data-preview-theme', currentTheme);
-    //     cardEl.setAttribute('data-preview-accent', currentAccent);
-    //   }
+    //   // Sincronizar el DOM llamando al método utilitario predictivo
+    //   this.applyThemeStyles(currentTheme, currentSize, currentAccent);
     // });
     //
-    // Una vez que implementes este effect(), ¡puedes borrar los métodos privados 'saveToLocalStorage' y 'applyThemeStyles'!
+    // Una vez que implementes este effect(), ¡puedes borrar el método privado 'saveToLocalStorage'! (Mantén 'applyThemeStyles' ya que ahora lo invocas en el effect)
 
     // ==========================================
     // RETO 4: onCleanup para Analíticas con Debounce
@@ -165,7 +160,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     // Actualmente funciona mutando la variable primitiva y disparando recálculos de forma manual:
     this.theme = t;
     this.saveToLocalStorage();
-    this.applyThemeStyles();
+    this.applyThemeStyles(this.theme, this.fontSize, this.accentColor);
 
     // TODO con Signals: Cuando 'theme' sea un signal, simplemente actualiza su valor:
     // this.theme.set(t);
@@ -179,7 +174,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     // Asignación tradicional y recálculos manuales:
     this.fontSize = clamped;
     this.saveToLocalStorage();
-    this.applyThemeStyles();
+    this.applyThemeStyles(this.theme, this.fontSize, this.accentColor);
 
     // TODO con Signals: Cuando 'fontSize' sea una señal, actualízala:
     // this.fontSize.set(clamped);
@@ -190,7 +185,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     // Asignación tradicional y recálculos manuales:
     this.accentColor = color;
     this.saveToLocalStorage();
-    this.applyThemeStyles();
+    this.applyThemeStyles(this.theme, this.fontSize, this.accentColor);
 
     // TODO con Signals: Cuando 'accentColor' sea una señal, actualízala:
     // this.accentColor.set(color);
@@ -209,12 +204,28 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     localStorage.setItem('academy-theme-preferences', JSON.stringify(prefs));
   }
 
-  private applyThemeStyles() {
+  private applyThemeStyles(theme: 'dark' | 'light', fontSize: number, accentColor: 'purple' | 'cyan' | 'pink') {
+    // ⚠️ ALERTA DE ARQUITECTURA ANGULAR (Directiva de Diseño Seguro):
+    // La manipulación directa del DOM mediante selectores globales como 'document.querySelector' o
+    // accediendo de forma imperativa al objeto '.style' de los elementos HTML es un severo anti-patrón en Angular.
+    //
+    // ¿Por qué es una mala práctica en entornos de producción?
+    // 1. **Incompatibilidad de Plataforma (SSR/Universal):** Si la aplicación se ejecuta en el servidor o en
+    //    un entorno sin DOM nativo (como Server-Side Rendering, Web Workers o prerendering), 'document' no
+    //    estará definido y la aplicación fallará con un error catastrófico.
+    // 2. **Vulnerabilidad de Seguridad (XSS):** Evita los sistemas internos de desinfección y sanitización
+    //    de Angular, abriendo la puerta a inyecciones de código malicioso de forma inadvertida.
+    // 3. **Acoplamiento Fuerte:** Desacopla la lógica del ciclo de detección de cambios de Angular,
+    //    dificultando enormemente las pruebas unitarias e incrementando el riesgo de parpadeos e inconsistencias de estado.
+    //
+    // *Nota Didáctica:* Este método privado utiliza esta técnica única y exclusivamente con fines didácticos
+    // para simular y demostrar cómo se puede sincronizar de forma reactiva el estado de señales con
+    // scripts legados de terceros o librerías externas que operan directamente sobre el árbol de elementos.
     const cardEl = document.querySelector('.theme-preview-card') as HTMLElement;
     if (cardEl) {
-      cardEl.style.setProperty('--preview-font-size', `${this.fontSize}px`);
-      cardEl.setAttribute('data-preview-theme', this.theme);
-      cardEl.setAttribute('data-preview-accent', this.accentColor);
+      cardEl.style.setProperty('--preview-font-size', `${fontSize}px`);
+      cardEl.setAttribute('data-preview-theme', theme);
+      cardEl.setAttribute('data-preview-accent', accentColor);
     }
   }
 }
