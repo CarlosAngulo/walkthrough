@@ -13,7 +13,7 @@
 
 /* Dynamic Themes for Preview */
 :host([data-preview-theme="dark"]) {
-  background: rgba(12, 13, 20, 0.6);
+  background: #1A1A1A;
   color: #f3f4f6;
 }
 
