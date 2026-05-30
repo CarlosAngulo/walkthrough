@@ -1,25 +1,31 @@
 /* CSS Variables & Design Tokens */
 :root {
-  --bg-primary: #0a0b10;
-  --bg-card: rgba(18, 20, 32, 0.65);
+  --bg-primary: #c3cfd5;
+  --bg-pattern: #bbc5cb;
+  --bg-emphasis: #1a1a1a;
+  --bg-card: rgb(255 255 255 / 30%);
   --border-color: rgba(255, 255, 255, 0.08);
   --border-glow: rgba(147, 51, 234, 0.3);
   
   /* Curated Harmonious Palette */
   --text-primary: #f3f4f6;
   --text-muted: #9ca3af;
+  --text-accent: #5e6178;
+  --text-highlight: #1a1a1a;
   --color-primary: #a855f7; /* Violet */
   --color-secondary: #06b6d4; /* Cyan */
   --color-accent: #ec4899; /* Pink */
   
-  --grad-primary: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-  --grad-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --grad-primary: #ff5a00;
+  --grad-secondary: #b3b4b9;
+  --grad-accent: #22c55e;
   
-  --font-title: 'Outfit', sans-serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-title: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
   
-  --shadow-neon: 0 8px 32px 0 rgba(147, 51, 234, 0.15);
-  --shadow-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.05);
+  --shadow-neon: 0 8px 8px 0 rgba(0, 0, 0, 0.15);
+  --shadow-inner: inset -1px 1px 0px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* Base Resets & Global Styles */
@@ -27,13 +33,16 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  letter-spacing: 0.02em;
 }
 
 body {
   background-color: var(--bg-primary);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(147, 51, 234, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+  background-image: linear-gradient(var(--bg-pattern) 2px, transparent 2px), linear-gradient(90deg, var(--bg-pattern) 2px, transparent 2px), linear-gradient(var(--bg-pattern) 1px, transparent 1px), linear-gradient(90deg, var(--bg-pattern) 1px, var(--bg-primary) 1px);
+  
+  background-size: 300px 300px, 300px 300px, 150px 150px, 150px 150px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+
   color: var(--text-primary);
   font-family: var(--font-body);
   min-height: 100vh;
@@ -42,12 +51,23 @@ body {
   padding: 0;
 }
 
+body::before {
+  display: block;
+  content: '';
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
 /* Layout for Host Element */
 .block-app-counter {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 /* Glassmorphism Card Container */
@@ -58,8 +78,8 @@ body {
 
 .card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   border: 1px solid var(--border-color);
   border-radius: 24px;
   padding: 2.5rem;
@@ -69,40 +89,29 @@ body {
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--grad-primary);
-}
-
-.card:hover {
-  border-color: var(--border-glow);
-  box-shadow: 0 12px 40px 0 rgba(147, 51, 234, 0.25), var(--shadow-inner);
-}
-
 /* Typography & Titles */
 .title {
   font-family: var(--font-title);
-  font-size: 2.25rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: 0.02em;
+  font-weight: 400;
   text-align: center;
   margin-bottom: 0.5rem;
-  background: var(--grad-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
+  color: var(--text-accent);
+  text-transform: uppercase;
+}
+
+.title span {
+  filter: grayscale(1);
 }
 
 .subtitle {
   font-size: 0.95rem;
-  color: var(--text-muted);
+  color: var(--text-highlight);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   line-height: 1.5;
+  font-family: var(--font-code);
 }
 
 /* Stats Display Grid */
@@ -114,7 +123,7 @@ body {
 }
 
 .stat-box {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 16px;
   padding: 1.25rem;
@@ -131,9 +140,10 @@ body {
 
 .stat-label {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-accent);
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
   text-align: center;
@@ -147,23 +157,17 @@ body {
 }
 
 .stat-value.highlight {
-  background: var(--grad-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(236, 72, 153, 0.3));
+  color: var(--grad-primary);
 }
 
 .stat-value.secondary {
-  background: var(--grad-secondary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(6, 182, 212, 0.3));
+  color: var(--grad-accent);
 }
 
 /* Badge and Input Info Panel */
 .input-info {
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 3px solid var(--color-secondary);
+  /* background-color: var(--bg-emphasis);  */
+  border: 1px solid var(--grad-secondary);
   border-radius: 8px;
   padding: 0.85rem 1.25rem;
   margin-bottom: 2rem;
@@ -174,7 +178,8 @@ body {
 
 .input-info p {
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--text-highlight);
+  font-family: var(--font-code);
 }
 
 .input-info p strong {
@@ -207,7 +212,7 @@ body {
   font-size: 1rem;
   font-weight: 600;
   padding: 0.95rem;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   border: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -215,16 +220,16 @@ body {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  clip-path: polygon(0 0, 100% 0%, 100% 12px, 100% 100%, 12px 100%, 0% 70%);
 }
 
 .btn-primary {
   background: var(--grad-primary);
   color: white;
-  box-shadow: 0 4px 16px 0 rgba(236, 72, 153, 0.25);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 6px 20px 0 rgba(236, 72, 153, 0.4);
+  box-shadow: 0 6px 5px 0 rgba(236, 118, 72, 0.4);
   transform: translateY(-1px);
   filter: brightness(1.15);
 }
@@ -232,6 +237,11 @@ body {
 .btn-primary:active {
   transform: translateY(1px);
   box-shadow: 0 2px 10px 0 rgba(236, 72, 153, 0.2);
+}
+
+.btn-secondary {
+  background: var(--grad-secondary);
+  color: white;
 }
 
 .btn-outline {
@@ -359,15 +369,9 @@ body {
 }
 
 .badge-pending {
-  background: rgba(236, 72, 153, 0.15);
-  color: #f472b6;
-  border: 1px solid rgba(236, 72, 153, 0.2);
 }
 
 .badge-completed {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 /* Task List */

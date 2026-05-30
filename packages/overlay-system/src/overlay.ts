@@ -24,7 +24,7 @@ const INJECTED_CSS = `
   z-index: 99999;
   box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 2px solid #ffffff;
+  border: 2px solid #ffd85c;
 }
 
 .learning-pulse-dot:hover {
@@ -40,6 +40,7 @@ const INJECTED_CSS = `
   background-color: #22c55e;
   animation: learning-pulse-green 2s infinite;
   box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  border: 2px solid white;
 }
 
 .learning-pulse-dot.warning {

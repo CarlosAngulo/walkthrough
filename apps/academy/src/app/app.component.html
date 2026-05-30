@@ -1,0 +1,138 @@
+<div class="academy-layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-text">
+        <h1 class="brand-title">{{ courseMetadata.subtitle }}</h1>
+      </div>
+    </div>
+
+    <nav class="nav-levels">
+      @for (level of levels; track level.path) {
+        <a
+          [routerLink] class="level-card"
+          [class.active]="activeLevelPath() === level.path"
+          [class.is-locked]="level.status === 'locked'"
+          [routerLink]="level.status !== 'locked' ? level.path : null"
+        >
+          <span class="level-badge" [class]="'badge-' + level.status">
+            {{ level.emoji }}
+          </span>
+          <div class="level-info">
+            <strong>{{ level.title }}</strong>
+            <small>{{ level.subtitle }}</small>
+          </div>
+          @if (level.status === 'locked') {
+            <span class="lock-icon">🔒</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <!-- Logros Desbloqueados -->
+    @if (academyState().achievements.length > 0 && false) {
+      <div class="achievements-section">
+        <span class="progress-label">Logros Desbloqueados</span>
+        <div class="achievements-list">
+          @for (ach of academyState().achievements; track ach.id) {
+            <div class="ach-badge" [title]="ach.description">
+              <span class="ach-emoji">{{ ach.emoji }}</span>
+              <div class="ach-info">
+                <strong>{{ ach.title }}</strong>
+                <small>¡Desbloqueado!</small>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="sidebar-footer">
+      <div class="progress-info">
+        <span class="progress-label">Progreso General</span>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progressPercentage()"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="progress-text">{{ completedCount() }} / {{ courseMetadata.levels.length }} Niveles ({{ academyState().score }} pts)</span>
+          <button class="btn-reset" (click)="resetProgress()">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content-viewport">
+    <router-outlet />
+  </main>
+
+  <!-- ─── Panel Lateral de Unit Tests en Tiempo Real 🧪 ─── -->
+  <aside class="test-panel-sidebar">
+    <div class="test-header">
+      <div class="test-title-row">
+        <h2 class="test-title">Unit Tests</h2>
+        <span class="test-subtitle">Feedback de Vitest</span>
+      </div>
+      <span class="status-indicator" [class]="getGlobalTestStatus()">
+        {{ getGlobalTestStatusLabel() }}
+      </span>
+    </div>
+
+    <!-- Barra de Progreso del Nivel -->
+    @if (hasTestResults()) {
+      <div class="test-progress-box">
+        <div class="progress-header">
+          <span>Retos Aprobados</span>
+          <strong>{{ getPassedTestsCount() }} / {{ getTotalTestsCount() }}</strong>
+        </div>
+        <div class="test-progress-bar">
+          <div class="test-progress-fill" [style.width.%]="getTestsProgressPercentage()"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Listado de Tests -->
+    <div class="test-list-container">
+      @if (!hasTestResults()) {
+        <!-- Estado Vacío: Esperando por Vitest -->
+        <div class="tests-empty-state">
+          <h3>Test Runner Inactivo</h3>
+          <p>Para ver el estado de tus retos en esta pantalla en tiempo real, ejecuta el comando de pruebas en tu terminal:</p>
+          <div class="cmd-box">
+            <code>{{ activeTestCommand() }}</code>
+            <div class="cmd-actions">
+              <button class="btn-copy" [class.success]="isCopied()" (click)="copyCommand(activeTestCommand())" title="Copiar comando">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M288 64C252.7 64 224 92.7 224 128L224 384C224 419.3 252.7 448 288 448L480 448C515.3 448 544 419.3 544 384L544 183.4C544 166 536.9 149.3 524.3 137.2L466.6 81.8C454.7 70.4 438.8 64 422.3 64L288 64zM160 192C124.7 192 96 220.7 96 256L96 512C96 547.3 124.7 576 160 576L352 576C387.3 576 416 547.3 416 512L416 496L352 496L352 512L160 512L160 256L176 256L176 192L160 192z"/></svg>
+              </button>
+            </div>
+          </div>
+          <small class="empty-hint">El reporter transmitirá los resultados al instante mediante WebSockets al guardar archivos.</small>
+        </div>
+      } @else {
+        @for (file of testResults(); track file.filepath) {
+          <div class="test-file-card">
+            <div class="file-header">
+              <span class="file-icon">📄</span>
+              <span class="file-name">{{ file.name }}</span>
+            </div>
+            <div class="file-tasks">
+              @for (task of file.tasks; track task.name) {
+                <div class="task-row" [class]="task.status">
+                  <div class="task-status-indicator">
+                    <span class="task-chk" [class]="task.status"></span>
+                  </div>
+                  <div class="task-details">
+                    <div class="task-name-text">{{ task.name }}</div>
+                    @if (task.status === 'fail' && task.error) {
+                      <div class="task-error-box">
+                        {{ task.error }}
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </aside>
+</div>
