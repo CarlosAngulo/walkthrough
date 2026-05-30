@@ -12,7 +12,7 @@
   --text-muted: #9ca3af;
   --text-accent: #5e6178;
   --text-highlight: #1a1a1a;
-  --color-primary: #a855f7; /* Violet */
+  --color-primary: #ff5a00; /* Violet */
   --color-secondary: #06b6d4; /* Cyan */
   --color-accent: #ec4899; /* Pink */
   
@@ -680,31 +680,31 @@ body::before {
   flex-shrink: 0;
 }
 
-.accent-dot.purple {
-  background: #a855f7;
+.accent-dot.primary {
+  background: #ff5a00;
   border: 3px solid transparent;
 }
-.accent-dot.purple.selected {
+.accent-dot.primary.selected {
   border-color: #f3f4f6;
-  box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 10px rgba(255, 90, 0, 0.6);
 }
 
-.accent-dot.cyan {
-  background: #06b6d4;
+.accent-dot.secondary {
+  background: #11b780;
   border: 3px solid transparent;
 }
-.accent-dot.cyan.selected {
+.accent-dot.secondary.selected {
   border-color: #f3f4f6;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 10px rgba(17, 183, 128, 0.6);
 }
 
-.accent-dot.pink {
-  background: #ec4899;
+.accent-dot.neutral {
+  background: #b3b4b9;
   border: 3px solid transparent;
 }
-.accent-dot.pink.selected {
+.accent-dot.neutral.selected {
   border-color: #f3f4f6;
-  box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+  box-shadow: 0 0 10px rgba(179, 180, 185, 0.6);
 }
 
 .accent-dot:hover {

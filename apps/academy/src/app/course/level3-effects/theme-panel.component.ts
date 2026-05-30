@@ -42,11 +42,11 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   // TODO: Convierte estas tres propiedades en Writable Signals con sus respectivos valores por defecto:
   // - theme: ThemeMode (inicializada en 'dark')
   // - fontSize: number (inicializada en 16)
-  // - accentColor: AccentColor (inicializada en 'purple')
+  // - accentColor: AccentColor (inicializada en 'primary')
   // Pista: theme = signal<ThemeMode>('dark');
   theme: ThemeMode = 'dark';
   fontSize = 16;
-  accentColor: AccentColor = 'purple';
+  accentColor: AccentColor = 'primary';
 
   // Analítica simulada para contar cambios (usada para pruebas)
   analyticsLogCount = 0;
@@ -61,7 +61,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   //
   // private getSavedPrefs(): ThemePreferences {
   //   const saved = localStorage.getItem('academy-theme-preferences');
-  //   return saved ? JSON.parse(saved) : { theme: 'dark', fontSize: 16, accentColor: 'purple' };
+  //   return saved ? JSON.parse(saved) : { theme: 'dark', fontSize: 16, accentColor: 'primary' };
   // }
   //
   // Y luego inicializar tus señales llamando a ese método:

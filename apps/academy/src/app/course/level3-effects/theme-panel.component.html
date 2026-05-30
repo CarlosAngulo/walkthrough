@@ -44,24 +44,24 @@
         <div class="control-group">
           <label class="control-label">Color de Acento Principal</label>
           <div class="accent-palette">
-            <!-- TODO: Reto 5 - Evalúa accentColor como función: accentColor() === 'purple' -->
+            <!-- TODO: Reto 5 - Evalúa accentColor como función: accentColor() === 'primary' -->
             <button 
-              class="accent-dot purple" 
-              [class.selected]="accentColor === 'purple'"
-              (click)="setAccentColor('purple')"
-              title="Acento Violeta"
+              class="accent-dot primary" 
+              [class.selected]="accentColor === 'primary'"
+              (click)="setAccentColor('primary')"
+              title="Acento Primario (Naranja)"
             ></button>
             <button 
-              class="accent-dot cyan" 
-              [class.selected]="accentColor === 'cyan'"
-              (click)="setAccentColor('cyan')"
-              title="Acento Cian"
+              class="accent-dot secondary" 
+              [class.selected]="accentColor === 'secondary'"
+              (click)="setAccentColor('secondary')"
+              title="Acento Secundario (Verde)"
             ></button>
             <button 
-              class="accent-dot pink" 
-              [class.selected]="accentColor === 'pink'"
-              (click)="setAccentColor('pink')"
-              title="Acento Rosa"
+              class="accent-dot neutral" 
+              [class.selected]="accentColor === 'neutral'"
+              (click)="setAccentColor('neutral')"
+              title="Acento Neutral (Gris)"
             ></button>
           </div>
         </div>

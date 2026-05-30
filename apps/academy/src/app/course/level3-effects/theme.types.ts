@@ -1,5 +1,5 @@
 export type ThemeMode = 'dark' | 'light';
-export type AccentColor = 'purple' | 'cyan' | 'pink';
+export type AccentColor = 'primary' | 'secondary' | 'neutral';
 
 export interface ThemePreferences {
   theme: ThemeMode;

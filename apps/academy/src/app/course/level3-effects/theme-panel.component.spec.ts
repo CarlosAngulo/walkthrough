@@ -44,9 +44,8 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
     fixture = TestBed.createComponent(ThemePanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }
-
-  describe('RETO 1: Variables de Configuración como Signals', () => {
+    }
+    describe('RETO 1: Variables de Configuración como Signals', () => {
     it('debería declarar "theme", "fontSize" y "accentColor" como Writable Signals de Angular', async () => {
       await createComponent();
 
@@ -63,7 +62,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       ).toBe(true);
 
       expect(isSignal(component.accentColor)).withContext(
-        '¡Alerta! "accentColor" debe ser un Signal mutable de Angular. Reemplázala usando la función: signal("purple").'
+        '¡Alerta! "accentColor" debe ser un Signal mutable de Angular. Reemplázala usando la función: signal("primary").'
       ).toBe(true);
     });
 
@@ -72,7 +71,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
 
       expect((component.theme as any)()).toBe('dark');
       expect((component.fontSize as any)()).toBe(16);
-      expect((component.accentColor as any)()).toBe('purple');
+      expect((component.accentColor as any)()).toBe('primary');
     });
   });
 
@@ -82,7 +81,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       const savedPrefs = {
         theme: 'light',
         fontSize: 20,
-        accentColor: 'cyan'
+        accentColor: 'secondary'
       };
       localStorage.setItem('academy-theme-preferences', JSON.stringify(savedPrefs));
 
@@ -98,8 +97,8 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       ).toBe(20);
 
       expect((component.accentColor as any)()).withContext(
-        'El componente debería haber leído "accentColor" desde localStorage y cargado "cyan".'
-      ).toBe('cyan');
+        'El componente debería haber leído "accentColor" desde localStorage y cargado "secondary".'
+      ).toBe('secondary');
     });
   });
 
@@ -115,7 +114,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
         // Cambiar señales
         (component.theme as any).set('light');
         (component.fontSize as any).set(22);
-        (component.accentColor as any).set('pink');
+        (component.accentColor as any).set('neutral');
         
         // Propagar cambios
         fixture.detectChanges();
@@ -127,7 +126,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
         saved = JSON.parse(localStorage.getItem('academy-theme-preferences') || '{}');
         expect(saved.theme).withContext('effect() debería haber guardado el nuevo tema en localStorage.').toBe('light');
         expect(saved.fontSize).withContext('effect() debería haber guardado el nuevo tamaño de fuente en localStorage.').toBe(22);
-        expect(saved.accentColor).withContext('effect() debería haber guardado el nuevo color en localStorage.').toBe('pink');
+        expect(saved.accentColor).withContext('effect() debería haber guardado el nuevo color en localStorage.').toBe('neutral');
       } else {
         expect.fail('No se puede probar la persistencia automática porque las propiedades no son señales aún.');
       }
@@ -142,7 +141,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
       if (isSignal(component.theme) && cardEl) {
         (component.theme as any).set('light');
         (component.fontSize as any).set(18);
-        (component.accentColor as any).set('cyan');
+        (component.accentColor as any).set('secondary');
 
         fixture.detectChanges();
         await fixture.whenStable();
@@ -150,7 +149,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
         // Verificar el DOM
         expect(cardEl.style.getPropertyValue('--preview-font-size')).toBe('18px');
         expect(cardEl.getAttribute('data-preview-theme')).toBe('light');
-        expect(cardEl.getAttribute('data-preview-accent')).toBe('cyan');
+        expect(cardEl.getAttribute('data-preview-accent')).toBe('secondary');
       } else {
         expect.fail('No se puede probar la sincronización del DOM porque no hay señales o el preview card no se renderizó.');
       }
@@ -200,7 +199,7 @@ describe('Nivel 3: Effect Architecture 💾 - ThemePanelComponent', () => {
         fixture.detectChanges(); await fixture.whenStable();
         vi.advanceTimersByTime(300); // 600ms transcurridos en total, pero el nuevo timer solo lleva 300ms
 
-        (component.accentColor as any).set('pink');
+        (component.accentColor as any).set('neutral');
         fixture.detectChanges(); await fixture.whenStable();
         
         // Avanzar 500ms más (el primer timer ya habría expirado, pero gracias a onCleanup debe estar cancelado)
