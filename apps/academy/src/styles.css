@@ -970,5 +970,211 @@ body::before {
   color: #ef4444;
 }
 
+/* ==========================================
+   NIVEL 5 — RXJS BOUNDARIES COMPONENT STYLES
+   ========================================== */
+.block-rxjs-boundaries {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.rxjs-interop-container {
+  width: 100%;
+  max-width: 580px;
+}
+
+/* Search Box Container */
+.search-box-container {
+  margin-bottom: 2rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.15rem;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+.input-search {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 0.95rem 1rem 0.95rem 2.85rem;
+  font-family: var(--font-body);
+  color: var(--text-highlight);
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.input-search::placeholder {
+  color: var(--text-accent);
+  opacity: 0.7;
+}
+
+.input-search:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 1.15rem;
+  background: transparent;
+  border: none;
+  color: var(--text-accent);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color 0.2s ease;
+}
+
+.btn-clear-search:hover {
+  color: #ef4444;
+}
+
+.search-info-bar {
+  margin-top: 0.65rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Results Panel */
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 120px;
+}
+
+.course-result-card {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.course-result-card:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neon);
+}
+
+.course-emoji-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: var(--shadow-inner);
+}
+
+.course-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.course-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-highlight);
+}
+
+.course-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.course-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.course-tag.category {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06b6d4;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.course-tag.difficulty.principiante {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.course-tag.difficulty.intermedio {
+  background: rgba(255, 90, 0, 0.1);
+  color: #ff5a00;
+  border: 1px solid rgba(255, 90, 0, 0.2);
+}
+
+.course-tag.difficulty.avanzado {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+/* Empty State */
+.search-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--text-accent);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px dashed rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+}
+
+.search-empty-state .empty-icon {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-highlight);
+}
+
+.empty-desc {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
 
 

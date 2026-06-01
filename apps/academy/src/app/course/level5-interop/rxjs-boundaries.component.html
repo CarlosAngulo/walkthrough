@@ -1,0 +1,72 @@
+<div class="rxjs-interop-container">
+  <div class="card">
+    <h1 class="title">RxJS Boundaries <span>🔄</span></h1>
+    <p class="subtitle">Angular Signals — RxJS Interop</p>
+
+    <!-- Caja de Búsqueda Predictiva -->
+    <div class="search-box-container" data-learning-anchor="search-input">
+      <div class="input-wrapper">
+        <span class="search-icon">🔍</span>
+        <!-- TODO: Reto 1 - Enlaza reactivamente el valor de este input a la señal searchQuery -->
+        <!-- Pista: Usa el event binding (input)="searchQuery.set(txt.value)" en el input -->
+        <input
+          #txt
+          type="text"
+          placeholder="Buscar temas, categorías (ej: signals, rxjs, core)..."
+          (input)="searchQuery.set(txt.value)"
+          class="input-search"
+        />
+        @if (txt.value) {
+          <button class="btn-clear-search" (click)="txt.value = ''; searchQuery.set('')">✕</button>
+        }
+      </div>
+      <div class="search-info-bar">
+        <span class="badge">Term de Búsqueda: <strong>"{{ searchQuery() }}"</strong></span>
+      </div>
+    </div>
+
+    <!-- Resultados de Búsqueda Reactivos -->
+    <div class="results-panel" data-learning-anchor="results-panel">
+      <label class="control-label">Cursos Encontrados ({{ searchResults().length }})</label>
+      
+      <div class="results-grid">
+        <!-- TODO: Reto 4 - Itera sobre la señal searchResults() usando el nuevo control flow de Angular -->
+        @for (course of searchResults(); track course.id) {
+          <div class="course-result-card">
+            <div class="course-emoji-wrapper">
+              <span class="course-emoji">{{ course.emoji }}</span>
+            </div>
+            <div class="course-meta">
+              <h3 class="course-title">{{ course.title }}</h3>
+              <div class="course-tags">
+                <span class="course-tag category">{{ course.category }}</span>
+                <span class="course-tag difficulty" [class]="course.difficulty.toLowerCase()">
+                  {{ course.difficulty }}
+                </span>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="search-empty-state">
+            <span class="empty-icon">🔍</span>
+            @if (searchQuery().trim() === '') {
+              <p class="empty-title">Escribe algo para comenzar a buscar</p>
+              <p class="empty-desc">Prueba ingresando "signals" o "rxjs" en el buscador de arriba.</p>
+            } @else {
+              <p class="empty-title">No se encontraron resultados</p>
+              <p class="empty-desc">No hay cursos coincidentes con "{{ searchQuery() }}". Intenta con otro término.</p>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Panel Informativo TDL -->
+    <div class="educational-footer">
+      <div class="badge-tdl">TDL METODOLOGÍA</div>
+      <p>
+        En aplicaciones reales, realizar llamadas HTTP por cada tecla presionada satura el servidor. En este nivel, aprenderás a crear un puente limpio con RxJS usando <code>toObservable()</code>, aplicar operadores de debounce y cancelación de peticiones asíncronas, y regresar los resultados como una señal síncrona lista para renderizarse en el HTML usando <code>toSignal()</code>.
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "05. RxJS Boundaries (toSignal & toObservable)",
+  "steps": [
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
+      "description": "## ¡Bienvenido al Nivel 5: RxJS Boundaries! 🔄\n\nEn este nivel aprenderemos a cruzar la frontera reactiva entre **Angular Signals** y **RxJS** empleando:\n- **`toObservable()`:** Convertiremos una señal en un flujo observable asíncrono para aprovechar el ecosistema y operadores de RxJS.\n- **Operadores de Debounce y Cancelación:** Usaremos `debounceTime`, `distinctUntilChanged` y `switchMap` para optimizar búsquedas asíncronas predictivas.\n- **`toSignal()`:** Transformaremos el flujo observable resultante de nuevo en una señal sincrónica limpia con valor inicial para consumirse fácilmente en la UI.\n\n¡Haz clic en **Next** para iniciar el primer reto!",
+      "line": 16
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
+      "description": "### RETO 1: Writable Signal para el Filtro de Búsqueda ⚡\n\nPrimero, necesitamos que el texto que ingresa el usuario en la UI sea un flujo reactivo controlado por una señal.\n\n1. Transforma la propiedad tradicional `searchQuery` en una **Writable Signal** de Angular.\n2. Inicialízala en una cadena de texto vacía: `''`.\n\n*Pista de código:*  \n```typescript\nsearchQuery = signal<string>('');\n```",
+      "line": 44
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
+      "description": "### RETO 2: toObservable() — Cruzando a RxJS 🌊\n\nPara poder demorar las búsquedas mientras el usuario escribe y evitar llamadas consecutivas repetidas, necesitamos el poder de los operadores de RxJS. El primer paso es transformar la señal `searchQuery` en un Observable.\n\n1. Invoca `toObservable(this.searchQuery)` dentro del flujo de búsqueda.\n2. Recuerda que `toObservable` se importa desde `@angular/core/rxjs-interop`.",
+      "line": 49
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
+      "description": "### RETO 3: Tubería de Optimización RxJS 🛠️\n\nAplica en la tubería `.pipe(...)` de tu observable los siguientes operadores clave:\n- **`debounceTime(400)`:** Para esperar 400 milisegundos tras la última tecla pulsada antes de disparar la búsqueda.\n- **`distinctUntilChanged()`:** Para no ejecutar una búsqueda si el texto es exactamente igual al de la búsqueda anterior.\n- **`switchMap((query) => this.searchService.search(query))`:** Para activar la búsqueda asíncrona real cancelando peticiones previas en vuelo que queden obsoletas.",
+      "line": 51
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
+      "description": "### RETO 4: toSignal() — Regreso al Mundo Síncrono 🛡️\n\nFinalmente, queremos exponer el resultado de la búsqueda de forma síncrona y limpia para renderizarse en el HTML sin recurrir al molesto e imperativo pipe `async` ni suscripciones manuales.\n\n1. Convierte el observable de búsqueda anterior de vuelta a una señal asignándolo a `searchResults` mediante `toSignal()`.\n2. **Muy importante:** Especifica la opción `{ initialValue: [] as Course[] }` como segundo parámetro para evitar que la señal retorne `undefined` al inicio.\n\n*Pista de código:*  \n```typescript\nprivate searchQuery$ = toObservable(this.searchQuery).pipe(\n  debounceTime(400),\n  distinctUntilChanged(),\n  switchMap((query) => this.searchService.search(query))\n);\n\nsearchResults = toSignal(this.searchQuery$, { initialValue: [] as Course[] });\n```\n*(¡No olvides remover la inicialización mock `searchResults: any = () => [];` de abajo!)*",
+      "line": 69
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.html",
+      "description": "### RETO BONUS: Binding HTML e Iteración Reactiva 🌐\n\n1. Abre el template HTML y actualiza la interpolación del término de búsqueda para llamarla como una señal: `{{ searchQuery() }}`.\n2. El bucle `@for` y la comprobación de longitud `searchResults.length` deben actualizarse para invocar la señal: `searchResults().length` y `@for (course of searchResults(); track course.id)`.\n\n¡Al completar esto, tu buscador predictivo asíncrono estará al 100%!",
+      "line": 1
+    },
+    {
+      "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.spec.ts",
+      "description": "### ¡Verificación TDL! 🧪\n\n1. Ejecuta en tu terminal el comando de pruebas: `pnpm test:l5`\n2. Vitest validará la reactividad asíncrona de tu componente, los tiempos de debounceTime y la integridad estructural AST.\n\n¡Cuando todas las pruebas brillen en **GREEN**, te habrás convertido en un experto uniendo Signals y RxJS! 🚀",
+      "line": 1
+    }
+  ]
+}

@@ -41,11 +41,21 @@ const LEVEL4_RULES = [
   'L4_PRODUCT_LIST_INJECTION'
 ];
 
+const LEVEL5_RULES = [
+  'L5_SEARCH_QUERY_SIGNAL',
+  'L5_TO_OBSERVABLE',
+  'L5_RXJS_OPERATORS',
+  'L5_TO_SIGNAL'
+];
+
 function runAnalysis(level: string = 'nivel-1') {  
   let filePath = '';
   let rules = [];
 
-  if (level === 'nivel-4') {
+  if (level === 'nivel-5') {
+    filePath = path.resolve(__dirname, 'src/app/course/level5-interop/rxjs-boundaries.component.ts');
+    rules = LEVEL5_RULES;
+  } else if (level === 'nivel-4') {
     const servicePath = path.resolve(__dirname, 'src/app/course/level4-architecture/cart.service.ts');
     const componentPath = path.resolve(__dirname, 'src/app/course/level4-architecture/product-list.component.ts');
     if (!fs.existsSync(servicePath) || !fs.existsSync(componentPath)) {
@@ -59,9 +69,7 @@ function runAnalysis(level: string = 'nivel-1') {
       isValid: serviceEval.isValid && componentEval.isValid,
       evaluations: [...serviceEval.evaluations, ...componentEval.evaluations]
     };
-  }
-
-  if (level === 'nivel-3') {
+  } else if (level === 'nivel-3') {
     filePath = path.resolve(__dirname, 'src/app/course/level3-effects/theme-panel.component.ts');
     rules = LEVEL3_RULES;
   } else if (level === 'nivel-2') {
@@ -221,6 +229,14 @@ function learningEnginePlugin() {
       } else if (file.endsWith('cart.service.ts') || file.endsWith('product-list.component.ts')) {
         try {
           const evaluation = runAnalysis('nivel-4');
+          server.ws.send('learning-engine:status', evaluation);
+        } catch (e: any) {
+          console.error('[Learning Engine Plugin] HMR error:', e);
+        }
+      } else if (file.endsWith('rxjs-boundaries.component.ts')) {
+        try {
+          const analysis = analyzeFile(file);
+          const evaluation = evaluateRules(analysis, LEVEL5_RULES);
           server.ws.send('learning-engine:status', evaluation);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] HMR error:', e);

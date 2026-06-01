@@ -608,13 +608,145 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
   }
 };
 
+// Rules catalog for Level 5 RxJS Interop
+export const L5_RULES: Record<string, PedagogicalRule> = {
+  L5_SEARCH_QUERY_SIGNAL: (analysis) => {
+    const searchProp = analysis.properties.find(p => p.name === 'searchQuery');
+    if (!searchProp) {
+      return {
+        ruleId: 'L5_SEARCH_QUERY_SIGNAL',
+        success: false,
+        anchor: 'search-input',
+        message: 'No se detectó la propiedad "searchQuery" en tu componente.',
+        hint: 'Asegúrate de declarar la propiedad searchQuery para enlazar el texto de búsqueda.'
+      };
+    }
+    if (searchProp.type !== 'signal') {
+      return {
+        ruleId: 'L5_SEARCH_QUERY_SIGNAL',
+        success: false,
+        anchor: 'search-input',
+        message: 'La propiedad "searchQuery" debe ser declarada como una Writable Signal.',
+        hint: 'Usa: searchQuery = signal<string>(\'\'); importando signal desde @angular/core.'
+      };
+    }
+    return {
+      ruleId: 'L5_SEARCH_QUERY_SIGNAL',
+      success: true,
+      anchor: 'search-input',
+      message: '¡Excelente! "searchQuery" es una Writable Signal reactiva.'
+    };
+  },
+
+  L5_TO_OBSERVABLE: (analysis) => {
+    const toObsRegex = /toObservable\s*\(\s*(this\.)?searchQuery\s*\)/;
+    const usesToObservable = toObsRegex.test(analysis.fileContent || '');
+    if (!usesToObservable) {
+      return {
+        ruleId: 'L5_TO_OBSERVABLE',
+        success: false,
+        anchor: 'search-input',
+        message: 'No se detectó la conversión de "searchQuery" a Observable usando toObservable().',
+        hint: 'Usa la función toObservable(this.searchQuery) de @angular/core/rxjs-interop para crear un flujo Observable.'
+      };
+    }
+    return {
+      ruleId: 'L5_TO_OBSERVABLE',
+      success: true,
+      anchor: 'search-input',
+      message: '¡Perfecto! Has convertido exitosamente la Writable Signal "searchQuery" a Observable con toObservable().'
+    };
+  },
+
+  L5_RXJS_OPERATORS: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasDebounce = /debounceTime\s*\(\s*\d+\s*\)/.test(fileContent);
+    const hasDistinct = /distinctUntilChanged\s*\(\s*\)/.test(fileContent);
+    const hasSwitchMap = /switchMap\s*\(/.test(fileContent);
+
+    if (!hasDebounce) {
+      return {
+        ruleId: 'L5_RXJS_OPERATORS',
+        success: false,
+        anchor: 'search-input',
+        message: 'Falta aplicar el operador de retardo "debounceTime" en el flujo de búsqueda.',
+        hint: 'Aplica .pipe(debounceTime(300), ...) para retrasar la búsqueda mientras el usuario escribe y no saturar el servidor.'
+      };
+    }
+    if (!hasDistinct) {
+      return {
+        ruleId: 'L5_RXJS_OPERATORS',
+        success: false,
+        anchor: 'search-input',
+        message: 'Falta aplicar el operador "distinctUntilChanged" en el flujo de búsqueda.',
+        hint: 'Añade distinctUntilChanged() a la tubería para evitar búsquedas si el texto no ha cambiado realmente.'
+      };
+    }
+    if (!hasSwitchMap) {
+      return {
+        ruleId: 'L5_RXJS_OPERATORS',
+        success: false,
+        anchor: 'search-input',
+        message: 'Falta aplicar el operador de aplanamiento asíncrono "switchMap" en el flujo de búsqueda.',
+        hint: 'Usa switchMap(query => this.searchService.search(query)) para cancelar búsquedas anteriores en vuelo si se inicia una nueva.'
+      };
+    }
+
+    return {
+      ruleId: 'L5_RXJS_OPERATORS',
+      success: true,
+      anchor: 'search-input',
+      message: '¡Espectacular! Implementas las mejores prácticas de optimización de flujos asíncronos con debounceTime, distinctUntilChanged y switchMap.'
+    };
+  },
+
+  L5_TO_SIGNAL: (analysis) => {
+    const resultsProp = analysis.properties.find(p => p.name === 'searchResults');
+    if (!resultsProp) {
+      return {
+        ruleId: 'L5_TO_SIGNAL',
+        success: false,
+        anchor: 'results-panel',
+        message: 'No se detectó la propiedad "searchResults" en tu clase.',
+        hint: 'Asegúrate de definir la propiedad "searchResults" para almacenar los resultados del buscador.'
+      };
+    }
+    const usesToSignal = resultsProp.initializerText?.includes('toSignal(') || false;
+    if (!usesToSignal) {
+      return {
+        ruleId: 'L5_TO_SIGNAL',
+        success: false,
+        anchor: 'results-panel',
+        message: 'La propiedad "searchResults" debe ser convertida a Signal usando toSignal().',
+        hint: 'Usa la función toSignal(queryObservable) importada de @angular/core/rxjs-interop para transformar el observable final a una señal.'
+      };
+    }
+    const hasInitialValue = resultsProp.initializerText?.includes('initialValue') || false;
+    if (!hasInitialValue) {
+      return {
+        ruleId: 'L5_TO_SIGNAL',
+        success: false,
+        anchor: 'results-panel',
+        message: 'No has especificado un valor inicial seguro "initialValue" al usar toSignal().',
+        hint: 'Para evitar que "searchResults()" retorne undefined antes del primer valor emitido, añade la opción: toSignal(..., { initialValue: [] })'
+      };
+    }
+    return {
+      ruleId: 'L5_TO_SIGNAL',
+      success: true,
+      anchor: 'results-panel',
+      message: '¡Brillante! Has cerrado la brecha reactiva convirtiendo el flujo de vuelta a una señal de solo lectura "searchResults" y protegiéndola con un initialValue.'
+    };
+  }
+};
+
 export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): RulesEvaluationResult {
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
 
   ruleIds.forEach(id => {
     // Resolve rule from corresponding catalog
-    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id];
+    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id];
     if (rule) {
       const evaluation = rule(analysis);
       evaluations.push(evaluation);
