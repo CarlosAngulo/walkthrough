@@ -660,6 +660,19 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
 
   L5_RXJS_OPERATORS: (analysis) => {
     const fileContent = analysis.fileContent || '';
+    
+    // Si la búsqueda clásica sigue activa con searchSubject$, obligamos a que falle la regla
+    const usesLegacySubject = /searchSubject\$\s*\.pipe/.test(fileContent);
+    if (usesLegacySubject) {
+      return {
+        ruleId: 'L5_RXJS_OPERATORS',
+        success: false,
+        anchor: 'search-input',
+        message: 'Se detectó que aún se está utilizando el Subject clásico "searchSubject$" en el flujo de búsqueda.',
+        hint: 'Refactoriza el flujo para utilizar toObservable(this.searchQuery) y deshazte de searchSubject$.'
+      };
+    }
+
     const hasDebounce = /debounceTime\s*\(\s*\d+\s*\)/.test(fileContent);
     const hasDistinct = /distinctUntilChanged\s*\(\s*\)/.test(fileContent);
     const hasSwitchMap = /switchMap\s*\(/.test(fileContent);
