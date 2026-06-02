@@ -848,11 +848,22 @@ export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): Rule
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
 
+  // Creamos una copia de analysis para no mutar el objeto original, y limpiamos
+  // comentarios en su fileContent para evitar coincidencias falsas con código comentado (pistas)
+  const cleanAnalysis = {
+    ...analysis,
+    fileContent: analysis.fileContent
+      ? analysis.fileContent
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          .replace(/^[ \t]*\/\/.*$/gm, '')
+      : ''
+  };
+
   ruleIds.forEach(id => {
     // Resolve rule from corresponding catalog
     const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id] || L6_RULES[id];
     if (rule) {
-      const evaluation = rule(analysis);
+      const evaluation = rule(cleanAnalysis);
       evaluations.push(evaluation);
       if (!evaluation.success) {
         isValid = false;
