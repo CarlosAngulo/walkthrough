@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, viewChild, signal, computed, effect } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { learningStateStore, LearningState } from '@learning-engine/learning-state';
 import { overlaySystem } from '@learning-engine/overlay-system';
 import { LearningEngineService } from './engine/services/learning-engine.service';
 import { COURSE_METADATA } from './course/course-config';
+import { OverlayScrollbars } from 'overlayscrollbars';
 
 interface Level {
   number: number;
@@ -21,7 +22,10 @@ interface Level {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  sidebarScroll = viewChild<ElementRef<HTMLElement>>('sidebarScroll');
+  testListScroll = viewChild<ElementRef<HTMLElement>>('testListScroll');
+
   academyState = signal<LearningState>(learningStateStore.getState());
   private unsubscribeState?: () => void;
   isCopied = signal(false);
@@ -160,5 +164,49 @@ export class AppComponent implements OnInit, OnDestroy {
       status: (storeProgress[l.statusKey] || 'locked') as 'done' | 'active' | 'locked' | 'completed',
       emoji: l.emoji
     }));
+  }
+
+  ngAfterViewInit() {
+    this.initScrollbars();
+  }
+
+  private initScrollbars() {
+    // 1. App-level scroll (body)
+    if (typeof document !== 'undefined') {
+      OverlayScrollbars(document.body, {
+        scrollbars: {
+          visibility: 'auto',
+          autoHide: 'leave',
+          autoHideDelay: 500,
+          theme: 'os-theme-dark'
+        }
+      });
+    }
+
+    // 2. Left sidebar scroll
+    const sidebarEl = this.sidebarScroll()?.nativeElement;
+    if (sidebarEl) {
+      OverlayScrollbars(sidebarEl, {
+        scrollbars: {
+          visibility: 'auto',
+          autoHide: 'leave',
+          autoHideDelay: 500,
+          theme: 'os-theme-dark'
+        }
+      });
+    }
+
+    // 3. Right test sidebar scroll
+    const testEl = this.testListScroll()?.nativeElement;
+    if (testEl) {
+      OverlayScrollbars(testEl, {
+        scrollbars: {
+          visibility: 'auto',
+          autoHide: 'leave',
+          autoHideDelay: 500,
+          theme: 'os-theme-light'
+        }
+      });
+    }
   }
 }

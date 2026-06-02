@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@learning-engine/learning-state": "workspace:*",
-    "@learning-engine/overlay-system": "workspace:*"
+    "@learning-engine/overlay-system": "workspace:*",
+    "overlayscrollbars": "^2.16.0"
   },
   "devDependencies": {
     "@learning-engine/rules-engine": "workspace:*",

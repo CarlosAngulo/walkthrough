@@ -6,45 +6,47 @@
       </div>
     </div>
 
-    <nav class="nav-levels">
-      @for (level of levels; track level.path) {
-        <a
-          [routerLink] class="level-card"
-          [class.active]="activeLevelPath() === level.path"
-          [class.is-locked]="level.status === 'locked'"
-          [routerLink]="level.status !== 'locked' ? level.path : null"
-        >
-          <span class="level-badge" [class]="'badge-' + level.status">
-            {{ level.emoji }}
-          </span>
-          <div class="level-info">
-            <strong>{{ level.title }}</strong>
-            <small>{{ level.subtitle }}</small>
-          </div>
-          @if (level.status === 'locked') {
-            <span class="lock-icon">🔒</span>
-          }
-        </a>
-      }
-    </nav>
-
-    <!-- Logros Desbloqueados -->
-    @if (academyState().achievements.length > 0 && false) {
-      <div class="achievements-section">
-        <span class="progress-label">Logros Desbloqueados</span>
-        <div class="achievements-list">
-          @for (ach of academyState().achievements; track ach.id) {
-            <div class="ach-badge" [title]="ach.description">
-              <span class="ach-emoji">{{ ach.emoji }}</span>
-              <div class="ach-info">
-                <strong>{{ ach.title }}</strong>
-                <small>¡Desbloqueado!</small>
-              </div>
+    <div #sidebarScroll class="sidebar-scroll-container">
+      <nav class="nav-levels">
+        @for (level of levels; track level.path) {
+          <a
+            [routerLink] class="level-card"
+            [class.active]="activeLevelPath() === level.path"
+            [class.is-locked]="level.status === 'locked'"
+            [routerLink]="level.status !== 'locked' ? level.path : null"
+          >
+            <span class="level-badge" [class]="'badge-' + level.status">
+              {{ level.emoji }}
+            </span>
+            <div class="level-info">
+              <strong>{{ level.title }}</strong>
+              <small>{{ level.subtitle }}</small>
             </div>
-          }
+            @if (level.status === 'locked') {
+              <span class="lock-icon">🔒</span>
+            }
+          </a>
+        }
+      </nav>
+
+      <!-- Logros Desbloqueados -->
+      @if (academyState().achievements.length > 0 && false) {
+        <div class="achievements-section">
+          <span class="progress-label">Logros Desbloqueados</span>
+          <div class="achievements-list">
+            @for (ach of academyState().achievements; track ach.id) {
+              <div class="ach-badge" [title]="ach.description">
+                <span class="ach-emoji">{{ ach.emoji }}</span>
+                <div class="ach-info">
+                  <strong>{{ ach.title }}</strong>
+                  <small>¡Desbloqueado!</small>
+                </div>
+              </div>
+            }
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
 
     <div class="sidebar-footer">
       <div class="progress-info">
@@ -90,7 +92,7 @@
     }
 
     <!-- Listado de Tests -->
-    <div class="test-list-container">
+    <div #testListScroll class="test-list-container">
       @if (!hasTestResults()) {
         <!-- Estado Vacío: Esperando por Vitest -->
         <div class="tests-empty-state">

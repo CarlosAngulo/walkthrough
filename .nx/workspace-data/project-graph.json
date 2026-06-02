@@ -121,7 +121,9 @@
               "test:l1",
               "test:l2",
               "test:l3",
-              "test:l4"
+              "test:l4",
+              "test:l5",
+              "test:l6"
             ]
           }
         },
@@ -214,6 +216,30 @@
             "metadata": {
               "scriptContent": "vitest product-list",
               "runCommand": "pnpm run test:l4"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l5": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l5"
+            },
+            "metadata": {
+              "scriptContent": "vitest rxjs-boundaries",
+              "runCommand": "pnpm run test:l5"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l6": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l6"
+            },
+            "metadata": {
+              "scriptContent": "vitest messages-list",
+              "runCommand": "pnpm run test:l6"
             },
             "configurations": {},
             "parallelism": true
@@ -4274,6 +4300,15 @@
         "hash": "sha512-QkCdPooczexPLiXIrbVOPYkR3VO3T6v2OyKRkR1Xbhpy7/LAVXwahnRCgRp78Oe/Ehf0C/HATAxfSr6eA1oX+w=="
       }
     },
+    "npm:overlayscrollbars": {
+      "type": "npm",
+      "name": "npm:overlayscrollbars",
+      "data": {
+        "version": "2.16.0",
+        "packageName": "overlayscrollbars",
+        "hash": "sha512-N03oje/q7j93D0aLZtoCdsDSYLmhheSsv8H7oSLE7HhdV9P/bmCURtLV/KbPye7P/bpfyt/obSfDpGUYoJ0OWg=="
+      }
+    },
     "npm:parse5-html-rewriting-stream": {
       "type": "npm",
       "name": "npm:parse5-html-rewriting-stream",
@@ -5364,6 +5399,11 @@
       {
         "source": "academy",
         "target": "@learning-engine/overlay-system",
+        "type": "static"
+      },
+      {
+        "source": "academy",
+        "target": "npm:overlayscrollbars",
         "type": "static"
       }
     ],

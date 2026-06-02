@@ -1,3 +1,5 @@
+@import 'overlayscrollbars/overlayscrollbars.css';
+
 /* CSS Variables & Design Tokens */
 :root {
   --bg-primary: #c3cfd5;
