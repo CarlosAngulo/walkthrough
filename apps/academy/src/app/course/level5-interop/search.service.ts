@@ -29,7 +29,7 @@ export class SearchService {
   search(query: string): Observable<Course[]> {
     const cleanQuery = query.toLowerCase().trim();
     if (!cleanQuery) {
-      return of([]).pipe(delay(150));
+      return of(this.courses).pipe(delay(150));
     }
 
     const filtered = this.courses.filter(
