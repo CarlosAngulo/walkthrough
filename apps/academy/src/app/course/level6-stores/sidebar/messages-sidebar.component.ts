@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessagesStore } from './messages-store';
-import { Message } from './rxjs-messages.service';
+import { MessagesStore } from '../messages-store';
+import { Message } from '../rxjs-messages.service';
 
 @Component({
   selector: 'app-messages-sidebar',
@@ -10,7 +10,7 @@ import { Message } from './rxjs-messages.service';
   templateUrl: './messages-sidebar.component.html'
 })
 export class MessagesSidebarComponent {
-  // Inyectamos de forma segura el store global de @ngrx/signals
+  // Inyectamos de forma segura el store global de @ngrx/signals desde el nivel superior
   protected store: any = (() => {
     try {
       if (MessagesStore) {

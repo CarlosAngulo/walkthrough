@@ -4,8 +4,8 @@ import { LearningComponent } from '../../engine/learning.component';
 import { learningStateStore } from '@learning-engine/learning-state';
 import { RxjsMessagesService, Message } from './rxjs-messages.service';
 import { MessagesStore, CustomStore } from './messages-store';
-import { MessagesSidebarComponent } from './messages-sidebar.component';
-import { MessageItemComponent } from './message-item.component';
+import { MessagesSidebarComponent } from './sidebar/messages-sidebar.component';
+import { MessageItemComponent } from './message-item/message-item.component';
 
 @Component({
   selector: 'app-messages-list',
