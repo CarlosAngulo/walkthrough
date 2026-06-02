@@ -41,7 +41,11 @@ export const routes: Routes = [
         (m) => m.RxjsBoundariesComponent
       ),
   },
-  // Rutas futuras:
-  // { path: 'nivel-6', loadComponent: () => import('./levels/level6-stores/todo-list.component').then(m => m.TodoListComponent) },
-  // { path: 'nivel-7', loadComponent: () => import('./levels/level7-zoneless/performance-lab.component').then(m => m.PerformanceLabComponent) },
+  {
+    path: 'nivel-6',
+    loadComponent: () =>
+      import('./course/level6-stores/messages-list.component').then(
+        (m) => m.MessagesListComponent
+      ),
+  },
 ];

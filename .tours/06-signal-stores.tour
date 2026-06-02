@@ -1,0 +1,46 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "06. Signal Stores (DIY & @ngrx/signals)",
+  "steps": [
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "## ¡Bienvenido al Nivel 6: Signal Stores! 🏛️\n\nEn este nivel aprenderemos sobre la **gestión de estado centralizada moderna** en Angular.\nAbordaremos el desafío en dos partes:\n1. **Parte 1: DIY (Do It Yourself) Store:** Entenderemos cómo construir un store modular de forma nativa encapsulando un `WritableSignal` privado y exponiendo sub-señales de solo lectura.\n2. **Parte 2: Almacén oficial con `@ngrx/signals`:** Utilizaremos la biblioteca estándar del ecosistema para definir un almacén estructurado con estados, selectores computados y actualizadores inmutables.\n\n¡Haz clic en **Next** para comenzar!",
+      "line": 1
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "### RETO 0: DIY Store (Do It Yourself) 🛠️\n\nVamos a completar el contenedor `CustomStore` hecho a mano:\n1. Declara la propiedad `private _state` inicializada como un `signal` mutable conteniendo el `initialState`.\n2. Expón la propiedad `readonly state` como un `computed(() => this._state())` para proteger el estado de modificaciones directas desde fuera.\n3. Define el método `update(fn)` para llamar a `this._state.update(fn)` de forma inmutable.\n\n*Pista de código:*  \n```typescript\nexport class CustomStore<T> {\n  private _state = signal<T>(initialState);\n  readonly state = computed(() => this._state());\n  update(fn: (state: T) => T): void {\n    this._state.update(fn);\n  }\n}\n```",
+      "line": 14
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "### RETO 1: Declaración de Almacén con signalStore() 🏛️\n\nPara la Parte 2, utilizaremos `@ngrx/signals`.\n\n1. Define y exporta la constante `MessagesStore` usando la función `signalStore()`.\n2. Configura el store para ser inyectable en toda la aplicación pasándole `{ providedIn: 'root' }` como primer argumento.\n\n*Pista de código:*  \n```typescript\nexport const MessagesStore = signalStore(\n  { providedIn: 'root' },\n  // ... pasos siguientes\n);\n```",
+      "line": 40
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "### RETO 2: Inicialización de Estado con withState() 📦\n\nAñade la propiedad de estado inicial a tu `signalStore()`.\n\n1. Usa `withState(initialState)` para inicializar las propiedades del almacén:\n   - `messages`: Un array vacío de mensajes académicos.\n   - `filter`: El filtro inicial establecido en `'all'`.\n   - `loading`: Booleano en `false` para rastrear las peticiones de red.\n\n*Pista de código:*  \n```typescript\nwithState(initialState)\n```",
+      "line": 42
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "### RETO 3: Derivar Estados Computados con withComputed() 🧠\n\nUn store profesional debe exponer selectores reactivos eficientes que deriven automáticamente información a partir del estado primario.\n\n1. Añade la función `withComputed()` a tu store.\n2. Declara `unreadCount`: Un `computed` que retorne el número de mensajes con `read: false`.\n3. Declara `filteredMessages`: Un `computed` que filtre la lista de mensajes reactivamente de acuerdo al valor de `filter()` ('all' o 'unread').\n\n*Pista de código:*  \n```typescript\nwithComputed((store) => ({\n  unreadCount: computed(() => store.messages().filter(m => !m.read).length),\n  filteredMessages: computed(() => {\n    const filter = store.filter();\n    const messages = store.messages();\n    return filter === 'unread' ? messages.filter(m => !m.read) : messages;\n  })\n}))\n```",
+      "line": 45
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
+      "description": "### RETO 4: Métodos de Actualización Inmutable con withMethods() y patchState() ⚡\n\nPara modificar el estado en `@ngrx/signals`, definimos métodos controlados que utilizan la función pura `patchState()` para realizar actualizaciones de forma segura e inmutable.\n\n1. Añade `withMethods()` a tu store.\n2. Define los siguientes actualizadores:\n   - `loadMessages(messages)`: Establece los mensajes académicos y desactiva el estado loading.\n   - `setFilter(filter)`: Actualiza el filtro de visualización activo.\n   - `markAsRead(messageId)`: Mapea la colección de mensajes y establece `read: true` en el mensaje correspondiente.\n   - `setLoading(loading)`: Establece el estado de carga del canal asíncrono.\n\n*Pista de código:*  \n```typescript\nwithMethods((store) => ({\n  loadMessages(messages: Message[]) {\n    patchState(store, { messages, loading: false });\n  },\n  setFilter(filter: 'all' | 'unread') {\n    patchState(store, { filter });\n  },\n  markAsRead(messageId: string) {\n    patchState(store, (state) => ({\n      messages: state.messages.map(m => m.id === messageId ? { ...m, read: true } : m)\n    }));\n  },\n  setLoading(loading: boolean) {\n    patchState(store, { loading });\n  }\n}))\n```\n*(¡Asegúrate de remover la declaración dummy `export const MessagesStore: any = null;` al finalizar!)*",
+      "line": 48
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-list.component.ts",
+      "description": "### BONUS RETO: Consumo del Store en la Arquitectura Multi-Componente 🌐\n\n1. En `messages-list.component.ts`, inyecta el `MessagesStore` que has creado:\n   `protected store = inject(MessagesStore);`.\n2. Para demostrar el poder del Store, hemos dividido la interfaz en componentes independientes:\n   - **`MessagesSidebarComponent`**: Inyecta el store para renderizar filtros y contadores (`unreadCount`).\n   - **`MessageItemComponent`**: Inyecta el store para emitir la mutación inmutable `markAsRead()` al hacer clic.\n\n¡Verás cómo ambos componentes hijos cooperan y se mantienen perfectamente en sincronía a través del Store centralizado sin pasarse datos entre sí! 🚀",
+      "line": 39
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-list.component.spec.ts",
+      "description": "### ¡Verificación TDL! 🧪\n\n1. Ejecuta el comando de pruebas: `pnpm test:l6` en la consola.\n2. Vitest validará la reactividad inmutable, los computados del store y la integridad semántica AST.\n\n¡Cuando todas las pruebas brillen en **GREEN**, tu implementación de gestión de estado a gran escala será perfecta! 🚀",
+      "line": 1
+    }
+  ]
+}

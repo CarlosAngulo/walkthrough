@@ -25,6 +25,7 @@ export interface AnalysisResult {
   methods: MethodAnalysis[];
   imports: ImportAnalysis[];
   templateContent?: string;
+  fileContent?: string;
 }
 
 // Global project instance to reuse TS compiler state
@@ -62,7 +63,8 @@ export function analyzeFile(filePath: string): AnalysisResult {
     properties: [],
     methods: [],
     imports: [],
-    templateContent: ''
+    templateContent: '',
+    fileContent: sourceFile.getFullText()
   };
 
   // Resolve template URL if it is a component

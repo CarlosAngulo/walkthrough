@@ -1,0 +1,61 @@
+<div class="messages-container" data-learning-anchor="messages-list-anchor">
+  <div class="card">
+    <h1 class="title">Inbox Centralizado <span>🏛️</span></h1>
+    <p class="subtitle">NgRx Signal Store & Custom Stores</p>
+
+    <!-- ========================================================================
+         PARTE 1: DEMOSTRACIÓN DEL CUSTOM STORE (DIY)
+         ======================================================================== -->
+    <div class="stat-box" style="margin-bottom: 2rem; background: rgba(255, 90, 0, 0.08); border-color: rgba(255, 90, 0, 0.15); display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
+      <div style="text-align: left;">
+        <span class="badge" style="background: rgba(255, 90, 0, 0.2); color: var(--color-primary); border-color: rgba(255, 90, 0, 0.3);">
+          PARTE 1: DIY CUSTOM STORE
+        </span>
+        <h4 style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-highlight); font-weight: 600;">
+          Valor de Estado en CustomStore:
+        </h4>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="stat-value highlight" style="font-size: 2.2rem;">
+          {{ customCounterStore.state().count }}
+        </span>
+        <button (click)="incrementCustomStore()" class="btn-mark-read" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; font-weight: bold;">
+          Incrementar ➕
+        </button>
+      </div>
+    </div>
+
+    <div class="messages-inbox-section">
+      <!-- Pestañas Filtros de Mensajes Centralizados -->
+      <app-messages-sidebar></app-messages-sidebar>
+
+      <!-- Contenedor Listado de Mensajes -->
+      <div class="messages-list-wrapper">
+        @if (store.loading()) {
+          <div class="loader-spinner">
+            <div class="spinner"></div>
+            <p>Conectando con el servidor académico...</p>
+          </div>
+        } @else {
+          @for (msg of store.filteredMessages(); track msg.id) {
+            <app-message-item [message]="msg"></app-message-item>
+          } @empty {
+            <div class="search-empty-state">
+              <span class="empty-icon">✉️</span>
+              <p class="empty-title">Bandeja de entrada vacía</p>
+              <p class="empty-desc">No hay mensajes académicos correspondientes a este filtro.</p>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Panel Educativo TDL -->
+    <div class="educational-footer" style="margin-top: 2rem;">
+      <div class="badge-tdl">METODOLOGÍA CENTRALIZADA</div>
+      <p>
+        Para aplicaciones a gran escala, mantener el estado distribuido en componentes produce incoherencias. Con <code>&#64;ngrx/signals</code>, unificamos el estado en un store autónomo mediante <code>signalStore()</code>. Esto permite derivar eficientemente computadas reactivas con <code>withComputed()</code> y mutar de forma segura el estado inmutable usando <code>withMethods()</code> y <code>patchState()</code>.
+      </p>
+    </div>
+  </div>
+</div>

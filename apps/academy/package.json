@@ -11,7 +11,8 @@
     "test:l2": "vitest task-filter",
     "test:l3": "vitest theme-panel",
     "test:l4": "vitest product-list",
-    "test:l5": "vitest rxjs-boundaries"
+    "test:l5": "vitest rxjs-boundaries",
+    "test:l6": "vitest messages-list"
   },
   "dependencies": {
     "@learning-engine/learning-state": "workspace:*",

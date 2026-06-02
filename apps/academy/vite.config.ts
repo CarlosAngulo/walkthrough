@@ -48,11 +48,21 @@ const LEVEL5_RULES = [
   'L5_TO_SIGNAL'
 ];
 
+const LEVEL6_RULES = [
+  'L6_STORE_DECLARATION',
+  'L6_STORE_STATE',
+  'L6_STORE_COMPUTED',
+  'L6_STORE_METHODS'
+];
+
 function runAnalysis(level: string = 'nivel-1') {  
   let filePath = '';
   let rules = [];
 
-  if (level === 'nivel-5') {
+  if (level === 'nivel-6') {
+    filePath = path.resolve(__dirname, 'src/app/course/level6-stores/messages-store.ts');
+    rules = LEVEL6_RULES;
+  } else if (level === 'nivel-5') {
     filePath = path.resolve(__dirname, 'src/app/course/level5-interop/rxjs-boundaries.component.ts');
     rules = LEVEL5_RULES;
   } else if (level === 'nivel-4') {
@@ -237,6 +247,14 @@ function learningEnginePlugin() {
         try {
           const analysis = analyzeFile(file);
           const evaluation = evaluateRules(analysis, LEVEL5_RULES);
+          server.ws.send('learning-engine:status', evaluation);
+        } catch (e: any) {
+          console.error('[Learning Engine Plugin] HMR error:', e);
+        }
+      } else if (file.endsWith('messages-store.ts')) {
+        try {
+          const analysis = analyzeFile(file);
+          const evaluation = evaluateRules(analysis, LEVEL6_RULES);
           server.ws.send('learning-engine:status', evaluation);
         } catch (e: any) {
           console.error('[Learning Engine Plugin] HMR error:', e);

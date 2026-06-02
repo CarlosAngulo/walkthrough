@@ -1,0 +1,28 @@
+<div class="message-card" [class.unread]="!message.read">
+  <div class="message-header">
+    <div class="message-sender">
+      <div class="avatar-initials">
+        {{ message.sender.substring(0, 2) }}
+      </div>
+      <div class="sender-info">
+        <span class="sender-name">{{ message.sender }}</span>
+        <span class="message-subject">{{ message.subject }}</span>
+      </div>
+    </div>
+    @if (!message.read) {
+      <span class="badge-unread-dot"></span>
+    }
+  </div>
+  <p class="message-body">{{ message.body }}</p>
+  <div class="message-footer">
+    <span class="message-time">{{ message.time }}</span>
+    @if (!message.read) {
+      <button
+        (click)="markAsRead()"
+        class="btn-mark-read"
+      >
+        <span class="read-check-icon">✓</span> Marcar como leído
+      </button>
+    }
+  </div>
+</div>

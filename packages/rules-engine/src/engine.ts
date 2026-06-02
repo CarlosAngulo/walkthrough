@@ -740,13 +740,117 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
   }
 };
 
+// Rules catalog for Level 6 Signal Stores
+export const L6_RULES: Record<string, PedagogicalRule> = {
+  L6_STORE_DECLARATION: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasSignalStore = /signalStore\s*\(/.test(fileContent);
+    if (!hasSignalStore) {
+      return {
+        ruleId: 'L6_STORE_DECLARATION',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'No se detectó la declaración del almacén usando la función signalStore() de @ngrx/signals.',
+        hint: 'Declara tu store en messages-store.ts usando: export const MessagesStore = signalStore(...);'
+      };
+    }
+    return {
+      ruleId: 'L6_STORE_DECLARATION',
+      success: true,
+      anchor: 'messages-list-anchor',
+      message: '¡Excelente! Declaraste tu almacén centralizado usando la función signalStore().'
+    };
+  },
+
+  L6_STORE_STATE: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasWithState = /withState\s*\(/.test(fileContent);
+    if (!hasWithState) {
+      return {
+        ruleId: 'L6_STORE_STATE',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'No se encontró la inicialización del estado en el Store.',
+        hint: 'Usa la función withState() para configurar el estado inicial: withState({ messages: [] as Message[], filter: \'all\' as \'all\' | \'unread\', loading: false })'
+      };
+    }
+    return {
+      ruleId: 'L6_STORE_STATE',
+      success: true,
+      anchor: 'messages-list-anchor',
+      message: '¡Genial! El estado inicial del almacén está perfectamente configurado con withState().'
+    };
+  },
+
+  L6_STORE_COMPUTED: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasWithComputed = /withComputed\s*\(/.test(fileContent);
+    if (!hasWithComputed) {
+      return {
+        ruleId: 'L6_STORE_COMPUTED',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'No se detectó el mapeo de estados derivados computados en tu Store.',
+        hint: 'Declara tus computadas usando withComputed((store) => ({ filteredMessages: computed(() => ...), unreadCount: computed(() => ...) }))'
+      };
+    }
+    const hasFilteredMessages = /filteredMessages\s*:\s*computed\(/.test(fileContent);
+    const hasUnreadCount = /unreadCount\s*:\s*computed\(/.test(fileContent);
+    if (!hasFilteredMessages || !hasUnreadCount) {
+      return {
+        ruleId: 'L6_STORE_COMPUTED',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'Falta derivar las propiedades computadas "filteredMessages" o "unreadCount" en tu Store.',
+        hint: 'Asegúrate de computar filteredMessages (filtrando por mensaje leído/no leído) y unreadCount (número total de mensajes sin leer).'
+      };
+    }
+    return {
+      ruleId: 'L6_STORE_COMPUTED',
+      success: true,
+      anchor: 'messages-list-anchor',
+      message: '¡Espectacular! Declaras y derivas estados computados eficientes usando withComputed().'
+    };
+  },
+
+  L6_STORE_METHODS: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasWithMethods = /withMethods\s*\(/.test(fileContent);
+    if (!hasWithMethods) {
+      return {
+        ruleId: 'L6_STORE_METHODS',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'No se encontraron los métodos de manipulación de estado en tu Store.',
+        hint: 'Usa withMethods((store) => ({ loadMessages(), setFilter(), markAsRead() })) para exponer operaciones inmutables.'
+      };
+    }
+    const hasPatchState = /patchState\s*\(/.test(fileContent);
+    if (!hasPatchState) {
+      return {
+        ruleId: 'L6_STORE_METHODS',
+        success: false,
+        anchor: 'messages-list-anchor',
+        message: 'No se detectó el uso de la función patchState() para actualizar el Store de forma inmutable.',
+        hint: 'Importa patchState desde @ngrx/signals y úsalo para realizar actualizaciones parciales en tus métodos: patchState(store, { filter }) o patchState(store, (state) => ({ ... }))'
+      };
+    }
+    return {
+      ruleId: 'L6_STORE_METHODS',
+      success: true,
+      anchor: 'messages-list-anchor',
+      message: '¡Brillante! Expones operaciones controladas y actualizas el estado con patchState() de forma inmutable.'
+    };
+  }
+};
+
 export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): RulesEvaluationResult {
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
 
   ruleIds.forEach(id => {
     // Resolve rule from corresponding catalog
-    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id];
+    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id] || L6_RULES[id];
     if (rule) {
       const evaluation = rule(analysis);
       evaluations.push(evaluation);
