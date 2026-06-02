@@ -220,7 +220,7 @@ body::before {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  clip-path: polygon(0 0, 100% 0%, 100% 12px, 100% 100%, 12px 100%, 0% 70%);
+  clip-path: polygon(0 0, 100% 0%, 100% 12px, 100% 100%, 12px 100%, 0% calc(100% - 12px));
 }
 
 .btn-primary {
