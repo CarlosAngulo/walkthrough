@@ -78,7 +78,11 @@ describe('Nivel 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
     it('debería inicializar "searchResults" con un valor inicial de array vacío', async () => {
       await createComponent();
 
-      expect(component.searchResults()).toEqual([]);
+      if (isSignal(component.searchResults)) {
+        expect(component.searchResults()).toEqual([]);
+      } else {
+        expect(component.searchResults).toEqual([]);
+      }
     });
 
     it('debería aplicar debounceTime y switchMap correctamente al cambiar searchQuery', async () => {

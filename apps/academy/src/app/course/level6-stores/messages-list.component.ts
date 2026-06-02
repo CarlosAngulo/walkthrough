@@ -77,6 +77,7 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
   })();
 
   ngOnInit() {
+    super.ngOnInit();
     // Al iniciar el componente, activamos el estado de carga y obtenemos los mensajes del servicio.
     if (this.store && typeof this.store.setLoading === 'function') {
       this.store.setLoading(true);

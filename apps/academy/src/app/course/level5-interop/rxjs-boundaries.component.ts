@@ -1,9 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { LearningComponent } from '../../engine/learning.component';
 import { learningStateStore } from '@learning-engine/learning-state';
 import { SearchService, Course } from './search.service';
+
+// Nota para el estudiante: para poder usar toObservable y toSignal,
+// necesitarás importar estas funciones utilitarias desde el sub-módulo rxjs-interop:
+// import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+// import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-rxjs-boundaries',
@@ -13,7 +18,7 @@ import { SearchService, Course } from './search.service';
     class: 'block-rxjs-boundaries'
   }
 })
-export class RxjsBoundariesComponent extends LearningComponent {
+export class RxjsBoundariesComponent extends LearningComponent implements OnInit, OnDestroy {
   // ==========================================
   // Configuración del Nivel y Recompensa
   // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
@@ -30,44 +35,54 @@ export class RxjsBoundariesComponent extends LearningComponent {
     learningStateStore.completeLevel(this.level);
   }
   // ==========================================
-  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
-  // ==========================================
 
   // Inyectar el mock SearchService
   protected searchService = inject(SearchService);
 
-  // Inicializador mock seguro que simula una Signal para evitar que el template HTML explote al iniciar el nivel.
-  // Tu reto consiste en reemplazar esto por una Writable Signal real de Angular: searchQuery = signal<string>('');
-  searchQuery: any = (() => {
-    const fn: any = () => fn.value;
-    fn.value = '';
-    fn.set = (val: string) => { fn.value = val; };
-    return fn;
-  })();
+  // ============================================================================
+  // CÓDIGO CLÁSICO / ANTICUADO A REFACTORIZAR (RETO 1, 2, 3 y 4)
+  // ============================================================================
+  // Actualmente la búsqueda funciona de forma imperativa con Subjects de RxJS y
+  // suscripciones manuales que requieren liberar memoria para evitar fugas (memory leaks).
+  //
+  // Tu reto consiste en refactorizar esto a Signals siguiendo el CodeTour:
+  // 1. Convierte searchQuery en una Writable Signal: searchQuery = signal<string>('');
+  // 2. Convierte searchQuery a Observable usando: toObservable(this.searchQuery)
+  // 3. Aplica los operadores en la tubería pipe() y conviértelo de vuelta a señal usando toSignal().
+  // 4. Elimina por completo el Subject, la Subscription, ngOnInit, ngOnDestroy y el método onSearchInput.
+  // ============================================================================
 
-  // ==========================================
-  // RETO 2, 3 y 4: Puenteo a RxJS y Conversión de Vuelta
-  // ==========================================
-  // TODO: Crea el flujo del buscador predictivo puenteando señales y observables.
-  // 1. Convierte la señal searchQuery en un observable usando la función: toObservable(this.searchQuery)
-  // 2. Encadena los operadores de RxJS en un pipe:
-  //    - debounceTime(400) para retrasar la búsqueda mientras el usuario escribe.
-  //    - distinctUntilChanged() para evitar peticiones repetidas con el mismo término.
-  //    - switchMap(query => this.searchService.search(query)) para buscar y descartar peticiones obsoletas en vuelo.
-  // 3. Convierte el observable final de vuelta a una señal usando la función: toSignal()
-  //    ¡No olvides pasar la opción { initialValue: [] } como segundo parámetro para evitar que la señal retorne undefined al inicio!
-  //
-  // Pista de código:
-  //
-  // private searchQuery$ = toObservable(this.searchQuery).pipe(
-  //   debounceTime(400),
-  //   distinctUntilChanged(),
-  //   switchMap((query) => this.searchService.search(query))
-  // );
-  //
-  // searchResults = toSignal(this.searchQuery$, { initialValue: [] as Course[] });
+  searchQuery: string = '';
+  searchResults: Course[] = [];
 
-  // Boilerplate temporal sin reactividad asíncrona para que no rompa el compilador al inicio.
-  // Borra estas dos líneas y descomenta/adapta la pista de arriba al resolver el reto.
-  searchResults: any = () => [];
+  // Subject para emitir los términos de búsqueda
+  private searchSubject$ = new Subject<string>();
+  
+  // Guardamos la suscripción para desuscribirnos en el ciclo OnDestroy
+  private searchSubscription = new Subscription();
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.searchSubscription = this.searchSubject$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap((query) => this.searchService.search(query))
+    ).subscribe((results) => {
+      this.searchResults = results; // Asignación de estado imperativa
+    });
+
+    // Carga inicial para mostrar todos los cursos al arrancar el componente
+    this.searchSubject$.next('');
+  }
+
+  // Método disparado desde la UI por cada cambio en el input
+  onSearchInput(value: string) {
+    this.searchQuery = value;
+    this.searchSubject$.next(value);
+  }
+
+  ngOnDestroy() {
+    // Liberación manual obligatoria de memoria en RxJS clásico para evitar fugas
+    this.searchSubscription.unsubscribe();
+  }
 }
