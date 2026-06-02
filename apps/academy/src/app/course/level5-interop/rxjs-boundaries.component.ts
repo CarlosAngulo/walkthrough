@@ -36,12 +36,14 @@ export class RxjsBoundariesComponent extends LearningComponent {
   // Inyectar el mock SearchService
   protected searchService = inject(SearchService);
 
-  // ==========================================
-  // RETO 1: Writable Signal para la Búsqueda
-  // ==========================================
-  // TODO: Transforma esta propiedad en una Writable Signal con un valor inicial de cadena vacía ('').
-  // Pista: Reemplázalo por: searchQuery = signal<string>('');
-  searchQuery: any = '';
+  // Inicializador mock seguro que simula una Signal para evitar que el template HTML explote al iniciar el nivel.
+  // Tu reto consiste en reemplazar esto por una Writable Signal real de Angular: searchQuery = signal<string>('');
+  searchQuery: any = (() => {
+    const fn: any = () => fn.value;
+    fn.value = '';
+    fn.set = (val: string) => { fn.value = val; };
+    return fn;
+  })();
 
   // ==========================================
   // RETO 2, 3 y 4: Puenteo a RxJS y Conversión de Vuelta
