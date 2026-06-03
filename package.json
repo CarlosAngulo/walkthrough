@@ -11,7 +11,9 @@
     "test:l2": "pnpm --filter academy test:l2",
     "test:l3": "pnpm --filter academy test:l3",
     "test:l4": "pnpm --filter academy test:l4",
-    "test:l5": "pnpm --filter academy test:l5"
+    "test:l5": "pnpm --filter academy test:l5",
+    "test:l6": "pnpm --filter academy test:l6",
+    "test:l7": "pnpm --filter academy test:l7"
   },
   "dependencies": {
     "@angular/common": "^19.0.0",

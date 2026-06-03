@@ -48,4 +48,12 @@ export const routes: Routes = [
         (m) => m.MessagesListComponent
       ),
   },
+  {
+    path: 'nivel-7',
+    loadComponent: () =>
+      import('./course/level7-zoneless/performance-monitor.component').then(
+        (m) => m.PerformanceMonitorComponent
+      ),
+  },
 ];
+

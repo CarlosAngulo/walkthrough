@@ -1,0 +1,127 @@
+<div class="perf-monitor-container p-6 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl text-white max-w-4xl mx-auto shadow-2xl">
+  
+  <!-- Banner Informativo -->
+  <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-violet-600/20 to-cyan-600/20 border border-violet-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-xl font-bold flex items-center gap-2 text-cyan-400">
+        🚀 Nivel 7: Zone-less Angular & Renderizado Óptimo
+      </h2>
+      <p class="text-xs text-slate-300 mt-1">
+        Aprende a eliminar Zone.js, usar la estrategia <strong>OnPush</strong>, migrar a <strong>Signals</strong> y dominar el ciclo <strong>afterRender</strong> para interacciones DOM de alta velocidad sin sobrecargar la CPU.
+      </p>
+    </div>
+    <div data-learning-anchor="zoneless-provider-anchor" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-950 border border-white/10 text-violet-300 self-start md:self-auto">
+      Status: <span class="text-amber-400 animate-pulse font-bold">ZONE-FULL</span>
+    </div>
+  </div>
+
+  <!-- Panel Principal Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    <!-- Columna Izquierda: Estadísticas Digitales -->
+    <div class="md:col-span-1 flex flex-col gap-6">
+      
+      <!-- Card FPS Promedio -->
+      <div data-learning-anchor="state-signals-anchor" class="p-6 rounded-xl border border-white/5 bg-slate-950/40 backdrop-blur-md flex flex-col items-center justify-center relative overflow-hidden group">
+        <!-- Efecto de luz de fondo -->
+        <div class="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-cyan-500/10 blur-xl group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+        
+        <span class="text-slate-400 text-xs uppercase tracking-wider font-semibold">FPS Promedio (30f)</span>
+        
+        <!-- Valor digital. Se evalúa dinámicamente -->
+        <span class="text-6xl font-black font-mono tracking-tighter my-3 transition-colors duration-300"
+              [class.text-emerald-400]="averageFps >= 50"
+              [class.text-amber-400]="averageFps >= 30 && averageFps < 50"
+              [class.text-rose-500]="averageFps < 30">
+          {{ averageFps }}
+        </span>
+        
+        <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
+              [class.bg-emerald-950]="averageFps >= 50"
+              [class.text-emerald-300]="averageFps >= 50"
+              [class.bg-amber-950]="averageFps >= 30 && averageFps < 50"
+              [class.text-amber-300]="averageFps >= 30 && averageFps < 50"
+              [class.bg-rose-950]="averageFps < 30"
+              [class.text-rose-300]="averageFps < 30">
+          {{ averageFps >= 50 ? 'Excelente' : averageFps >= 30 ? 'Carga Moderada' : 'Pérdida de Frames' }}
+        </span>
+      </div>
+
+      <!-- Card Configuración / Acciones -->
+      <div data-learning-anchor="onpush-strategy-anchor" class="p-6 rounded-xl border border-white/5 bg-slate-950/40 backdrop-blur-md flex flex-col gap-4">
+        <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wide">Controles de Simulación</h3>
+        
+        <!-- Botón CPU Load Toggle -->
+        <button (click)="toggleCpuLoad()" 
+                class="w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+                [class.bg-rose-600]="cpuLoadActive"
+                [class.hover:bg-rose-500]="cpuLoadActive"
+                [class.text-white]="cpuLoadActive"
+                [class.bg-slate-800]="!cpuLoadActive"
+                [class.hover:bg-slate-700]="!cpuLoadActive"
+                [class.text-slate-200]="!cpuLoadActive">
+          <span>{{ cpuLoadActive ? '🔥 Detener Carga CPU' : '💻 Simular Carga CPU' }}</span>
+        </button>
+
+        <!-- Botón Vaciar Historial -->
+        <button (click)="clearStats()" 
+                class="w-full py-2.5 px-4 rounded-lg bg-slate-800/50 hover:bg-slate-800 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer">
+          <span>🧹 Reiniciar Historial</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Columna Derecha: Gráfico en tiempo real y logs -->
+    <div class="md:col-span-2 flex flex-col gap-6">
+      
+      <!-- Card Canvas de Rendimiento -->
+      <div data-learning-anchor="after-render-anchor" class="p-6 rounded-xl border border-white/5 bg-slate-950/40 backdrop-blur-md flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+            📊 Gráfico de Frames (Canvas DOM)
+          </h3>
+          <span class="text-xs text-slate-500 font-mono">Actualizado en ngAfterViewChecked</span>
+        </div>
+        
+        <div class="relative w-full overflow-hidden rounded-lg border border-white/5 bg-slate-950">
+          <canvas #statsCanvas width="520" height="180" class="w-full block"></canvas>
+        </div>
+      </div>
+
+      <!-- Card Terminal Logs -->
+      <div class="p-5 rounded-xl border border-white/5 bg-slate-950/40 backdrop-blur-md flex flex-col gap-3">
+        <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+          📟 Consola de Eventos
+        </h3>
+        
+        <div class="bg-slate-950/80 border border-white/5 rounded-lg p-3 h-32 overflow-y-auto font-mono text-xs flex flex-col gap-1.5 scrollbar-thin">
+          @for (log of logs; track log) {
+            <div class="flex items-start gap-2 text-slate-300">
+              <span class="text-slate-500 font-bold shrink-0">></span>
+              <span [class.text-rose-400]="log.includes('⚠️')"
+                    [class.text-emerald-400]="log.includes('🟢')"
+                    [class.text-amber-400]="log.includes('🔥')"
+                    [class.text-slate-400]="log.includes('🧹')">
+                {{ log }}
+              </span>
+            </div>
+          } @empty {
+            <div class="text-slate-600 text-center py-8">No hay registros de eventos en esta sesión.</div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Botón de Completar Nivel en la UI -->
+  <div class="mt-8 pt-6 border-t border-white/5 flex justify-end">
+    <button (click)="onLevelCompleted()"
+            class="px-6 py-3 rounded-xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 shadow-xl hover:shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center gap-2 cursor-pointer">
+      <span>Finalizar Nivel 7 🚀</span>
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "07. Zone-less Angular (OnPush, zoneless, afterRender)",
+  "steps": [
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.ts",
+      "description": "## ¡Bienvenido al Nivel 7: Zone-less Angular & Renderizado Óptimo! 🚀\n\nEn este nivel aprenderemos a exprimir el máximo rendimiento de Angular eliminando **Zone.js**.\n\n### ¿Por qué Zoneless?\nPor defecto, Angular utiliza Zone.js para interceptar tareas asíncronas (como `requestAnimationFrame`, `setTimeout`, o eventos de mouse) y disparar una detección de cambios global. En componentes de alta intensidad, como este monitor que dibuja en un Canvas a 60 FPS, esto causa que Angular verifique constantemente toda la aplicación, degradando el rendimiento.\n\n¡Haz clic en **Next** para iniciar la migración!",
+      "line": 1
+    },
+    {
+      "file": "apps/academy/src/app/app.config.ts",
+      "description": "### RETO 1: Eliminar Zone.js del Monorepo ⚙️\n\nEl primer paso para habilitar el modo zoneless puro es reconfigurar los proveedores de la aplicación.\n\n1. Abre `apps/academy/src/app/app.config.ts`.\n2. Reemplaza `provideZoneChangeDetection({ eventCoalescing: true })` por `provideExperimentalZonelessChangeDetection()` importado desde `@angular/core`.\n\n*Pista de código:*  \n```typescript\nimport { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';\n\nexport const appConfig: ApplicationConfig = {\n  providers: [\n    provideExperimentalZonelessChangeDetection(),\n    provideRouter(routes),\n  ],\n};\n```",
+      "line": 5
+    },
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.ts",
+      "description": "### RETO 2: Configurar la Estrategia OnPush 🛡️\n\nCon Zoneless, OnPush es la estrategia de detección de cambios más segura y eficiente, ya que reduce el ámbito de verificación y asume que el estado del componente se maneja reactivamente.\n\n1. Importa `ChangeDetectionStrategy` de `@angular/core`.\n2. Añade `changeDetection: ChangeDetectionStrategy.OnPush` en el decorador `@Component` de `PerformanceMonitorComponent`.\n\n*Pista de código:*  \n```typescript\n@Component({\n  selector: 'app-performance-monitor',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './performance-monitor.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\n```",
+      "line": 15
+    },
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.ts",
+      "description": "### RETO 3: Migración del Estado a Signals 🧬\n\nEn un entorno Zone-less, Angular no sabe cuándo redibujar el componente si modificas variables tradicionales de JS. Debemos usar **Signals** para notificar reactivamente al framework que los datos cambiaron y la interfaz debe refrescarse.\n\n1. Importa `signal` y `computed` desde `@angular/core`.\n2. Convierte `fpsList` a una Writable Signal: `fpsList = signal<number[]>([]);`.\n3. Convierte `averageFps` a una Computed Signal: `averageFps = computed(() => { ... });`.\n4. Convierte `logs` a una Writable Signal: `logs = signal<string[]>([]);`.\n5. Ajusta los métodos de la simulación (`startSimulation`, `toggleCpuLoad`, `clearStats`) para que actualicen el estado usando `.set()` o `.update()` en lugar de asignaciones directas.",
+      "line": 23
+    },
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.ts",
+      "description": "### RETO 4: Dominando afterRender para interacciones DOM 🎨\n\nEl hook `ngAfterViewChecked` se ejecuta cada vez que Angular finaliza un ciclo de detección. En modo Zoneless, este hook ya no se llamará automáticamente ante tareas asíncronas y, además, manipular el Canvas en él puede provocar bucles innecesarios.\n\nAngular introduce **afterRender** y **afterNextRender** para ejecutar operaciones de lectura/escritura en el DOM o Canvas de forma segura y coordinada con el ciclo de renderizado del navegador.\n\n1. Elimina `implements AfterViewChecked` y el método `ngAfterViewChecked()`.\n2. Importa `afterRender` desde `@angular/core`.\n3. Inyecta `afterRender` en el constructor de tu componente para que dibuje en el Canvas después de cada ciclo de renderizado:\n\n```typescript\nconstructor() {\n  super();\n  afterRender(() => {\n    this.drawCanvas();\n  });\n}\n```",
+      "line": 34
+    },
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.html",
+      "description": "### RETO 5: Actualizar el Template HTML 🖥️\n\nPara que la interfaz web reaccione al nuevo modelo de señales, debemos invocar las señales usando la sintaxis de función `()` en el template.\n\n1. Abre `performance-monitor.component.html`.\n2. Cambia la visualización del promedio de FPS para invocar la señal: `{{ averageFps() }}`.\n3. Cambia la directiva `@for` de logs para iterar sobre el valor de la señal: `@for (log of logs(); track log)`.\n\n*Pista de código:*  \n```html\n<span class=\"text-6xl font-black font-mono ...\">\n  {{ averageFps() }}\n</span>\n\n@for (log of logs(); track log) {\n  ...\n}\n```",
+      "line": 35
+    },
+    {
+      "file": "apps/academy/src/app/course/level7-zoneless/performance-monitor.component.spec.ts",
+      "description": "### ¡Validación del Nivel 7! 🧪\n\n1. Ejecuta las pruebas correspondientes en tu terminal: `pnpm test:l7`.\n2. Vitest comprobará las aserciones semánticas (AST) y simulará el comportamiento de tus frames.\n\n¡Una vez que todos los tests estén en verde, habrás dominado la programación reactiva de alto rendimiento en Angular! 🚀",
+      "line": 1
+    }
+  ]
+}

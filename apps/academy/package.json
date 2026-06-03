@@ -12,7 +12,8 @@
     "test:l3": "vitest theme-panel",
     "test:l4": "vitest product-list",
     "test:l5": "vitest rxjs-boundaries",
-    "test:l6": "vitest messages-list"
+    "test:l6": "vitest messages-list",
+    "test:l7": "vitest performance-monitor"
   },
   "dependencies": {
     "@learning-engine/learning-state": "workspace:*",

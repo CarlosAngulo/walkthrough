@@ -123,7 +123,8 @@
               "test:l3",
               "test:l4",
               "test:l5",
-              "test:l6"
+              "test:l6",
+              "test:l7"
             ]
           }
         },
@@ -240,6 +241,18 @@
             "metadata": {
               "scriptContent": "vitest messages-list",
               "runCommand": "pnpm run test:l6"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:l7": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:l7"
+            },
+            "metadata": {
+              "scriptContent": "vitest performance-monitor",
+              "runCommand": "pnpm run test:l7"
             },
             "configurations": {},
             "parallelism": true

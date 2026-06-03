@@ -1399,6 +1399,40 @@ body::before {
   font-size: 0.85rem;
 }
 
+/* ==========================================
+   NIVEL 7 — ZONE-LESS PERFORMANCE MONITOR
+   ========================================== */
+.block-performance-monitor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.perf-monitor-container {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 50px -10px rgba(139, 92, 246, 0.15);
+  transition: all 0.4s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
 
 
 

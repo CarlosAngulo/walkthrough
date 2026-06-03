@@ -857,6 +857,182 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
   }
 };
 
+// Rules catalog for Level 7 Zone-less Angular
+export const L7_RULES: Record<string, PedagogicalRule> = {
+  L7_ZONELESS_PROVIDER: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasZoneless = /provideExperimentalZonelessChangeDetection\s*\(\s*\)/.test(fileContent);
+    const hasZone = /provideZoneChangeDetection\s*\(/.test(fileContent);
+
+    if (!hasZoneless || hasZone) {
+      return {
+        ruleId: 'L7_ZONELESS_PROVIDER',
+        success: false,
+        anchor: 'zoneless-provider-anchor',
+        message: 'No se detectó el proveedor de detección de cambios zoneless experimental en tu configuración global.',
+        hint: 'Reemplaza "provideZoneChangeDetection({ eventCoalescing: true })" por "provideExperimentalZonelessChangeDetection()" en app.config.ts e impórtalo desde "@angular/core".'
+      };
+    }
+    return {
+      ruleId: 'L7_ZONELESS_PROVIDER',
+      success: true,
+      anchor: 'zoneless-provider-anchor',
+      message: '¡Excelente! Configuraste Angular en modo Zone-less puro usando provideExperimentalZonelessChangeDetection().'
+    };
+  },
+
+  L7_ON_PUSH_STRATEGY: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasOnPush = /changeDetection\s*:\s*ChangeDetectionStrategy\.OnPush/.test(fileContent);
+
+    if (!hasOnPush) {
+      return {
+        ruleId: 'L7_ON_PUSH_STRATEGY',
+        success: false,
+        anchor: 'onpush-strategy-anchor',
+        message: 'El componente no utiliza la estrategia de detección de cambios OnPush.',
+        hint: 'Agrega "changeDetection: ChangeDetectionStrategy.OnPush" en el decorador @Component de tu performance-monitor.component.ts. Importa ChangeDetectionStrategy desde "@angular/core".'
+      };
+    }
+    return {
+      ruleId: 'L7_ON_PUSH_STRATEGY',
+      success: true,
+      anchor: 'onpush-strategy-anchor',
+      message: '¡Excelente! Configurar OnPush es una buena práctica y vital en aplicaciones de alto rendimiento.'
+    };
+  },
+
+  L7_AFTER_RENDER_HOOK: (analysis) => {
+    const fileContent = analysis.fileContent || '';
+    const hasAfterRender = /afterRender\s*\(/.test(fileContent) || /afterNextRender\s*\(/.test(fileContent);
+    const hasAfterViewChecked = /ngAfterViewChecked\s*\(/.test(fileContent) || /implements\s+[^]*AfterViewChecked/.test(fileContent);
+
+    if (hasAfterViewChecked) {
+      return {
+        ruleId: 'L7_AFTER_RENDER_HOOK',
+        success: false,
+        anchor: 'after-render-anchor',
+        message: 'Aún estás utilizando el hook del ciclo de vida tradicional ngAfterViewChecked, el cual puede disparar bucles infinitos u operaciones de renderizado excesivas en entornos Zoneless.',
+        hint: 'Elimina el método ngAfterViewChecked y el "implements AfterViewChecked" del componente. En su lugar, usa afterRender o afterNextRender en el constructor.'
+      };
+    }
+
+    if (!hasAfterRender) {
+      return {
+        ruleId: 'L7_AFTER_RENDER_HOOK',
+        success: false,
+        anchor: 'after-render-anchor',
+        message: 'No se detectó el uso de afterRender o afterNextRender en el constructor del componente.',
+        hint: 'Importa afterRender o afterNextRender desde "@angular/core" y ejecútalo en el constructor para interactuar de forma segura con el Canvas/DOM: afterRender(() => { ... })'
+      };
+    }
+
+    return {
+      ruleId: 'L7_AFTER_RENDER_HOOK',
+      success: true,
+      anchor: 'after-render-anchor',
+      message: '¡Magnífico! Utilizas afterRender/afterNextRender para garantizar que la manipulación del DOM / Canvas ocurra estrictamente después de que Angular haya terminado de escribir en el DOM, evitando trashing de layouts.'
+    };
+  },
+
+  L7_STATE_SIGNALS: (analysis) => {
+    const fpsListProp = analysis.properties.find(p => p.name === 'fpsList');
+    const averageFpsProp = analysis.properties.find(p => p.name === 'averageFps');
+    const logsProp = analysis.properties.find(p => p.name === 'logs');
+
+    if (!fpsListProp) {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'No se detectó la propiedad "fpsList" en tu componente.',
+        hint: 'Conserva la propiedad "fpsList" al refactorizar para almacenar el historial de frames.'
+      };
+    }
+    
+    if (fpsListProp.type !== 'signal') {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'La propiedad "fpsList" debe ser un Writable Signal.',
+        hint: 'Declara fpsList como una señal reactiva: fpsList = signal<number[]>([]);'
+      };
+    }
+
+    if (!averageFpsProp) {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'No se detectó la propiedad "averageFps" en tu componente.',
+        hint: 'Asegúrate de definir "averageFps" para mostrar la media de FPS.'
+      };
+    }
+
+    if (averageFpsProp.type !== 'computed') {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'La propiedad "averageFps" debe ser un Computed Signal derivado.',
+        hint: 'Define averageFps usando la función computed: averageFps = computed(() => { ... }); que calcule el promedio del array de fpsList().'
+      };
+    }
+
+    if (!logsProp) {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'No se detectó la propiedad "logs" en tu componente.',
+        hint: 'Asegúrate de conservar la propiedad "logs" para registrar la actividad.'
+      };
+    }
+
+    if (logsProp.type !== 'signal') {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: 'La propiedad "logs" debe ser un Writable Signal.',
+        hint: 'Declara logs como una señal reactiva: logs = signal<string[]>([]);'
+      };
+    }
+
+    // Verificar en el HTML si se hace interpolación normal {{ averageFps }} o {{ averageFps }}
+    // en lugar de invocar la señal.
+    const usesOldAverageFpsTemplate = /{{\s*averageFps\s*}}/.test(analysis.templateContent || '');
+    if (usesOldAverageFpsTemplate) {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: '¡Estructura TypeScript correcta! Pero falta actualizar la interpolación de "averageFps" en el HTML.',
+        hint: 'Modifica "performance-monitor.component.html" para que invoque la señal computada: "{{ averageFps() }}".'
+      };
+    }
+
+    const usesOldLogsTemplate = /of\s+logs\b(?!(\s*\(\)))/.test(analysis.templateContent || '');
+    if (usesOldLogsTemplate) {
+      return {
+        ruleId: 'L7_STATE_SIGNALS',
+        success: false,
+        anchor: 'state-signals-anchor',
+        message: '¡Estructura TypeScript correcta! Pero falta actualizar la directiva @for de "logs" en el HTML.',
+        hint: 'Modifica "performance-monitor.component.html" para iterar sobre la señal: "@for (log of logs(); track log)".'
+      };
+    }
+
+    return {
+      ruleId: 'L7_STATE_SIGNALS',
+      success: true,
+      anchor: 'state-signals-anchor',
+      message: '¡Excelente! El estado de rendimiento está modelado íntegramente con Signals reactivos.'
+    };
+  }
+};
+
 export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): RulesEvaluationResult {
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
@@ -874,7 +1050,7 @@ export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): Rule
 
   ruleIds.forEach(id => {
     // Resolve rule from corresponding catalog
-    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id] || L6_RULES[id];
+    const rule = L1_RULES[id] || L2_RULES[id] || L3_RULES[id] || L4_RULES[id] || L5_RULES[id] || L6_RULES[id] || L7_RULES[id];
     if (rule) {
       const evaluation = rule(cleanAnalysis);
       evaluations.push(evaluation);
@@ -889,3 +1065,4 @@ export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): Rule
     evaluations
   };
 }
+
