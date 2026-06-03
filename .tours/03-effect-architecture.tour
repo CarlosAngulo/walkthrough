@@ -44,7 +44,7 @@
     },
     {
       "file": "apps/academy/src/app/course/level3-effects/theme-panel.component.html",
-      "description": "### RETO BONUS: Adaptar Enlaces en el Template HTML 🌐\n\nFinalmente, recuerda que en el template HTML de Angular, las señales son **funciones**. Para renderizar o comprobar sus valores en las directivas y propiedades del template, debes invocarlas ejecutándolas con paréntesis:\n\n1. Reemplaza `theme === 'dark'` por `theme() === 'dark'` (y también para `'light'`).\n2. Reemplaza `fontSize` por `fontSize()` en la comprobación del botón decremento y el badge central de visualización.\n3. Reemplaza `accentColor === 'purple'` por `accentColor() === 'purple'` (y repite para `'cyan'` y `'pink'`).\n\n¡Al terminar todos estos retos, la suite de pruebas pasará completamente a verde!",
+      "description": "### RETO BONUS: Adaptar Enlaces en el Template HTML 🌐\n\nFinalmente, recuerda que en el template HTML de Angular, las señales son **funciones**. Para renderizar o comprobar sus valores en las directivas y propiedades del template, debes invocarlas ejecutándolas con paréntesis:\n\n1. Reemplaza `theme === 'dark'` por `theme() === 'dark'` (y también para `'light'`).\n2. Reemplaza `fontSize` por `fontSize()` en la comprobación del botón decremento y el badge central de visualización.\n3. Reemplaza `accentColor === 'primary'` por `accentColor() === 'primary'` (y repite para `'secondary'` y `'neutral'`).\n\n¡Al terminar todos estos retos, la suite de pruebas pasará completamente a verde!",
       "line": 1
     },
     {
