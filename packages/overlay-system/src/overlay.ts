@@ -95,7 +95,7 @@ const INJECTED_CSS = `
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
   padding: 1rem 1.25rem !important;
   border-radius: 16px !important;
-  width: 290px !important;
+  width: 320px !important;
   z-index: 100000 !important;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
   font-size: 0.825rem !important;
@@ -141,7 +141,6 @@ const INJECTED_CSS = `
 
 .learning-card-hint {
   background: rgba(255, 255, 255, 0.04);
-  border-left: 3px solid #a855f7;
   padding: 0.5rem 0.65rem;
   border-radius: 4px 8px 8px 4px;
   font-size: 0.75rem;

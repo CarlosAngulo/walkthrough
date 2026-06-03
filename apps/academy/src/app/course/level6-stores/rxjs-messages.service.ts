@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 export interface Message {
@@ -42,8 +42,41 @@ export class RxjsMessagesService {
     }
   ];
 
+  // ==========================================
+  // ESTADO TRADICIONAL BASADO EN RXJS (OPCIÓN B)
+  // ==========================================
+  private messagesSubject$ = new BehaviorSubject<Message[]>([]);
+  readonly messages$ = this.messagesSubject$.asObservable();
+
+  private filterSubject$ = new BehaviorSubject<'all' | 'unread'>('all');
+  readonly filter$ = this.filterSubject$.asObservable();
+
+  private loadingSubject$ = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this.loadingSubject$.asObservable();
+
   getMessages(): Observable<Message[]> {
     // Simula una latencia de red de 600ms para demostrar el estado loading
     return of(this.initialMessages).pipe(delay(600));
+  }
+
+  // Métodos del Store tradicional
+  loadMessages(messages: Message[]) {
+    this.messagesSubject$.next(messages);
+    this.loadingSubject$.next(false);
+  }
+
+  setFilter(filter: 'all' | 'unread') {
+    this.filterSubject$.next(filter);
+  }
+
+  markAsRead(messageId: string) {
+    const updated = this.messagesSubject$.value.map(m =>
+      m.id === messageId ? { ...m, read: true } : m
+    );
+    this.messagesSubject$.next(updated);
+  }
+
+  setLoading(loading: boolean) {
+    this.loadingSubject$.next(loading);
   }
 }

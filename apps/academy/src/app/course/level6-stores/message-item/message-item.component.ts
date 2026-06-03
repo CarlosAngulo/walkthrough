@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Message } from '../rxjs-messages.service';
+import { RxjsMessagesService, Message } from '../rxjs-messages.service';
 import { MessagesStore } from '../messages-store';
 
 @Component({
@@ -21,9 +21,10 @@ export class MessageItemComponent {
     } catch (e) {
       console.warn('MessagesStore no está disponible en MessageItemComponent:', e);
     }
-    // Respaldo reactivo temporal para evitar excepciones en vuelo
+    // Respaldo reactivo temporal (Opción B: Servicio RxJS Tradicional)
+    const service = inject(RxjsMessagesService);
     return {
-      markAsRead: () => {}
+      markAsRead: (id: string) => service.markAsRead(id)
     };
   })();
 

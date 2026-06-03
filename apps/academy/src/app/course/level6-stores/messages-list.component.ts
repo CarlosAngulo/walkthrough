@@ -1,5 +1,7 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { of } from 'rxjs';
 import { LearningComponent } from '../../engine/learning.component';
 import { learningStateStore } from '@learning-engine/learning-state';
 import { RxjsMessagesService, Message } from './rxjs-messages.service';
@@ -62,17 +64,26 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
     } catch (e) {
       console.warn('MessagesStore no está listo aún para ser inyectado:', e);
     }
-    // Retorno de respaldo reactivo temporal para evitar excepciones en la renderización inicial.
+    // Retorno de respaldo reactivo temporal (Opción B: Servicio RxJS Tradicional)
+    const service = inject(RxjsMessagesService);
+    const messages = toSignal(service.messages$ || of([]), { initialValue: [] as Message[] });
+    const filter = toSignal(service.filter$ || of('all'), { initialValue: 'all' as 'all' | 'unread' });
+    const loading = toSignal(service.loading$ || of(false), { initialValue: false });
+
     return {
-      messages: signal([] as Message[]),
-      filter: signal('all' as 'all' | 'unread'),
-      loading: signal(false),
-      filteredMessages: computed(() => [] as Message[]),
-      unreadCount: computed(() => 0),
-      loadMessages: () => {},
-      setFilter: () => {},
-      markAsRead: () => {},
-      setLoading: () => {}
+      messages,
+      filter,
+      loading,
+      filteredMessages: computed(() => {
+        const f = filter();
+        const msgs = messages();
+        return f === 'unread' ? msgs.filter(m => !m.read) : msgs;
+      }),
+      unreadCount: computed(() => messages().filter(m => !m.read).length),
+      loadMessages: (msgs: Message[]) => service.loadMessages?.(msgs),
+      setFilter: (f: 'all' | 'unread') => service.setFilter?.(f),
+      markAsRead: (id: string) => service.markAsRead?.(id),
+      setLoading: (l: boolean) => service.setLoading?.(l)
     };
   })();
 
