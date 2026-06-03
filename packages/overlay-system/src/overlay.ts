@@ -254,11 +254,18 @@ export class OverlaySystem {
       }
 
       card.style.left = `${left}px`;
-      card.style.top = `${top}px`;
       
       // Calculate top position correctly (height is known only after render)
       const cardHeight = card.offsetHeight;
-      card.style.top = `${top - cardHeight}px`;
+      const relativeTop = dotRect.top - 10 - cardHeight;
+
+      if (relativeTop < 10) {
+        // If it goes off-screen at the top of the viewport, position it below the dot
+        card.style.top = `${dotRect.bottom + scrollY + 10}px`;
+      } else {
+        // Otherwise, position it above the dot (default)
+        card.style.top = `${top - cardHeight}px`;
+      }
 
       // Trigger animation
       requestAnimationFrame(() => {
