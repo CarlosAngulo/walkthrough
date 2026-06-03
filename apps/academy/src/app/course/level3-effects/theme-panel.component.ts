@@ -64,7 +64,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   //   return saved ? JSON.parse(saved) : { theme: 'dark', fontSize: 16, accentColor: 'primary' };
   // }
   //
-  // Y luego inicializar tus señales llamando a ese método:
+  // Y luego devuélvete al punto donde están definidas tus varialbes para incializarlas llamando a ese método:
   // theme = signal<'dark' | 'light'>(this.getSavedPrefs().theme);
   // (repite para las otras 2).
   // Si decides usar este enfoque elegante, ¡puedes borrar el código de ngOnInit!
@@ -139,7 +139,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     //
     //   const timer = setTimeout(() => {
     //     this.analyticsLogCount++;
-    //     console.log(`[Analytics] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`);
+    //     console.log(`[Analytics] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`);console.log(`%c[Analytics>>] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`, 'color: rgb(31, 230, 58); font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 4px;');
     //   }, 800);
     //
     //   onCleanup(() => {

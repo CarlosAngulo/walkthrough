@@ -95,7 +95,7 @@ const INJECTED_CSS = `
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
   padding: 1rem 1.25rem !important;
   border-radius: 16px !important;
-  width: 320px !important;
+  width: 280px !important;
   z-index: 100000 !important;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
   font-size: 0.825rem !important;
