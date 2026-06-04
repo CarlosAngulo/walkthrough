@@ -102,7 +102,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     // cualquier señal leída en su interior y se ejecutan cada vez que cambien.
     // Tu efecto debe realizar esta acción secundaria crítica:
     // 1. Serializar el estado actual completo ({ theme, fontSize, accentColor })
-    //    y guardarlo en localStorage con la clave 'academy-theme-preferences'.
+    //    y guárdarlo en localStorage con la clave 'academy-theme-preferences'.
     //
     // *Nota de Arquitectura:* La sincronización del DOM se realiza de forma 100%
     // declarativa gracias al nuevo componente autónomo <app-theme-preview> y sus bindings.
@@ -139,7 +139,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     //
     //   const timer = setTimeout(() => {
     //     this.analyticsLogCount++;
-    //     console.log(`[Analytics] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`);console.log(`%c[Analytics>>] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`, 'color: rgb(31, 230, 58); font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 4px;');
+    //     console.log(`%c[Analytics] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`);console.log(`%c[Analytics>>] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`, 'color: rgb(31, 230, 58); font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 4px;');
     //   }, 800);
     //
     //   onCleanup(() => {
