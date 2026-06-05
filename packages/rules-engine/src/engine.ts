@@ -662,7 +662,7 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
     const fileContent = analysis.fileContent || '';
     
     // Si la búsqueda clásica sigue activa con searchSubject$, obligamos a que falle la regla
-    const usesLegacySubject = /searchSubject\$\s*\.pipe/.test(fileContent);
+    const usesLegacySubject = /_?searchSubject\$\s*\.pipe/.test(fileContent);
     if (usesLegacySubject) {
       return {
         ruleId: 'L5_RXJS_OPERATORS',
