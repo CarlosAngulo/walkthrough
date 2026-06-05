@@ -20,7 +20,7 @@
     {
       "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
       "description": "### RETO 2: toObservable() — Cruzando a RxJS 🌊\n\nPara poder usar los operadores optimizados de RxJS, el primer paso es transformar tu nueva señal `searchQuery` en un Observable.\n\n1. En lugar de usar `searchSubject$`, declara un flujo observable intermedio `searchQuery$` usando la función `toObservable`.\n2. Invoca: `toObservable(this.searchQuery)` y encadena la tubería de operadores.\n\n*Pista de código:*  \n```typescript\nprivate searchQuery$ = toObservable(this.searchQuery).pipe(\n  debounceTime(400),\n  distinctUntilChanged(),\n  switchMap((query) => this.searchService.search(query))\n);\n```",
-      "line": 64
+      "line": 65
     },
     {
       "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
@@ -29,12 +29,12 @@
     },
     {
       "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.ts",
-      "description": "### RETO 4: toSignal() — Regreso al Mundo Síncrono y Limpieza 🛡️\n\nQueremos que la propiedad `searchResults` de la línea 56 sea una señal para consumirla de forma limpia en el HTML sin suscripciones manuales ni unsubscribe imperativo.\n\n1. Asigna a `searchResults` la conversión de tu observable usando `toSignal(...)`.\n2. **Importante:** Agrega la opción `{ initialValue: [] as Course[] }` como segundo parámetro para evitar que retorne `undefined` al inicio.\n3. **¡Limpieza Obligatoria!**: Elimina por completo el Subject `searchSubject$`, la suscripción `searchSubscription`, el ciclo `ngOnInit()`, el ciclo `ngOnDestroy()` y el método `onSearchInput(...)`. ¡Ya no son necesarios con Signals!\n\n*Pista de código:*  \n```typescript\nsearchResults = toSignal(this.searchQuery$, { initialValue: [] as Course[] });\n```",
-      "line": 56
+      "description": "### RETO 4: toSignal() — Regreso al Mundo Síncrono y Limpieza 🛡️\n\nQueremos que la propiedad `searchResults` de la línea 57 sea una señal para consumirla de forma limpia en el HTML sin suscripciones manuales ni unsubscribe imperativo.\n\n1. Asigna a `searchResults` la conversión de tu observable usando `toSignal(...)`.\n2. **Importante:** Agrega la opción `{ initialValue: [] as Course[] }` como segundo parámetro para evitar que retorne `undefined` al inicio.\n3. **¡Limpieza Obligatoria!**: Elimina por completo el Subject `searchSubject$`, la suscripción `searchSubscription`, el ciclo `ngOnInit()`, el ciclo `ngOnDestroy()` y el método `onSearchInput(...)`. ¡Ya no son necesarios con Signals!\n\n*Pista de código:*  \n```typescript\nsearchResults = toSignal(this.searchQuery$, { initialValue: [] as Course[] });\n```",
+      "line": 57
     },
     {
       "file": "apps/academy/src/app/course/level5-interop/rxjs-boundaries.component.html",
-      "description": "### RETO BONUS: Binding HTML e Iteración Reactiva 🌐\n\nUna vez migrado a TypeScript, debemos actualizar la UI:\n1. Cambia `(input)="onSearchInput(txt.value)"` por `(input)="searchQuery.set(txt.value)"` y `onSearchInput('')` por `searchQuery.set('')`.\n2. Cambia `{{ searchQuery }}` por `{{ searchQuery() }}`.\n3. Cambia `searchResults.length` por `searchResults().length`.\n4. Cambia `@for (course of searchResults; ...)` por `@for (course of searchResults(); ...)`.\n\n¡Al completar esto, tu buscador predictivo asíncrono estará al 100%!",
+      "description": "### RETO BONUS: Binding HTML e Iteración Reactiva 🌐\n\nUna vez migrado a TypeScript, debemos actualizar la UI:\n1. Cambia `(input)=\"onSearchInput(txt.value)\"` por `(input)=\"searchQuery.set(txt.value)\"` y `onSearchInput('')` por `searchQuery.set('')`.\n2. Cambia `{{ searchQuery }}` por `{{ searchQuery() }}`.\n3. Cambia `searchResults.length` por `searchResults().length`.\n4. Cambia `@for (course of searchResults; ...)` por `@for (course of searchResults(); ...)`.\n\n¡Al completar esto, tu buscador predictivo asíncrono estará al 100%!",
       "line": 1
     },
     {
