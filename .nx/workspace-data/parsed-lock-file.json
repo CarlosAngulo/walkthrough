@@ -1440,6 +1440,15 @@
         "hash": "sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ=="
       }
     },
+    "npm:@ngrx/signals": {
+      "type": "npm",
+      "name": "npm:@ngrx/signals",
+      "data": {
+        "version": "19.2.1",
+        "packageName": "@ngrx/signals",
+        "hash": "sha512-Tajd2TVjkxxyFMhnMSWLa5pAWfynjP0VM0B/BCMaLiBrwBBxybxRVENoUDU5tGyiKSax/2tBJC3+sOglmxm27A=="
+      }
+    },
     "npm:@nodelib/fs.scandir": {
       "type": "npm",
       "name": "npm:@nodelib/fs.scandir",
@@ -6099,6 +6108,21 @@
     {
       "source": "npm:@napi-rs/wasm-runtime",
       "target": "npm:@tybys/wasm-util",
+      "type": "static"
+    },
+    {
+      "source": "npm:@ngrx/signals",
+      "target": "npm:@angular/core",
+      "type": "static"
+    },
+    {
+      "source": "npm:@ngrx/signals",
+      "target": "npm:tslib",
+      "type": "static"
+    },
+    {
+      "source": "npm:@ngrx/signals",
+      "target": "npm:rxjs",
       "type": "static"
     },
     {

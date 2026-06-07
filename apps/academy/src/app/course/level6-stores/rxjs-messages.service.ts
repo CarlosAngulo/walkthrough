@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-export interface Message {
+export type Message = {
   id: string;
   sender: string;
   subject: string;
@@ -15,7 +15,7 @@ export interface Message {
   providedIn: 'root'
 })
 export class RxjsMessagesService {
-  private initialMessages: Message[] = [
+  private _initialMessages: Message[] = [
     {
       id: '1',
       sender: 'Prof. Ana Martínez',
@@ -43,40 +43,40 @@ export class RxjsMessagesService {
   ];
 
   // ==========================================
-  // ESTADO TRADICIONAL BASADO EN RXJS (OPCIÓN B)
+  // ESTADO TRADICIONAL BASADO EN RXJS
   // ==========================================
-  private messagesSubject$ = new BehaviorSubject<Message[]>([]);
-  readonly messages$ = this.messagesSubject$.asObservable();
+  private _messagesSubject$ = new BehaviorSubject<Message[]>([]);
+  readonly messages$ = this._messagesSubject$.asObservable();
 
-  private filterSubject$ = new BehaviorSubject<'all' | 'unread'>('all');
-  readonly filter$ = this.filterSubject$.asObservable();
+  private _filterSubject$ = new BehaviorSubject<'all' | 'unread'>('all');
+  readonly filter$ = this._filterSubject$.asObservable();
 
-  private loadingSubject$ = new BehaviorSubject<boolean>(false);
-  readonly loading$ = this.loadingSubject$.asObservable();
+  private _loadingSubject$ = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this._loadingSubject$.asObservable();
 
   getMessages(): Observable<Message[]> {
     // Simula una latencia de red de 600ms para demostrar el estado loading
-    return of(this.initialMessages).pipe(delay(600));
+    return of(this._initialMessages).pipe(delay(600));
   }
 
   // Métodos del Store tradicional
   loadMessages(messages: Message[]) {
-    this.messagesSubject$.next(messages);
-    this.loadingSubject$.next(false);
+    this._messagesSubject$.next(messages);
+    this._loadingSubject$.next(false);
   }
 
   setFilter(filter: 'all' | 'unread') {
-    this.filterSubject$.next(filter);
+    this._filterSubject$.next(filter);
   }
 
   markAsRead(messageId: string) {
-    const updated = this.messagesSubject$.value.map(m =>
+    const updated = this._messagesSubject$.value.map(m =>
       m.id === messageId ? { ...m, read: true } : m
     );
-    this.messagesSubject$.next(updated);
+    this._messagesSubject$.next(updated);
   }
 
   setLoading(loading: boolean) {
-    this.loadingSubject$.next(loading);
+    this._loadingSubject$.next(loading);
   }
 }

@@ -1,5 +1,6 @@
 import { signal, computed, Signal } from '@angular/core';
 import { Message } from './rxjs-messages.service';
+import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 
 // ============================================================================
 // PARTE 1: DIY (Do It Yourself) Signal Store

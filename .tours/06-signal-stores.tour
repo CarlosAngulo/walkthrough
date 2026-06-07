@@ -3,29 +3,69 @@
   "title": "06. Signal Stores (DIY & @ngrx/signals)",
   "steps": [
     {
-      "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
-      "description": "## ¡Bienvenido al Nivel 6: Signal Stores! 🏛️\n\nEn este nivel aprenderemos sobre la **gestión de estado centralizada moderna** en Angular.\nAbordaremos el desafío en dos partes:\n1. **Parte 1: DIY (Do It Yourself) Store:** Entenderemos cómo construir un store modular de forma nativa encapsulando un `WritableSignal` privado y exponiendo sub-señales de solo lectura.\n2. **Parte 2: Almacén oficial con `@ngrx/signals`:** Utilizaremos la biblioteca estándar del ecosistema para definir un almacén estructurado con estados, selectores computados y actualizadores inmutables.\n\n¡Haz clic en **Next** para comenzar!",
-      "line": 1
+      "file": "apps/academy/src/app/course/level6-stores/messages-list.component.ts",
+      "description": "## ¡Bienvenido al Nivel 6: Signal Stores! 🏛️\n\nEn este nivel aprenderemos sobre la **gestión de estado centralizada moderna** en Angular.\nAbordaremos el desafío en dos partes:\n1. **Parte 1: DIY (Do It Yourself) Store:** Entenderemos cómo construir un store modular de forma nativa encapsulando un `WritableSignal` privado y exponiendo sub-señales de solo lectura.\n2. **Parte 2: Almacén oficial con `@ngrx/signals`:** Utilizaremos la biblioteca estándar del ecosistema para definir un almacén estructurado con estados, selectores computados y actualizadores inmutables.\n\nComo siempre, te pedirnos que estudies todo este folder para que veas cómo funciona el código, corras la aplicación y la veas en acción, y finalmente, corras las pruebas, las cuales están pasando parcialmente.\n\n¡Haz clic en **Next** para comenzar!",
+      "line": 22
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/rxjs-messages.service.ts",
+      "description": "### El Store de Respaldo con RxJS 🏛️\n\nPara que la aplicación funcione de manera interactiva desde el primer momento (antes de que implementes el reto de Signals), hemos provisto un servicio tradicional de gestión de estado: `RxjsMessagesService`.\n\n- **¿Cómo funciona?** Utiliza `BehaviorSubject` para retener la lista de mensajes, el filtro activo y el estado de carga.\n- **¿Por qué está aquí?** Permite que los distintos componentes del nivel se comuniquen de forma desacoplada compartiendo una fuente de verdad común.\n- **En aplicaciones reales:** Aunque este patrón casero de \"Servicio con Subjects\" es sumamente común en proyectos pequeños o medianos, para aplicaciones empresariales grandes se suele delegar el manejo de estado a librerías estructuradas como **NgRx Store (Redux)**, **Akita**, o en el ecosistema actual de Signals, la biblioteca oficial **`@ngrx/signals`** que aprenderemos a implementar en este nivel.",
+      "line": 47
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/messages-list.component.ts",
+      "description": "### Uso del Store Inicial en la aplicación (`MessagesListComponent`) 🌐\n\nVeamos cómo el componente principal interactúa con el store inicial de RxJS:\n\n1. **Inyección:** Inyecta el servicio tradicional `RxjsMessagesService` en la propiedad `messagesService` (línea 39).\n2. **Conexión de Respaldo:** Para que las plantillas HTML puedan consumir señales nativas sin usar async pipes, definimos una propiedad `store` como función autoejecutable y que es sólo temporal (línea 59). Su función es convertir los observables del servicio (`messages$`, `filter$`, `loading$`) en señales usando la función `toSignal()`. Estúdiala un poco para que sepas cómo funciona.\n3. **Carga Inicial:** El método `loadMessages()` (línea 90), invocado en el `ngOnInit()`, llama a `messagesService.getMessages()` para obtener los mensajes del servidor ficticio y cargarlos en el store mediante `store.loadMessages(msgs)`.",
+      "line": 59,
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 197
+        },
+        "end": {
+          "line": 7,
+          "character": 202
+        }
+      }
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/sidebar/messages-sidebar.component.ts",
+      "description": "### Uso del Store en el componente de Filtros (`MessagesSidebarComponent`) 📊\n\nEste componente interactúa con el store RxJS temporal para mostrar filtros y contadores:\n\n1. **Inyección y Conversión:** En la propiedad `store` (línea 16), inyecta `RxjsMessagesService` y convierte sus observables a señales reactivas temporales.\n2. **Actualización de Filtros:** Cuando haces clic en un filtro de la barra lateral, se invoca el método `selectFilter()` (línea 37), el cual delega la acción llamando a `store.setFilter()`, que a su vez emite el nuevo filtro a través del `BehaviorSubject` del servicio.",
+      "line": 16
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/message-item/message-item.component.ts",
+      "description": "### Uso del Store en la Card de mensaje (`MessageItemComponent`) ✉️\n\nCada card de mensaje individual necesita notificar cuando ha sido leída:\n\n1. **Inyección y Delegación:** En su propiedad `store` (línea 16), el componente inyecta `RxjsMessagesService` para mapear el método `markAsRead(id)`.\n2. **Ejecución de la Acción:** Cuando haces clic en la tarjeta, se ejecuta `markAsRead()` (línea 31), el cual llama a `store.markAsRead()`. Esto modifica la lista de mensajes en el `BehaviorSubject` del servicio tradicional, lo que reactivamente notifica a los demás componentes conectados.",
+      "line": 16,
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 68
+        },
+        "end": {
+          "line": 5,
+          "character": 74
+        }
+      }
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
-      "description": "### RETO 0: DIY Store (Do It Yourself) 🛠️\n\nVamos a completar el contenedor `CustomStore` hecho a mano:\n1. Declara la propiedad `private _state` inicializada como un `signal` mutable conteniendo el `initialState`.\n2. Expón la propiedad `readonly state` como un `computed(() => this._state())` para proteger el estado de modificaciones directas desde fuera.\n3. Define el método `update(fn)` para llamar a `this._state.update(fn)` de forma inmutable.\n\n*Pista de código:*  \n```typescript\nexport class CustomStore<T> {\n  private _state = signal<T>(initialState);\n  readonly state = computed(() => this._state());\n  update(fn: (state: T) => T): void {\n    this._state.update(fn);\n  }\n}\n```",
+      "description": "### RETO 0: DIY Store (Do It Yourself) 🛠️\n\nVamos a revisar el contenedor `CustomStore` hecho a mano el cual es usado dentro de la interfaz, en el cuadro que dice \"Valor de Estado en CustomStore\". Su uso es meramente pedagógico para conocer los fundamentos de un Store:\n1. La propiedad `private _state` está inicializada como un `signal` mutable conteniendo el `initialState`.\n2. La propiedad `readonly state` es pública y es computada: `computed(() => this._state())` hecha para proteger el estado de modificaciones directas desde fuera.\n3. Se está definiendo un método `update(fn)` para llamar a `this._state.update(fn)` de forma inmutable.\n\n*Pista de código:*  \n```typescript\nexport class CustomStore<T> {\n  private _state = signal<T>(initialState);\n  readonly state = computed(() => this._state());\n  update(fn: (state: T) => T): void {\n    this._state.update(fn);\n  }\n}\n```",
       "line": 14
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
-      "description": "### RETO 1: Declaración de Almacén con signalStore() 🏛️\n\nPara la Parte 2, utilizaremos `@ngrx/signals`.\n\n1. Define y exporta la constante `MessagesStore` usando la función `signalStore()`.\n2. Configura el store para ser inyectable en toda la aplicación pasándole `{ providedIn: 'root' }` como primer argumento.\n\n*Pista de código:*  \n```typescript\nexport const MessagesStore = signalStore(\n  { providedIn: 'root' },\n  // ... pasos siguientes\n);\n```",
-      "line": 40
+      "description": "### RETO 1: Declaración del Store con signalStore() 🏛️\n\nPara la Parte 2, utilizaremos `@ngrx/signals`.\n\n1. Define y exporta la constante `MessagesStore` usando la función `signalStore()`.\n2. Configura el store para ser inyectable en toda la aplicación pasándole `{ providedIn: 'root' }` como primer argumento.\n\n*Pista de código:*  \n```typescript\nexport const MessagesStore = signalStore(\n  { providedIn: 'root' },\n  // ... pasos siguientes\n);\n```",
+      "line": 57
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
-      "description": "### RETO 2: Inicialización de Estado con withState() 📦\n\nAñade la propiedad de estado inicial a tu `signalStore()`.\n\n1. Usa `withState(initialState)` para inicializar las propiedades del almacén:\n   - `messages`: Un array vacío de mensajes académicos.\n   - `filter`: El filtro inicial establecido en `'all'`.\n   - `loading`: Booleano en `false` para rastrear las peticiones de red.\n\n*Pista de código:*  \n```typescript\nwithState(initialState)\n```",
-      "line": 42
+      "description": "### RETO 2: Inicialización de Estado con withState() 📦\n\nAñade la propiedad de estado inicial a tu `signalStore()`.\n\n1. Usa `withState(initialState)` para inicializar las propiedades del Store:\n   - `messages`: Un array vacío de mensajes académicos.\n   - `filter`: El filtro inicial establecido en `'all'`.\n   - `loading`: Booleano en `false` para rastrear las peticiones de red.\n\n*Pista de código:*  \n```typescript\nwithState(initialState)\n```\n\n**`withState`?** es una función de `@ngrx/signals` que sirve para inicializar y declarar las propiedades de estado de un Store. Al pasarle un objeto con el estado inicial (por ejemplo, `initialState`), `@ngrx/signals` genera de manera automática una señal reactiva de solo lectura (`Signal`) para cada una de las propiedades de ese objeto (en este caso, `messages()`, `filter()` y `loading()`). Esto permite que los componentes consuman y se suscriban reactivamente a estas porciones del estado sin configuraciones adicionales.",
+      "line": 58
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
       "description": "### RETO 3: Derivar Estados Computados con withComputed() 🧠\n\nUn store profesional debe exponer selectores reactivos eficientes que deriven automáticamente información a partir del estado primario.\n\n1. Añade la función `withComputed()` a tu store.\n2. Declara `unreadCount`: Un `computed` que retorne el número de mensajes con `read: false`.\n3. Declara `filteredMessages`: Un `computed` que filtre la lista de mensajes reactivamente de acuerdo al valor de `filter()` ('all' o 'unread').\n\n*Pista de código:*  \n```typescript\nwithComputed((store) => ({\n  unreadCount: computed(() => store.messages().filter(m => !m.read).length),\n  filteredMessages: computed(() => {\n    const filter = store.filter();\n    const messages = store.messages();\n    return filter === 'unread' ? messages.filter(m => !m.read) : messages;\n  })\n}))\n```",
-      "line": 45
+      "line": 66
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
@@ -34,8 +74,18 @@
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-list.component.ts",
-      "description": "### BONUS RETO: Consumo del Store en la Arquitectura Multi-Componente 🌐\n\n1. En `messages-list.component.ts`, inyecta el `MessagesStore` que has creado:\n   `protected store = inject(MessagesStore);`.\n2. Para demostrar el poder del Store, hemos dividido la interfaz en componentes independientes:\n   - **`MessagesSidebarComponent`**: Inyecta el store para renderizar filtros y contadores (`unreadCount`).\n   - **`MessageItemComponent`**: Inyecta el store para emitir la mutación inmutable `markAsRead()` al hacer clic.\n\n¡Verás cómo ambos componentes hijos cooperan y se mantienen perfectamente en sincronía a través del Store centralizado sin pasarse datos entre sí! 🚀",
-      "line": 39
+      "description": "### BONUS RETO 1: Inyección en el Contenedor Principal (`MessagesListComponent`) 🌐\n\nEl componente contenedor es el encargado de iniciar las peticiones de datos y coordinar el estado de carga inicial.\n\n1. Inyecta la instancia del store usando la función inyectora:\n   ```typescript\n   protected store = inject(MessagesStore);\n   ```\n2. Reemplaza el bloque de inicialización de respaldo `store: any = (() => { ... })();` (desde la línea 59 a la 88) por esta declaración directa. ¡Verás cómo se reduce drásticamente el código boilerplate de respaldo!\n3. Observa en `ngOnInit()` (línea 90) cómo se invocan los métodos del store de forma directa y tipada: `this.store.setLoading(true)` y `this.store.loadMessages(msgs)`.",
+      "line": 59
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/sidebar/messages-sidebar.component.ts",
+      "description": "### BONUS RETO 2: Consumo Reactivo en la Barra Lateral (`MessagesSidebarComponent`) 📊\n\nEl componente de la barra lateral necesita leer información reactiva (los mensajes filtrados y el contador de no leídos) y disparar cambios de filtro.\n\n1. Abre `messages-sidebar.component.ts` e inyecta la instancia global única del store en la propiedad `store`:\n   ```typescript\n   protected store = inject(MessagesStore);\n   ```\n2. Reemplaza todo el bloque de respaldo (líneas 16 a 35) por la inyección directa.\n3. Abre `messages-sidebar.component.html`. Observa cómo consumimos las señales derivadas exponiendo `store.unreadCount()` para pintar el contador, y `store.filter()` para determinar qué botón está activo. También llamamos a `store.setFilter()` al hacer clic en los botones.",
+      "line": 16
+    },
+    {
+      "file": "apps/academy/src/app/course/level6-stores/message-item/message-item.component.ts",
+      "description": "### BONUS RETO 3: Ejecución de Mutaciones en la Tarjeta de Mensaje (`MessageItemComponent`) ✉️\n\nCada elemento de la lista es renderizado por `MessageItemComponent`. Este componente necesita marcar el mensaje como leído cuando el usuario hace clic.\n\n1. Abre `message-item.component.ts` e inyecta el store en la propiedad `store`:\n   ```typescript\n   protected store = inject(MessagesStore);\n   ```\n2. Reemplaza el bloque de inicialización de respaldo (líneas 16 a 29) por la inyección directa.\n3. Observa el método `markAsRead()` (línea 31): al dispararse, ejecuta `this.store.markAsRead(this.message.id)`. Esto actualiza inmutablemente el array de mensajes globales en el store. Al hacerlo, la barra lateral recalcula `unreadCount()` y actualiza el contador de inmediato, sin necesidad de emitir eventos hacia el padre o pasar inputs. ¡Es la magia del estado centralizado con Signals!",
+      "line": 16
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-list.component.spec.ts",
