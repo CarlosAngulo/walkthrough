@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import '@learning-engine/test-integration';
 
-describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () => {
+describe('Level 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () => {
   let component: MessagesListComponent;
   let fixture: ComponentFixture<MessagesListComponent>;
   let messagesServiceMock: any;
@@ -42,8 +42,8 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
     fixture.detectChanges();
   }
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con todas las reglas de diseño para signalStore y sub-módulos', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with all design rules for signalStore and sub-modules', () => {
       const storePath = 'src/app/course/level6-stores/messages-store.ts';
       
       expect(storePath).toSatisfyRules([
@@ -55,17 +55,17 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
     });
   });
 
-  describe('PARTE 1: DIY Custom Signal Store', () => {
-    it('debería inicializar el CustomStore con un estado inicial inmutable', () => {
+  describe('PART 1: DIY Custom Signal Store', () => {
+    it('should initialize CustomStore with an immutable initial state', () => {
       const store = new CustomStore<{ count: number }>({ count: 5 });
       expect(store.state()).toEqual({ count: 5 });
     });
 
-    it('debería permitir actualizar el estado del CustomStore usando update() reactivamente', () => {
+    it('should allow updating the CustomStore state reactively using update()', () => {
       const store = new CustomStore<{ count: number }>({ count: 5 });
       
       let observedValue: any = null;
-      // Creamos un computed para observar cambios reactivos
+      // We create a computed signal to observe reactive changes
       const doubleCount = computed(() => store.state().count * 2);
       
       expect(doubleCount()).toBe(10);
@@ -76,33 +76,33 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
     });
   });
 
-  describe('PARTE 2: Store Centralizado con @ngrx/signals', () => {
-    it('debería cargar el estado y resolver el flujo de mensajes', async () => {
+  describe('PART 2: Centralized Store with @ngrx/signals', () => {
+    it('should load state and resolve message flow', async () => {
       await createComponent();
 
-      // Si el alumno ya creó el MessagesStore correctamente
+      // If student already created the MessagesStore correctly
       if (MessagesStore) {
         expect(component['store']).toBeDefined();
         
-        // Debería estar cargando inicialmente al llamar a ngOnInit
+        // Should be loading initially when calling ngOnInit
         expect(component['store'].loading()).toBe(true);
 
-        // Simulamos el paso del tiempo para completar el delay(50ms) del servicio
+        // We simulate the passage of time to complete the service delay(50ms)
         vi.advanceTimersByTime(50);
         fixture.detectChanges();
 
-        // Ya no debería estar cargando
+        // Should no longer be loading
         expect(component['store'].loading()).toBe(false);
         
-        // Los mensajes en el store deben coincidir con los del mock
+        // Messages in store should match mock messages
         expect(component['store'].messages().length).toBe(2);
       } else {
-        // Test aprobado temporalmente si el alumno aún no declara el store para evitar bloquear compilación
+        // Pass test temporarily if student hasn't declared store yet to prevent blocking compilation
         expect(true).toBe(true);
       }
     });
 
-    it('debería computar correctamente unreadCount y filtrar según el estado', async () => {
+    it('should correctly compute unreadCount and filter based on state', async () => {
       await createComponent();
 
       if (MessagesStore) {
@@ -111,14 +111,14 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
 
         const store = component['store'];
         
-        // Unread count debería ser 1, ya que de los 2 mensajes de mock, uno tiene read: false
+        // Unread count should be 1, since out of the 2 mock messages, one has read: false
         expect(store.unreadCount()).toBe(1);
 
-        // Por defecto, filter is 'all'
+        // By default, filter is 'all'
         expect(store.filter()).toBe('all');
         expect(store.filteredMessages().length).toBe(2);
 
-        // Cambiamos el filtro a 'unread'
+        // Change filter to 'unread'
         store.setFilter('unread');
         fixture.detectChanges();
 
@@ -130,7 +130,7 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
       }
     });
 
-    it('debería marcar mensajes como leídos de forma inmutable a través de los métodos expuestos', async () => {
+    it('should mark messages as read immutably through exposed methods', async () => {
       await createComponent();
 
       if (MessagesStore) {
@@ -140,11 +140,11 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
         const store = component['store'];
         expect(store.unreadCount()).toBe(1);
 
-        // Marcar el mensaje con id '1' como leído
+        // Mark message with id '1' as read
         store.markAsRead('1');
         fixture.detectChanges();
 
-        // El unread count ahora debería ser 0
+        // Unread count should now be 0
         expect(store.unreadCount()).toBe(0);
         expect(store.messages().find((m: any) => m.id === '1').read).toBe(true);
       } else {
@@ -153,8 +153,8 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
     });
   });
 
-  describe('INTERACCIÓN MULTI-COMPONENTE 🔄 (Integración)', () => {
-    it('debería sincronizar de forma cruzada las acciones del listado de mensajes (hijo) con el contador de la barra lateral (hijo)', async () => {
+  describe('MULTI-COMPONENT INTERACTION 🔄 (Integration)', () => {
+    it('should cross-synchronize actions from the message list (child) with the sidebar counter (child)', async () => {
       await createComponent();
 
       if (MessagesStore) {
@@ -164,24 +164,24 @@ describe('Nivel 6: Signal Stores 🏛️ - MessagesListComponent & Stores', () =
         const store = component['store'];
         expect(store.unreadCount()).toBe(1);
 
-        // Buscamos el elemento del botón del componente hijo <app-message-item>
+        // Search for button element in child component <app-message-item>
         const messageItemEl = fixture.debugElement.query(By.css('app-message-item'));
         expect(messageItemEl).toBeDefined();
 
-        // Obtenemos su botón de "Marcar como leído"
+        // Get its "Mark as read" button
         const markReadBtn = messageItemEl.query(By.css('.btn-mark-read'));
         expect(markReadBtn).toBeDefined();
 
-        // Disparamos el click
+        // Trigger click
         markReadBtn.nativeElement.click();
         fixture.detectChanges();
 
-        // Verificamos que el contador de la barra lateral <app-messages-sidebar> se haya actualizado reactivamente a 0
+        // Verify that sidebar counter <app-messages-sidebar> reactively updated to 0
         expect(store.unreadCount()).toBe(0);
         
-        // También podemos verificar el HTML del sidebar directamente
+        // We can also verify sidebar HTML directly
         const sidebarEl = fixture.debugElement.query(By.css('app-messages-sidebar'));
-        expect(sidebarEl.nativeElement.textContent).toContain('Sin Leer (0)');
+        expect(sidebarEl.nativeElement.textContent).toContain('Unread (0)');
       } else {
         expect(true).toBe(true);
       }

@@ -20,7 +20,7 @@ import { MessageItemComponent } from './message-item/message-item.component';
 })
 export class MessagesListComponent extends LearningComponent implements OnInit {
   // ==========================================
-  // Configuración del Nivel y Logros
+  // Level Configuration and Achievements
   // ==========================================
   protected override level = 'nivel-6';
 
@@ -28,20 +28,20 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
     learningStateStore.addAchievement(
       'L6_SIGNAL_STORES',
       'Architect State Guru 🏛️',
-      'Dominaste la arquitectura de stores centralizados con @ngrx/signals y construiste tu propio Custom Store.',
+      'You mastered centralized store architecture with @ngrx/signals and built your own Custom Store.',
       '🏛️'
     );
     learningStateStore.completeLevel(this.level);
   }
   // ==========================================
 
-  // Inyectar el servicio de simulación de mensajería académica
+  // Inject academic messaging simulation service
   protected messagesService = inject(RxjsMessagesService);
 
   // ============================================================================
-  // DEMO PARTE 1: DIY Custom Store (Demostración Práctica)
+  // DEMO PART 1: DIY Custom Store (Practical Demonstration)
   // ============================================================================
-  // Instanciamos el Custom Store de la Parte 1 para demostrar su funcionamiento en la UI.
+  // We instantiate the Part 1 Custom Store to demonstrate its functionality in the UI.
   protected customCounterStore = new CustomStore<{ count: number }>({ count: 10 });
   
   protected incrementCustomStore() {
@@ -49,12 +49,12 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
   }
 
   // ============================================================================
-  // PARTE 2: Inyección de @ngrx/signals MessagesStore
+  // PART 2: NgRx Signals MessagesStore Injection
   // ============================================================================
-  // TODO: Una vez que declares tu MessagesStore usando signalStore() en messages-store.ts,
-  // el inyector de Angular te permitirá obtener la instancia global única (Singleton).
+  // TODO: Once you declare your MessagesStore using signalStore() in messages-store.ts,
+  // the Angular injector will let you obtain the unique global instance (Singleton).
   //
-  // Pista: protected store = inject(MessagesStore);
+  // Hint: protected store = inject(MessagesStore);
   
   protected store: any = (() => {
     try {
@@ -62,9 +62,9 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
         return inject(MessagesStore);
       }
     } catch (e) {
-      console.warn('MessagesStore no está listo aún para ser inyectado:', e);
+      console.warn('MessagesStore is not ready to be injected yet:', e);
     }
-    // Retorno de respaldo reactivo temporal (Opción B: Servicio RxJS Tradicional)
+    // Temporary reactive fallback return (Option B: Traditional RxJS Service)
     const service = inject(RxjsMessagesService);
     const messages = toSignal(service.messages$ || of([]), { initialValue: [] as Message[] });
     const filter = toSignal(service.filter$ || of('all'), { initialValue: 'all' as 'all' | 'unread' });
@@ -89,7 +89,7 @@ export class MessagesListComponent extends LearningComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    // Al iniciar el componente, activamos el estado de carga y obtenemos los mensajes del servicio.
+    // On startup, we activate loading state and load messages from the service.
     this.loadMessages();
   }
   

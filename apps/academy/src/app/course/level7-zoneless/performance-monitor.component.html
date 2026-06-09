@@ -1,25 +1,25 @@
 <div class="card">
-  <h1 class="title">Zone-less Angular & Renderizado Óptimo<span>🚀</span></h1>
+  <h1 class="title">Zone-less Angular & Optimal Rendering <span>🚀</span></h1>
   <p class="subtitle">NgRx Signal Store & Custom Stores</p>
   <div class="perf-banner">
     <p class="perf-subtitle">
-      Aprende a eliminar Zone.js, usar la estrategia <strong>OnPush</strong>, migrar a <strong>Signals</strong> y dominar el ciclo <strong>afterRender</strong> para interacciones DOM de alta velocidad sin sobrecargar la CPU.
+      Learn how to remove Zone.js, use the <strong>OnPush</strong> strategy, migrate to <strong>Signals</strong>, and master the <strong>afterRender</strong> lifecycle for high-speed DOM interactions without overloading the CPU.
     </p>
     <div data-learning-anchor="zoneless-provider-anchor" class="perf-status-badge">
       Status: <span class="status-mode text-warning">ZONE-FULL</span>
     </div>
   </div>
 
-  <!-- Panel Principal Grid -->
+  <!-- Main Grid Panel -->
   <div class="perf-grid">
     
-    <!-- Columna Izquierda: Estadísticas Digitales -->
+    <!-- Left Column: Digital Statistics -->
     <div class="perf-col-left">
       
-      <!-- Card FPS Promedio -->
+      <!-- Average FPS Card -->
       <div data-learning-anchor="state-signals-anchor" class="perf-card fps-card">
         <div class="card-glow"></div>
-        <span class="card-label">FPS Promedio (30f)</span>
+        <span class="card-label">Average FPS (30f)</span>
         
         <span class="fps-value"
               [class.fps-green]="averageFps >= 50"
@@ -32,38 +32,38 @@
               [class.fps-bg-green]="averageFps >= 50"
               [class.fps-bg-yellow]="averageFps >= 30 && averageFps < 50"
               [class.fps-bg-red]="averageFps < 30">
-          {{ averageFps >= 50 ? 'Excelente' : averageFps >= 30 ? 'Carga Moderada' : 'Pérdida de Frames' }}
+          {{ averageFps >= 50 ? 'Excellent' : averageFps >= 30 ? 'Moderate Load' : 'Frame Loss' }}
         </span>
       </div>
 
-      <!-- Card Configuración / Acciones -->
+      <!-- Configuration / Actions Card -->
       <div data-learning-anchor="onpush-strategy-anchor" class="perf-card controls-card">
-        <h3 class="perf-section-title">Controles de Simulación</h3>
+        <h3 class="perf-section-title">Simulation Controls</h3>
         
-        <!-- Botón CPU Load Toggle -->
+        <!-- CPU Load Toggle Button -->
         <button (click)="toggleCpuLoad()" 
                 class="btn-perf-action"
                 [class.btn-active]="cpuLoadActive">
-          <span>{{ cpuLoadActive ? '🔥 Detener Carga CPU' : '💻 Simular Carga CPU' }}</span>
+          <span>{{ cpuLoadActive ? '🔥 Stop CPU Load' : '💻 Simulate CPU Load' }}</span>
         </button>
 
-        <!-- Botón Vaciar Historial -->
+        <!-- Clear History Button -->
         <button (click)="clearStats()" 
                 class="btn-perf-reset">
-          <span>🧹 Reiniciar Historial</span>
+          <span>🧹 Reset History</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Columna Derecha: Gráfico en tiempo real y logs -->
+    <!-- Right Column: Real-time graph and logs -->
     <div class="perf-col-right">
       
-      <!-- Card Canvas de Rendimiento -->
+      <!-- Performance Canvas Card -->
       <div data-learning-anchor="after-render-anchor" class="perf-card canvas-card">
         <div class="canvas-header">
-          <h3 class="perf-section-title">📊 Gráfico de Frames (Canvas DOM)</h3>
-          <span class="canvas-hint">Actualizado en ngAfterViewChecked</span>
+          <h3 class="perf-section-title">📊 Frame Graph (DOM Canvas)</h3>
+          <span class="canvas-hint">Updated in ngAfterViewChecked</span>
         </div>
         
         <div class="canvas-wrapper">
@@ -71,9 +71,9 @@
         </div>
       </div>
 
-      <!-- Card Terminal Logs -->
+      <!-- Terminal Logs Card -->
       <div class="perf-card logs-card">
-        <h3 class="perf-section-title">📟 Consola de Eventos</h3>
+        <h3 class="perf-section-title">📟 Event Console</h3>
         
         <div class="log-console scrollbar-thin">
           @for (log of logs; track log) {
@@ -87,7 +87,7 @@
               </span>
             </div>
           } @empty {
-            <div class="log-empty">No hay registros de eventos en esta sesión.</div>
+            <div class="log-empty">No event records in this session.</div>
           }
         </div>
       </div>

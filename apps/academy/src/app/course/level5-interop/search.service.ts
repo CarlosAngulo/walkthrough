@@ -24,7 +24,7 @@ export class SearchService {
   ];
 
   /**
-   * Simula una petición HTTP de búsqueda con latencia asíncrona.
+   * Simulates an HTTP search request with asynchronous latency.
    */
   search(query: string): Observable<Course[]> {
     const cleanQuery = query.toLowerCase().trim();
@@ -38,7 +38,7 @@ export class SearchService {
         c.category.toLowerCase().includes(cleanQuery)
     );
 
-    // Simular un retardo de red de 200ms
+    // Simulate a network delay of 200ms
     return of(filtered).pipe(delay(200));
   }
 }

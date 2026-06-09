@@ -19,31 +19,31 @@ export class RxjsMessagesService {
     {
       id: '1',
       sender: 'Prof. Ana Martínez',
-      subject: 'Retroalimentación del Reto 5',
-      body: '¡Hola! Excelente trabajo resolviendo la interoperabilidad con RxJS. Tu código cumple con todas las buenas prácticas.',
-      time: 'Hace 10 min',
+      subject: 'Challenge 5 Feedback',
+      body: 'Hello! Excellent job resolving RxJS interoperability. Your code complies with all best practices.',
+      time: '10 min ago',
       read: false
     },
     {
       id: '2',
-      sender: 'Soporte Técnico',
-      subject: 'Actualización de Cuenta Premium',
-      body: 'Se ha habilitado tu acceso a los laboratorios de Zoneless y Custom Stores en Signals Academy.',
-      time: 'Hace 1 hora',
+      sender: 'Technical Support',
+      subject: 'Premium Account Update',
+      body: 'Your access to the Zoneless and Custom Stores labs in Signals Academy has been enabled.',
+      time: '1 hour ago',
       read: false
     },
     {
       id: '3',
-      sender: 'Comunidad Signals',
-      subject: 'Invitación al Angular Meetup',
-      body: 'No te pierdas la charla sobre el futuro de la gestión de estado reactiva en Angular.',
-      time: 'Ayer',
+      sender: 'Signals Community',
+      subject: 'Angular Meetup Invitation',
+      body: 'Don\'t miss the talk about the future of reactive state management in Angular.',
+      time: 'Yesterday',
       read: true
     }
   ];
 
   // ==========================================
-  // ESTADO TRADICIONAL BASADO EN RXJS
+  // TRADITIONAL STATE BASED ON RXJS
   // ==========================================
   private _messagesSubject$ = new BehaviorSubject<Message[]>([]);
   readonly messages$ = this._messagesSubject$.asObservable();
@@ -55,11 +55,11 @@ export class RxjsMessagesService {
   readonly loading$ = this._loadingSubject$.asObservable();
 
   getMessages(): Observable<Message[]> {
-    // Simula una latencia de red de 600ms para demostrar el estado loading
+    // Simulates network latency of 600ms to demonstrate loading state
     return of(this._initialMessages).pipe(delay(600));
   }
 
-  // Métodos del Store tradicional
+  // Traditional Store methods
   loadMessages(messages: Message[]) {
     this._messagesSubject$.next(messages);
     this._loadingSubject$.next(false);

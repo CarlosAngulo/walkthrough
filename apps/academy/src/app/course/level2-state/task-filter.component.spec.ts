@@ -9,7 +9,7 @@ import { resolve } from 'path';
 // Import our custom Vitest matchers to extend expect
 import '@learning-engine/test-integration';
 
-describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
+describe('Level 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
   let component: TaskFilterComponent;
   let fixture: ComponentFixture<TaskFilterComponent>;
 
@@ -23,8 +23,8 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with all reactive design rules and avoid anti-patterns', () => {
       const componentPath = 'src/app/course/level2-state/task-filter.component.ts';
       
       expect(componentPath).toSatisfyRules([
@@ -37,134 +37,134 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
     });
   });
 
-  describe('RETO 1: Lista de Tareas como Signal', () => {
-    it('debería declarar "tasks" como un Writable Signal de Angular', () => {
+  describe('CHALLENGE 1: Task List as a Signal', () => {
+    it('should declare "tasks" as an Angular Writable Signal', () => {
       expect(component.tasks).toBeDefined();
 
       const isSignalResult = isSignal(component.tasks);
       expect(isSignalResult).withContext(
-        '¡Oh no! "tasks" debe ser un Signal de Angular. Asegúrate de declararla e inicializarla usando la función signal().'
+        'Oh no! "tasks" must be an Angular Signal. Make sure to declare and initialize it using the signal() function.'
       ).toBe(true);
 
       const tasksVal = (component.tasks as any)();
       expect(Array.isArray(tasksVal)).withContext(
-        'El valor del Signal "tasks" debe ser un array.'
+        'The value of the "tasks" Signal must be an array.'
       ).toBe(true);
 
       expect(tasksVal.length).withContext(
-        'El array de tareas inicial debe tener exactamente 3 elementos.'
+        'The initial tasks array must have exactly 3 elements.'
       ).toBe(3);
     });
   });
 
-  describe('RETO 2: Filtro Activo como Signal', () => {
-    it('debería declarar "filter" como un Writable Signal de Angular', () => {
+  describe('CHALLENGE 2: Active Filter as a Signal', () => {
+    it('should declare "filter" as an Angular Writable Signal', () => {
       expect(component.filter).toBeDefined();
 
       const isSignalResult = isSignal(component.filter);
       expect(isSignalResult).withContext(
-        '¡Casi! "filter" debe ser una señal mutable. Inicialízala usando signal("all").'
+        'Almost! "filter" must be a mutable signal. Initialize it using signal("all").'
       ).toBe(true);
 
       expect((component.filter as any)()).withContext(
-        'El valor inicial de "filter" debe ser "all".'
+        'The initial value of "filter" must be "all".'
       ).toBe('all');
     });
   });
 
-  describe('RETO 3: Computed Signal para Tareas Filtradas', () => {
-    it('debería declarar "filteredTasks" como un Computed Signal de Angular', () => {
+  describe('CHALLENGE 3: Computed Signal for Filtered Tasks', () => {
+    it('should declare "filteredTasks" as an Angular Computed Signal', () => {
       expect(component.filteredTasks).toBeDefined();
 
       const isSignalResult = isSignal(component.filteredTasks);
       expect(isSignalResult).withContext(
-        '¡Sigue intentando! "filteredTasks" debe ser un Computed Signal. Úsalo declarándolo con computed(...).'
+        'Keep trying! "filteredTasks" must be a Computed Signal. Use it by declaring it with computed(...).'
       ).toBe(true);
 
-      // Los computed signals no tienen el método .set o .update
+      // Computed signals do not have a .set or .update method
       const hasSet = typeof (component.filteredTasks as any).set === 'function';
       expect(hasSet).withContext(
-        '¡Cuidado! "filteredTasks" debe ser una señal de LECTURA (computed), no una Writable Signal mutable.'
+        'Careful! "filteredTasks" must be a READ-ONLY signal (computed), not a mutable Writable Signal.'
       ).toBe(false);
     });
 
-    it('debería filtrar las tareas automáticamente al cambiar el filtro sin intervención manual', () => {
+    it('should filter tasks automatically when the filter changes without manual intervention', () => {
       if (isSignal(component.filter) && isSignal(component.tasks)) {
-        // Inicialmente filter='all' -> muestra 3 tareas
+        // Initially filter='all' -> shows 3 tasks
         expect((component.filteredTasks as any)().length).toBe(3);
 
-        // Cambiar el filtro a completed
+        // Change filter to completed
         (component.filter as any).set('completed');
         fixture.detectChanges();
 
-        // Debería quedar solo 1 completada
+        // Should only be 1 completed
         expect((component.filteredTasks as any)().length).withContext(
-          'Cuando el filtro cambia a "completed", filteredTasks() debería retornar solo las tareas completadas (1 tarea).'
+          'When the filter changes to "completed", filteredTasks() should return only completed tasks (1 task).'
         ).toBe(1);
 
-        // Cambiar el filtro a pending
+        // Change filter to pending
         (component.filter as any).set('pending');
         fixture.detectChanges();
 
-        // Deberían quedar 2 pendientes
+        // Should only be 2 pending
         expect((component.filteredTasks as any)().length).withContext(
-          'Cuando el filtro cambia a "pending", filteredTasks() debería retornar solo las tareas pendientes (2 tareas).'
+          'When the filter changes to "pending", filteredTasks() should return only pending tasks (2 tasks).'
         ).toBe(2);
       } else {
-        expect.fail('No se puede evaluar el filtrado reactivo porque "filter" o "tasks" no son señales aún.');
+        expect.fail('Cannot evaluate reactive filtering because "filter" or "tasks" are not signals yet.');
       }
     });
   });
 
-  describe('RETO 4: Computed Signals para Estadísticas (Counts)', () => {
-    it('debería declarar "pendingCount" y "completedCount" como Computed Signals de Angular', () => {
+  describe('CHALLENGE 4: Computed Signals for Statistics (Counts)', () => {
+    it('should declare "pendingCount" and "completedCount" as Angular Computed Signals', () => {
       expect(component.pendingCount).toBeDefined();
       expect(component.completedCount).toBeDefined();
 
       expect(isSignal(component.pendingCount)).withContext(
-        '\"pendingCount\" debe ser un Computed Signal. Declarado con computed(...).'
+        '"pendingCount" must be a Computed Signal. Declared with computed(...).'
       ).toBe(true);
 
       expect(isSignal(component.completedCount)).withContext(
-        '\"completedCount\" debe ser un Computed Signal. Declarado con computed(...).'
+        '"completedCount" must be a Computed Signal. Declared with computed(...).'
       ).toBe(true);
 
       const hasPendingSet = typeof (component.pendingCount as any).set === 'function';
       expect(hasPendingSet).withContext(
-        '\"pendingCount\" debe ser una señal de lectura (computed).'
+        '"pendingCount" must be a read-only signal (computed).'
       ).toBe(false);
 
       const hasCompletedSet = typeof (component.completedCount as any).set === 'function';
       expect(hasCompletedSet).withContext(
-        '\"completedCount\" debe ser una señal de lectura (computed).'
+        '"completedCount" must be a read-only signal (computed).'
       ).toBe(false);
     });
 
-    it('debería actualizar los conteos automáticamente cuando cambia la lista de tareas', () => {
+    it('should update counts automatically when the task list changes', () => {
       if (isSignal(component.tasks) && typeof (component.tasks as any).update === 'function') {
         expect((component.pendingCount as any)()).toBe(2);
         expect((component.completedCount as any)()).toBe(1);
 
-        // Toggle de la segunda tarea (índice 1: "Dominar Computed...") para completarla
+        // Toggle the second task (index 1: "Dominar Computed...") to complete it
         (component.tasks as any).update((list: any[]) => 
           list.map((t, i) => i === 1 ? { ...t, completed: true } : t)
         );
         fixture.detectChanges();
 
         expect((component.pendingCount as any)()).withContext(
-          'Al completar la segunda tarea, pendingCount() debería bajar automáticamente a 1.'
+          'When completing the second task, pendingCount() should automatically drop to 1.'
         ).toBe(1);
         expect((component.completedCount as any)()).withContext(
-          'Al completar la segunda tarea, completedCount() debería subir automáticamente a 2.'
+          'When completing the second task, completedCount() should automatically rise to 2.'
         ).toBe(2);
       } else {
-        expect.fail('No se pueden evaluar las estadísticas reactivas porque "tasks" no es un Writable Signal.');
+        expect.fail('Cannot evaluate reactive statistics because "tasks" is not a Writable Signal.');
       }
     });
   });
 
-  describe('RETO 5: Mutación de Estado e Inmutabilidad', () => {
-    it('debería agregar una nueva tarea inmutablemente y ver reflejados los cambios en todo el sistema', () => {
+  describe('CHALLENGE 5: State Mutation and Immutability', () => {
+    it('should add a new task immutably and see changes reflected throughout the system', () => {
       if (isSignal(component.tasks) && isSignal(component.filteredTasks) && isSignal(component.pendingCount)) {
         const initialLength = (component.tasks as any)().length;
         
@@ -175,16 +175,16 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
         expect((component.tasks as any)()[initialLength].title).toBe('Probar inmutabilidad con Vitest 🚀');
         expect((component.tasks as any)()[initialLength].completed).toBe(false);
         
-        // El conteo de pendientes debería subir
+        // Pending count should increase
         expect((component.pendingCount as any)()).toBe(3);
       } else {
-        expect.fail('No se puede probar addTask porque las dependencias no son señales aún.');
+        expect.fail('Cannot test addTask because dependencies are not signals yet.');
       }
     });
 
-    it('debería conmutar (toggle) el estado completado de una tarea inmutablemente', () => {
+    it('should toggle the completed state of a task immutably', () => {
       if (isSignal(component.tasks) && isSignal(component.completedCount)) {
-        // Tarea en índice 0 ("Aprender Signals Básicos ⚡") está completed: true inicialmente
+        // Task at index 0 ("Aprender Signals Básicos ⚡") is completed: true initially
         expect((component.tasks as any)()[0].completed).toBe(true);
         expect((component.completedCount as any)()).toBe(1);
 
@@ -192,66 +192,63 @@ describe('Nivel 2: Reactive Thinking 🧠 - TaskFilterComponent', () => {
         fixture.detectChanges();
 
         expect((component.tasks as any)()[0].completed).withContext(
-          'toggleTask(0) debería cambiar el estado de true a false.'
+          'toggleTask(0) should switch the state from true to false.'
         ).toBe(false);
         expect((component.completedCount as any)()).withContext(
-          'completedCount() debería bajar a 0.'
+          'completedCount() should drop to 0.'
         ).toBe(0);
       } else {
-        expect.fail('No se puede probar toggleTask porque las dependencias no son señales.');
+        expect.fail('Cannot test toggleTask because dependencies are not signals.');
       }
     });
 
-    it('debería eliminar una tarea inmutablemente', () => {
+    it('should remove a task immutably', () => {
       if (isSignal(component.tasks) && isSignal(component.filteredTasks)) {
         expect((component.tasks as any)().length).toBe(3);
 
-        component.removeTask(1); // Elimina "Dominar Computed..."
+        component.removeTask(1); // Removes "Dominar Computed..."
         fixture.detectChanges();
 
         expect((component.tasks as any)().length).toBe(2);
-        expect((component.tasks as any)()[1].title).toBe('Explorar Arquitectura de Effects 💾'); // Ahora es el índice 1
+        expect((component.tasks as any)()[1].title).toBe('Explorar Arquitectura de Effects 💾'); // Now index 1
       } else {
-        expect.fail('No se puede probar removeTask porque las dependencias no son señales.');
+        expect.fail('Cannot test removeTask because dependencies are not signals.');
       }
     });
   });
 
-  describe('Análisis Arquitectónico (Disciplinas Reactivas) 🧐', () => {
-    it('no debería contener asignaciones manuales en runtime a variables computadas', () => {
+  describe('Architectural Analysis (Reactive Disciplines) 🧐', () => {
+    it('should not contain manual runtime assignments to computed variables', () => {
       const filePath = resolve(__dirname, 'task-filter.component.ts');
       const code = readFileSync(filePath, 'utf-8');
 
-      // Buscar reasignaciones de filteredTasks en métodos (fuera de la declaración de la clase)
-      // Buscamos si aparece "this.filteredTasks =" o "this.filteredTasks=" (asignaciones manuales).
+      // Search for filteredTasks reassignments in methods (outside class declaration)
       const filteredTasksMatches = code.match(/this\.filteredTasks\s*=/g) || [];
       expect(filteredTasksMatches.length).withContext(
-        '¡Alerta de Arquitectura! "filteredTasks" solo debe ser asignada una vez en su declaración usando computed(). No debes realizar asignaciones manuales del tipo "this.filteredTasks = ..." en tus métodos.'
+        'Architectural Alert! "filteredTasks" must only be assigned once in its declaration using computed(). You must not perform manual assignments of the type "this.filteredTasks = ..." in your methods.'
       ).toBe(0);
 
-      // Buscar reasignaciones de pendingCount
+      // Search for pendingCount reassignments
       const pendingCountMatches = code.match(/this\.pendingCount\s*=/g) || [];
       expect(pendingCountMatches.length).withContext(
-        '¡Alerta de Arquitectura! "pendingCount" solo debe ser declarada una vez usando computed(). No debes asignarle valores manualmente.'
+        'Architectural Alert! "pendingCount" must only be declared once using computed(). You must not assign values to it manually.'
       ).toBe(0);
 
-      // Buscar reasignaciones de completedCount
+      // Search for completedCount reassignments
       const completedCountMatches = code.match(/this\.completedCount\s*=/g) || [];
       expect(completedCountMatches.length).withContext(
-        '¡Alerta de Arquitectura! "completedCount" solo debe ser declarada una vez usando computed(). No debes asignarle valores manualmente.'
+        'Architectural Alert! "completedCount" must only be declared once using computed(). You must not assign values to it manually.'
       ).toBe(0);
     });
 
-    it('no debería llamar a setFilter ni realizar recálculos imperativos en los métodos de mutación', () => {
+    it('should not call setFilter or perform imperative recalculations in mutation methods', () => {
       const filePath = resolve(__dirname, 'task-filter.component.ts');
       const code = readFileSync(filePath, 'utf-8');
 
-      // Si el estudiante migró correctamente, no llamará a "this.setFilter" en sus métodos de manipulación.
-      // Solo mantendrá la declaración del método "setFilter(f: ...)" y quizás "this.filter.set(f)".
-      // Por ende, la cadena "this.setFilter" (con el "this.") no debe aparecer para nada en el archivo.
+      // If the student migrated correctly, they will not call "this.setFilter" in their manipulation methods.
       const thisSetFilterMatches = code.match(/this\.setFilter/g) || [];
       expect(thisSetFilterMatches.length).withContext(
-        '¡Alerta de Arquitectura! No debes llamar a "this.setFilter()" en addTask(), toggleTask() ni removeTask(). Al usar computed(), el estado derivado se recalcula automáticamente cuando cambian las señales de origen.'
+        'Architectural Alert! You must not call "this.setFilter()" in addTask(), toggleTask(), or removeTask(). When using computed(), the derived state is automatically recalculated when source signals change.'
       ).toBe(0);
     });
   });

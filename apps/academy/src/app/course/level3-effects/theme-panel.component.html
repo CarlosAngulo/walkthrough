@@ -4,75 +4,76 @@
     <p class="subtitle">Angular Signals</p>
 
     <div class="panel-layout">
-      <!-- Sección Izquierda: Controles de Preferencia -->
+      <!-- Left Section: Preference Controls -->
       <div class="preferences-controls" data-learning-anchor="preferences-controls">
         
-        <!-- Control 1: Selector de Tema -->
+        <!-- Control 1: Theme Selector -->
         <div class="control-group">
-          <label class="control-label">Esquema de Tema</label>
+          <label class="control-label">Theme Scheme</label>
           <div class="theme-toggle-bar">
-            <!-- TODO: Reto 5 - Evalúa 'theme' como función: theme() === 'dark' -->
+            <!-- TODO: Challenge 5 - Evaluate 'theme' as a function: theme() === 'dark' -->
             <button 
               class="btn-toggle" 
               [class.active]="theme === 'dark'"
               (click)="setTheme('dark')"
             >
-              <span>🌙</span> Oscuro
+              <span>🌙</span> Dark
             </button>
             <button 
               class="btn-toggle" 
               [class.active]="theme === 'light'"
+              (class.active)="theme === 'light'"
               (click)="setTheme('light')"
             >
-              <span>☀️</span> Claro
+              <span>☀️</span> Light
             </button>
           </div>
         </div>
 
-        <!-- Control 2: Tamaño de Fuente -->
+        <!-- Control 2: Font Size -->
         <div class="control-group">
-          <label class="control-label">Tamaño de Fuente (14px - 24px)</label>
+          <label class="control-label">Font Size (14px - 24px)</label>
           <div class="font-stepper">
-            <!-- TODO: Reto 5 - Cuando fontSize sea una señal, llámala como función: fontSize() -->
+            <!-- TODO: Challenge 5 - When fontSize is a signal, call it as a function: fontSize() -->
             <button class="btn-step" (click)="setFontSize(fontSize - 1)" [disabled]="fontSize <= 14">-</button>
             <span class="font-value-badge">{{ fontSize }}px</span>
             <button class="btn-step" (click)="setFontSize(fontSize + 1)" [disabled]="fontSize >= 24">+</button>
           </div>
         </div>
 
-        <!-- Control 3: Color de Acento -->
+        <!-- Control 3: Accent Color -->
         <div class="control-group">
-          <label class="control-label">Color de Acento Principal</label>
+          <label class="control-label">Primary Accent Color</label>
           <div class="accent-palette">
-            <!-- TODO: Reto 5 - Evalúa accentColor como función: accentColor() === 'primary' -->
+            <!-- TODO: Challenge 5 - Evaluate accentColor as a function: accentColor() === 'primary' -->
             <button 
               class="accent-dot primary" 
               [class.selected]="accentColor === 'primary'"
               (click)="setAccentColor('primary')"
-              title="Acento Primario (Naranja)"
+              title="Primary Accent (Orange)"
             ></button>
             <button 
               class="accent-dot secondary" 
               [class.selected]="accentColor === 'secondary'"
               (click)="setAccentColor('secondary')"
-              title="Acento Secundario (Verde)"
+              title="Secondary Accent (Green)"
             ></button>
             <button 
               class="accent-dot neutral" 
               [class.selected]="accentColor === 'neutral'"
               (click)="setAccentColor('neutral')"
-              title="Acento Neutral (Gris)"
+              title="Neutral Accent (Gray)"
             ></button>
           </div>
         </div>
 
       </div>
 
-      <!-- Sección Derecha: Tarjeta de Vista Previa -->
+      <!-- Right Section: Preview Card -->
       <div class="preview-panel">
-        <label class="control-label">Vista Previa Reactiva</label>
+        <label class="control-label">Reactive Preview</label>
         
-        <!-- TODO: Reto Bonus - Cuando 'theme', 'fontSize' y 'accentColor' sean señales, llámalas como función: theme(), etc. -->
+        <!-- TODO: Bonus Challenge - When 'theme', 'fontSize', and 'accentColor' are signals, call them as functions: theme(), etc. -->
         <app-theme-preview
           [theme]="theme"
           [fontSize]="fontSize"
@@ -81,11 +82,11 @@
       </div>
     </div>
 
-    <!-- Panel Informativo TDL -->
+    <!-- TDL Informative Panel -->
     <div class="educational-footer">
-      <div class="badge-tdl">TDL METODOLOGÍA</div>
+      <div class="badge-tdl">TDL METHODOLOGY</div>
       <p>
-        Actualmente, cada click actualiza el estado de forma imperativa y re-renderiza el DOM de forma manual (anti-patrón). Tu reto es encapsular estas operaciones secundarias dentro de un <code>effect()</code> declarativo que observe tus signals, y sincronizar las analíticas aplicando debounce y limpieza con <code>onCleanup</code>.
+        Currently, each click updates the state imperatively and re-renders the DOM manually (anti-pattern). Your challenge is to encapsulate these side operations inside a declarative <code>effect()</code> that observes your signals, and synchronize analytics by applying debounce and cleanup with <code>onCleanup</code>.
       </p>
     </div>
   </div>

@@ -15,15 +15,15 @@ import { ThemeMode, AccentColor } from '../theme.types';
 })
 export class ThemePreviewComponent {
   // =========================================================================
-  // EXPLICACIÓN PEDAGÓGICA: INPUTS TRADICIONALES vs SIGNAL INPUTS ⚡
+  // PEDAGOGICAL EXPLANATION: TRADITIONAL INPUTS vs SIGNAL INPUTS ⚡
   // =========================================================================
-  // En las versiones clásicas de Angular declaramos inputs con el decorador imperativo @Input():
+  // In classic versions of Angular we declare inputs with the imperative @Input() decorator:
   @Input({ required: true }) theme!: any;
   @Input({ required: true }) fontSize!: any;
   @Input({ required: true }) accentColor!: any;
 
-  // Resolutores inteligentes para dar soporte robusto a Signals pasados como referencia de función
-  // o como valores primitivos resueltos:
+  // Smart resolvers to robustly support Signals passed as a function reference
+  // or as resolved primitive values:
   get resolvedTheme(): ThemeMode {
     return typeof this.theme === 'function' ? this.theme() : this.theme;
   }
@@ -36,14 +36,14 @@ export class ThemePreviewComponent {
     return typeof this.accentColor === 'function' ? this.accentColor() : this.accentColor;
   }
 
-  // 💡 VENTAJAS DE LOS SIGNAL INPUTS (Angular 17.2+):
+  // 💡 ADVANTAGES OF SIGNAL INPUTS (Angular 17.2+):
   // 
-  // 1. **Reactividad Nativa e Integrada:** Al ser señales de lectura, se pueden usar directamente
-  //    en señales computadas (computed()) o efectos (effect()) de manera automática, sin hooks de ciclo de vida.
-  // 2. **Derivación de Estado Limpia:** Si quieres derivar un estado (por ejemplo, duplicar el tamaño de fuente),
-  //    simplemente escribes: `doubleFontSize = computed(() => this.fontSize() * 2)`. Ya no necesitas
-  //    implementar `ngOnChanges` ni `ngOnInit` con lógica manual repetitiva.
-  // 3. **Arquitectura Zoneless / Ultra-rendimiento:** Los Signal Inputs habilitan un modelo de detección
-  //    de cambios extremadamente óptimo a nivel de componente singular, pavimentando el camino para prescindir de Zone.js.
-  // 4. **Tipado Fuertemente Seguro:** Ofrece una sintaxis moderna muy limpia: `theme = input.required<ThemeMode>()` o `fontSize = input(16)`.
+  // 1. **Native & Integrated Reactivity:** As read-only signals, they can be directly used
+  //    in computed signals (computed()) or effects (effect()) automatically, without lifecycle hooks.
+  // 2. **Clean State Derivation:** If you want to derive a state (e.g., doubling the font size),
+  //    you simply write: `doubleFontSize = computed(() => this.fontSize() * 2)`. You no longer need
+  //    to implement `ngOnChanges` or `ngOnInit` with repetitive manual logic.
+  // 3. **Zoneless Architecture / Ultra-performance:** Signal Inputs enable an extremely optimal change
+  //    detection model at the individual component level, paving the way to get rid of Zone.js.
+  // 4. **Strongly Type-Safe:** Offers a very clean modern syntax: `theme = input.required<ThemeMode>()` or `fontSize = input(16)`.
 }

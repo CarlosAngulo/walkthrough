@@ -17,19 +17,19 @@ export class ProductListComponent extends LearningComponent {
   protected override level = 'nivel-4';
 
   // ==========================================
-  // Desbloqueo del Logro - Motor de Aprendizaje
+  // Achievement Unlocking - Learning Engine
   // ==========================================
   protected onLevelCompleted() {
     learningStateStore.addAchievement(
       'L4_ARCHITECTURE',
       'Reactive Architect 🏗️',
-      'Desacoplaste por completo el catálogo del estado global de forma segura y reactiva.',
+      'You completely decoupled the catalog from the global state securely and reactively.',
       '🏗️'
     );
     learningStateStore.completeLevel('nivel-4');
   }
 
-  // Catálogo de Productos
+  // Product Catalog
   products: Product[] = [
     { id: 'p1', name: 'Curso Angular Signals ⚡', price: 49.99 },
     { id: 'p2', name: 'Curso RxJS Bound 🔄', price: 59.99 },
@@ -37,19 +37,19 @@ export class ProductListComponent extends LearningComponent {
   ];
 
   // ==========================================
-  // RETO 5: Señales de Salida con output()
+  // CHALLENGE 5: Output Signals with output()
   // ==========================================
-  // TODO: Refactora este emisor tradicional para utilizar la nueva función output() de Angular:
+  // TODO: Refactor this traditional emitter to use Angular's new output() function:
   // - productAdded = output<Product>();
-  // Recuerda importar 'output' desde '@angular/core' (y puedes borrar EventEmitter y Output).
+  // Remember to import 'output' from '@angular/core' (and you can delete EventEmitter and Output).
   @Output() productAdded = new EventEmitter<Product>();
 
   // ==========================================
-  // RETO 6: Inyección de Dependencias Moderna
+  // CHALLENGE 6: Modern Dependency Injection
   // ==========================================
-  // TODO: Reemplaza esta inyección de constructor tradicional por la inyección declarativa inject():
+  // TODO: Replace this traditional constructor injection with declarative inject() injection:
   // - cartService = inject(CartService);
-  // Cuando lo hagas, ¡puedes borrar el constructor completamente!
+  // When you do so, you can delete the constructor completely!
   cartService: CartService;
 
   constructor(cartService: CartService) {
@@ -57,11 +57,11 @@ export class ProductListComponent extends LearningComponent {
     this.cartService = cartService;
   }
 
-  // Delegación del evento al Servicio
+  // Delegating event to the Service
   addToCart(product: Product) {
     this.cartService.addToCart(product);
     
-    // Emitir el evento de notificación
+    // Emit notification event
     this.productAdded.emit(product);
   }
 

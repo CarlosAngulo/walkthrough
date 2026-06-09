@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resetProgress() {
-    if (confirm('¿Estás seguro de que deseas reiniciar todo tu progreso y logros?')) {
+    if (confirm('Are you sure you want to reset all your progress and achievements?')) {
       learningStateStore.reset();
       this.learningEngineService.triggerRefresh();
     }
@@ -144,9 +144,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getGlobalTestStatusLabel(): string {
     const status = this.getGlobalTestStatus();
-    if (status === 'pass') return 'Aprobado';
-    if (status === 'fail') return 'Fallando';
-    return 'Inactivo';
+    if (status === 'pass') return 'Passed';
+    if (status === 'fail') return 'Failed';
+    return 'Inactive';
   }
 
   triggerTestPing() {

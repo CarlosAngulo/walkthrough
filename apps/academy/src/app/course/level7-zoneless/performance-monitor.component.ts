@@ -11,36 +11,36 @@ import { learningStateStore } from '@learning-engine/learning-state';
   host: {
     class: 'block-performance-monitor'
   }
-  // TODO: Reto L7_ON_PUSH_STRATEGY - Configura changeDetection a ChangeDetectionStrategy.OnPush
+  // TODO: Challenge L7_ON_PUSH_STRATEGY - Configure changeDetection to ChangeDetectionStrategy.OnPush
 })
 export class PerformanceMonitorComponent extends LearningComponent implements OnInit, AfterViewChecked, OnDestroy {
   protected override level = 'nivel-7';
 
   @ViewChild('statsCanvas') statsCanvas!: ElementRef<HTMLCanvasElement>;
 
-  // Variables de estado tradicionales (JS no reactivo)
-  // TODO: Reto L7_STATE_SIGNALS - Convertir estas propiedades a Signals (signal(), computed())
+  // Traditional state variables (non-reactive JS)
+  // TODO: Challenge L7_STATE_SIGNALS - Convert these properties to Signals (signal(), computed())
   fpsList: number[] = [];
   averageFps = 0;
 
-  // Registro de logs de simulación
+  // Simulation logs record
   logs: string[] = [];
 
-  // Variables internas de la simulación
+  // Internal simulation variables
   protected isSimulating = false;
   protected cpuLoadActive = false;
   private animationFrameId?: number;
   private lastFrameTime = performance.now();
 
-  // TODO: Reto L7_AFTER_RENDER_HOOK - Inyectar o importar afterRender o afterNextRender
-  // en el constructor para interactuar de manera óptima con el DOM/Canvas,
-  // y eliminar por completo la dependencia del gancho ngAfterViewChecked.
+  // TODO: Challenge L7_AFTER_RENDER_HOOK - Inject or import afterRender or afterNextRender
+  // in the constructor to interact optimally with the DOM/Canvas,
+  // and completely remove dependency on the ngAfterViewChecked hook.
 
   protected onLevelCompleted() {
     learningStateStore.addAchievement(
       'L7_ZONELESS_PERF',
       'Zoneless Performance Master 🚀',
-      'Lograste migrar un componente de alta intensidad a Zone-less puro usando OnPush, afterRender y Signals.',
+      'You successfully migrated a high-intensity component to pure Zone-less using OnPush, afterRender, and Signals.',
       '🚀'
     );
     learningStateStore.completeLevel(this.level);
@@ -51,7 +51,7 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
     this.startSimulation();
   }
 
-  // TODO: Eliminar este hook tradicional dependiente de Zone.js
+  // TODO: Remove this traditional Zone.js-dependent hook
   ngAfterViewChecked() {
     this.drawCanvas();
   }
@@ -63,31 +63,31 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
 
       const delta = time - this.lastFrameTime;
       this.lastFrameTime = time;
-      // Evitar división por cero en entornos virtuales ultra-rápidos
+      // Avoid division by zero in ultra-fast virtual testing environments
       const currentFps = delta > 0 ? Math.round(1000 / delta) : 60;
 
-      // Simular carga de CPU si está activa
+      // Simulate CPU load if active
       if (this.cpuLoadActive) {
         const start = performance.now();
         while (performance.now() - start < 12) {
-          // Bucle pesado de CPU para simular lag y bajas de FPS
+          // Heavy CPU loop to simulate lag and FPS drops
           Math.sqrt(Math.random() * 1000);
         }
       }
 
-      // Actualizar variables de estado tradicionales
+      // Update traditional state variables
       this.fpsList.push(currentFps);
       if (this.fpsList.length > 30) {
         this.fpsList.shift();
       }
 
-      // Calcular promedio de FPS tradicionalmente
+      // Calculate average FPS traditionally
       const sum = this.fpsList.reduce((a, b) => a + b, 0);
       this.averageFps = this.fpsList.length ? Math.round(sum / this.fpsList.length) : 0;
 
-      // Eventualmente agregar un log interesante
+      // Eventually add an interesting log
       if (currentFps < 45 && Math.random() < 0.1) {
-        this.logs.unshift(`[${new Date().toLocaleTimeString()}] ⚠️ Frame Drop: ${currentFps} FPS detectado.`);
+        this.logs.unshift(`[${new Date().toLocaleTimeString()}] ⚠️ Frame Drop: ${currentFps} FPS detected.`);
         if (this.logs.length > 8) this.logs.pop();
       }
 
@@ -101,7 +101,7 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
     this.cpuLoadActive = !this.cpuLoadActive;
     this.logs.unshift(
       `[${new Date().toLocaleTimeString()}] ${
-        this.cpuLoadActive ? '🔥 Carga de CPU simulada ACTIVADA (Bucle de 12ms por frame)' : '🟢 Carga de CPU simulada DESACTIVADA'
+        this.cpuLoadActive ? '🔥 Simulated CPU Load ACTIVATED (12ms loop per frame)' : '🟢 Simulated CPU Load DEACTIVATED'
       }`
     );
     if (this.logs.length > 8) this.logs.pop();
@@ -110,7 +110,7 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
   protected clearStats() {
     this.fpsList = [];
     this.averageFps = 0;
-    this.logs = [`[${new Date().toLocaleTimeString()}] 🧹 Historial reiniciado`];
+    this.logs = [`[${new Date().toLocaleTimeString()}] 🧹 History reset`];
   }
 
   private drawCanvas() {
@@ -120,24 +120,24 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
     try {
       ctx = canvas.getContext('2d');
     } catch (e) {
-      // Evitar errores y logs en entornos virtuales de testeo (como JSDOM)
+      // Avoid errors and logs in virtual testing environments (like JSDOM)
       return;
     }
     if (!ctx) return;
 
-    // Dimensiones
+    // Dimensions
     const width = canvas.width;
     const height = canvas.height;
     ctx.clearRect(0, 0, width, height);
 
-    // Fondo degradado
+    // Gradient background
     const bgGradient = ctx.createLinearGradient(0, 0, 0, height);
     bgGradient.addColorStop(0, 'rgba(15, 23, 42, 0.6)');
     bgGradient.addColorStop(1, 'rgba(30, 41, 59, 0.8)');
     ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, width, height);
 
-    // Dibujar rejilla
+    // Draw grid
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.lineWidth = 1;
     for (let i = 1; i < 4; i++) {
@@ -148,7 +148,7 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
       ctx.stroke();
     }
 
-    // Dibujar barras de FPS
+    // Draw FPS bars
     const barWidth = width / 30;
     const list = this.fpsList;
 
@@ -158,18 +158,18 @@ export class PerformanceMonitorComponent extends LearningComponent implements On
       const barHeight = height * pct * 0.8;
       const y = height - barHeight;
 
-      // Color curado dependiendo del rendimiento (Premium HSL)
-      let hue = 140; // verde
+      // Curated color depending on performance (Premium HSL)
+      let hue = 140; // green
       if (fps < 30) {
-        hue = 340; // rojo/rosa
+        hue = 340; // red/pink
       } else if (fps < 50) {
-        hue = 45; // naranja/amarillo
+        hue = 45; // orange/yellow
       }
 
       ctx.fillStyle = `hsla(${hue}, 85%, 60%, 0.75)`;
       ctx.fillRect(x + 2, y, barWidth - 4, barHeight);
 
-      // Bordes neon
+      // Neon borders
       ctx.strokeStyle = `hsla(${hue}, 85%, 60%, 1)`;
       ctx.strokeRect(x + 2, y, barWidth - 4, barHeight);
     });

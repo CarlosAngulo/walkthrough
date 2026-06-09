@@ -21,8 +21,8 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
     fixture.detectChanges();
   });
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with all reactive design rules and avoid anti-patterns', () => {
       // Path is relative to the apps/academy directory where tests run
       const componentPath = 'src/app/course/level1-counter/counter.component.ts';
       
@@ -35,78 +35,78 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
     });
   });
 
-  describe('RETO 1: Writable Signals', () => {
-    it('debería declarar "counter" como un Writable Signal de Angular inicializado en 0', () => {
+  describe('CHALLENGE 1: Writable Signals', () => {
+    it('should declare "counter" as an Angular Writable Signal initialized to 0', () => {
       expect(component.counter).toBeDefined();
       
       const isSignalResult = isSignal(component.counter);
       expect(isSignalResult).withContext(
-        '¡Oh no! "counter" debe ser un Signal de Angular. Asegúrate de inicializarlo usando la función: signal(0).'
+        'Oh no! "counter" must be an Angular Signal. Make sure to initialize it using the function: signal(0).'
       ).toBe(true);
 
       expect(component.counter()).withContext(
-        'El valor inicial de la señal "counter" debe ser 0.'
+        'The initial value of the "counter" signal must be 0.'
       ).toBe(0);
     });
   });
 
-  describe('RETO 2: Signal Inputs (Transformación)', () => {
-    it('debería declarar "step" como un Signal Input de Angular con un valor por defecto de 1', () => {
+  describe('CHALLENGE 2: Signal Inputs (Transformation)', () => {
+    it('should declare "step" as an Angular Signal Input with a default value of 1', () => {
       expect(component.step).toBeDefined();
 
       const isSignalResult = isSignal(component.step);
       expect(isSignalResult).withContext(
-        '¡Buen intento! "step" debe ser un Signal Input moderno de Angular. Usa la función input(1) para declararlo, reemplazando el valor anterior.'
+        'Good attempt! "step" must be a modern Angular Signal Input. Use the input(1) function to declare it, replacing the old value.'
       ).toBe(true);
 
       expect(component.step()).withContext(
-        'El valor por defecto del Signal Input "step" debe ser 1.'
+        'The default value of the "step" Signal Input must be 1.'
       ).toBe(1);
     });
 
-    it('debería reaccionar correctamente a los cambios en el input dinámicamente', () => {
+    it('should react correctly to changes in the input dynamically', () => {
       fixture.componentRef.setInput('step', 5);
       fixture.detectChanges();
 
       expect(component.step()).withContext(
-        'El Signal Input "step" debería haber actualizado su valor a 5 reactivamente.'
+        'The "step" Signal Input should have updated its value to 5 reactively.'
       ).toBe(5);
     });
   });
 
-  describe('RETO 3: Computed Signals', () => {
-    it('debería declarar "doubleCounter" como un Computed Signal de Angular', () => {
+  describe('CHALLENGE 3: Computed Signals', () => {
+    it('should declare "doubleCounter" as an Angular Computed Signal', () => {
       expect(component.doubleCounter).toBeDefined();
 
       const isSignalResult = isSignal(component.doubleCounter);
       expect(isSignalResult).withContext(
-        '¡Casi lo tienes! "doubleCounter" debe ser un Computed Signal. Inicialízalo usando computed(...).'
+        'Almost there! "doubleCounter" must be a Computed Signal. Initialize it using computed(...).'
       ).toBe(true);
     });
 
-    it('debería retornar el doble del valor de "counter" automáticamente', () => {
+    it('should return double the value of "counter" automatically', () => {
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
         (component.counter as any).set(5);
         fixture.detectChanges();
         
         expect(component.doubleCounter()).withContext(
-          '¡Atención! "doubleCounter" debería retornar 10 cuando "counter" es 5 (el doble).'
+          'Attention! "doubleCounter" should return 10 when "counter" is 5 (double).'
         ).toBe(10);
 
         (component.counter as any).set(12);
         fixture.detectChanges();
 
         expect(component.doubleCounter()).withContext(
-          '¡Atención! "doubleCounter" debería retornar 24 cuando "counter" es 12.'
+          'Attention! "doubleCounter" should return 24 when "counter" is 12.'
         ).toBe(24);
       } else {
-        expect.fail('No se puede probar doubleCounter porque "counter" no es un Writable Signal válido aún.');
+        expect.fail('Cannot test doubleCounter because "counter" is not a valid Writable Signal yet.');
       }
     });
   });
 
-  describe('RETO 4: Mutación del Estado', () => {
-    it('debería incrementar el valor de "counter" sumándole el valor de "step()" al llamar a increment()', () => {
+  describe('CHALLENGE 4: State Mutation', () => {
+    it('should increment the value of "counter" by adding the value of "step()" when calling increment()', () => {
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
         (component.counter as any).set(10);
         fixture.detectChanges();
@@ -114,7 +114,7 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
         component.increment();
         fixture.detectChanges();
         expect(component.counter()).withContext(
-          'Al llamar a increment() con step = 1, el counter debería pasar de 10 a 11.'
+          'When calling increment() with step = 1, counter should go from 10 to 11.'
         ).toBe(11);
 
         fixture.componentRef.setInput('step', 5);
@@ -123,14 +123,14 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
         component.increment();
         fixture.detectChanges();
         expect(component.counter()).withContext(
-          'Al llamar a increment() con step = 5, el counter debería pasar de 11 a 16.'
+          'When calling increment() with step = 5, counter should go from 11 to 16.'
         ).toBe(16);
       } else {
-        expect.fail('No se puede probar increment() porque "counter" no es un Writable Signal válido aún.');
+        expect.fail('Cannot test increment() because "counter" is not a valid Writable Signal yet.');
       }
     });
 
-    it('debería decrementar el valor de "counter" restándole el valor de "step()" al llamar a decrement()', () => {
+    it('should decrement the value of "counter" by subtracting the value of "step()" when calling decrement()', () => {
       if (isSignal(component.counter) && typeof (component.counter as any).set === 'function') {
         (component.counter as any).set(20);
         fixture.detectChanges();
@@ -138,7 +138,7 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
         component.decrement();
         fixture.detectChanges();
         expect(component.counter()).withContext(
-          'Al llamar a decrement() con step = 1, el counter debería pasar de 20 a 19.'
+          'When calling decrement() with step = 1, counter should go from 20 to 19.'
         ).toBe(19);
 
         fixture.componentRef.setInput('step', 7);
@@ -147,10 +147,10 @@ describe('Angular Signals - Test-Driven Learning 🚀', () => {
         component.decrement();
         fixture.detectChanges();
         expect(component.counter()).withContext(
-          'Al llamar a decrement() con step = 7, el counter debería pasar de 19 a 12.'
+          'When calling decrement() with step = 7, counter should go from 19 to 12.'
         ).toBe(12);
       } else {
-        expect.fail('No se puede probar decrement() porque "counter" no es un Writable Signal válido aún.');
+        expect.fail('Cannot test decrement() because "counter" is not a valid Writable Signal yet.');
       }
     });
   });

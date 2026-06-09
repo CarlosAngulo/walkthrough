@@ -4,13 +4,13 @@
     [class.active]="store.filter() === 'all'"
     class="tab-btn"
   >
-    📭 Todos ({{ store.messages().length }})
+    📭 All ({{ store.messages().length }})
   </button>
   <button
     (click)="selectFilter('unread')"
     [class.active]="store.filter() === 'unread'"
     class="tab-btn"
   >
-    ✉️ Sin Leer ({{ store.unreadCount() }})
+    ✉️ Unread ({{ store.unreadCount() }})
   </button>
 </div>

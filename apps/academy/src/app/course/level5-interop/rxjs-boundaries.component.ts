@@ -16,8 +16,8 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 })
 export class RxjsBoundariesComponent extends LearningComponent implements OnInit, OnDestroy {
   // ==========================================
-  // Configuración del Nivel y Recompensa
-  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // Level Configuration and Reward
+  // Do not modify this code section as it defines the course progress and achievements logic.
   // ==========================================
   protected override level = 'nivel-5';
 
@@ -25,36 +25,36 @@ export class RxjsBoundariesComponent extends LearningComponent implements OnInit
     learningStateStore.addAchievement(
       'L5_RXJS_INTEROP',
       'RxJS Boundaries Expert 🔄',
-      'Cruzaste la frontera de reactividad uniendo de forma perfecta Signals y RxJS.',
+      'You crossed the reactivity boundary seamlessly joining Signals and RxJS.',
       '🔄'
     );
     learningStateStore.completeLevel(this.level);
   }
   // ==========================================
 
-  // Inyectar el mock SearchService
+  // Inject the mock SearchService
   protected searchService = inject(SearchService);
 
   // ============================================================================
-  // CÓDIGO CLÁSICO / ANTICUADO A REFACTORIZAR (RETO 1, 2, 3 y 4)
+  // CLASSIC / OUTDATED CODE TO REFACTOR (CHALLENGE 1, 2, 3 and 4)
   // ============================================================================
-  // Actualmente la búsqueda funciona de forma imperativa con Subjects de RxJS y
-  // suscripciones manuales que requieren liberar memoria para evitar fugas (memory leaks).
+  // Currently searching works imperatively with RxJS Subjects and
+  // manual subscriptions that require releasing memory to avoid memory leaks.
   //
-  // Tu reto consiste en refactorizar esto a Signals siguiendo el CodeTour:
-  // 1. Convierte searchQuery en una Writable Signal: searchQuery = signal<string>('');
-  // 2. Convierte searchQuery$ a Observable usando: toObservable(this.searchQuery)
-  // 3. Aplica los operadores en la tubería pipe() y conviértelo de vuelta a señal usando toSignal().
-  // 4. Mueve la invocación de _setupSearchPipeline al constructor y elimina ngOnInit/ngOnDestroy.
+  // Your challenge is to refactor this to Signals following the CodeTour:
+  // 1. Convert searchQuery to a Writable Signal: searchQuery = signal<string>('');
+  // 2. Convert searchQuery$ to Observable using: toObservable(this.searchQuery)
+  // 3. Apply operators in the pipe() pipeline and convert it back to a signal using toSignal().
+  // 4. Move the invocation of _setupSearchPipeline to the constructor and remove ngOnInit/ngOnDestroy.
   // ============================================================================
 
   searchQuery: string = '';
   searchResults: Course[] = [];
 
-  // Subject para emitir los términos de búsqueda
+  // Subject to emit search terms
   private _searchSubject$ = new Subject<string>();
   
-  // Guardamos la suscripción para desuscribirnos en el ciclo OnDestroy
+  // Save subscription to unsubscribe in OnDestroy cycle
   private _searchSubscription = new Subscription();
 
   ngOnInit() {
@@ -62,28 +62,28 @@ export class RxjsBoundariesComponent extends LearningComponent implements OnInit
     this.setupSearchPipeline();
   }
 
-  // Método disparado desde la UI por cada cambio en el input
+  // Method triggered from the UI for each input change
   onSearchInput(value: string) {
     this.searchQuery = value;
     this._searchSubject$.next(value);
   }
 
   ngOnDestroy() {
-    // Liberación manual obligatoria de memoria en RxJS clásico para evitar fugas
+    // Mandatory manual memory release in classic RxJS to avoid leaks
     this._searchSubscription.unsubscribe();
   }
 
-  // Lógica de configuración de búsqueda imperativa inicial
+  // Initial imperative search setup logic
   private setupSearchPipeline() {
     this._searchSubscription = this._searchSubject$.pipe(
-      debounceTime(400), // Espera 400ms después del último evento antes de continuar
-      distinctUntilChanged(), // Solo emite si el valor ha cambiado
-      switchMap((query) => this.searchService.search(query)) // Cambia a un nuevo Observable de búsqueda cada vez que el término cambia
+      debounceTime(400), // Wait 400ms after the last event before continuing
+      distinctUntilChanged(), // Only emit if the value has changed
+      switchMap((query) => this.searchService.search(query)) // Switch to a new search Observable each time the term changes
     ).subscribe((results) => {
-      this.searchResults = results; // Asignación de estado imperativa
+      this.searchResults = results; // Imperative state assignment
     });
 
-    // Carga inicial para mostrar todos los cursos al arrancar el componente
+    // Initial load to show all courses when the component starts
     this._searchSubject$.next('');
   }
 }

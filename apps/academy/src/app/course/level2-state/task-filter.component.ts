@@ -17,8 +17,8 @@ export interface Task {
 })
 export class TaskFilterComponent extends LearningComponent {
   // ==========================================
-  // Configuración del Nivel y Recompensa
-  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // Level Configuration and Reward
+  // Do not modify this code section as it defines the course progress and achievements logic.
   // ==========================================
   protected override level = 'nivel-2';
 
@@ -26,20 +26,20 @@ export class TaskFilterComponent extends LearningComponent {
     learningStateStore.addAchievement(
       'L2_COMPUTED',
       'Reactive Thinker 🧠',
-      'Dominaste las cadenas computadas y el estado derivado reactivo.',
+      'You mastered computed chains and reactive derived state.',
       '🧠'
     );
     learningStateStore.completeLevel(this.level);
   }
   // ==========================================
-  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
+  // End of level configuration section. The rest of the code is your workspace for this level's challenge.
   // ==========================================
   
   // ==========================================
-  // RETO 1: Lista de Tareas como Signal
+  // CHALLENGE 1: Task List as a Signal
   // ==========================================
-  // TODO: Transforma esta propiedad en una Writable Signal que contenga el array de tareas.
-  // Pista: Reemplázalo por:
+  // TODO: Transform this property into a Writable Signal containing the tasks array.
+  // Hint: Replace it with:
   // tasks = signal<Task[]>([
   //   { title: 'Aprender Signals Básicos ⚡', completed: true },
   //   { title: 'Dominar Computed & Derived State 🧠', completed: false },
@@ -52,18 +52,18 @@ export class TaskFilterComponent extends LearningComponent {
   ];
 
   // ==========================================
-  // RETO 2: Filtro Activo como Signal
+  // CHALLENGE 2: Active Filter as a Signal
   // ==========================================
-  // TODO: Transforma esta propiedad en una Writable Signal con el valor inicial 'all'.
-  // Pista: Reemplázalo por: filter = signal<'all' | 'pending' | 'completed'>('all');
+  // TODO: Transform this property into a Writable Signal with initial value 'all'.
+  // Hint: Replace it with: filter = signal<'all' | 'pending' | 'completed'>('all');
   filter: 'all' | 'pending' | 'completed' = 'all';
 
   // ==========================================
-  // RETO 3: Computed Signal para Tareas Filtradas
+  // CHALLENGE 3: Computed Signal for Filtered Tasks
   // ==========================================
-  // TODO: Transforma filteredTasks en un Computed Signal reactivo.
-  // Debe depender de this.tasks() y de this.filter() para filtrar automáticamente las tareas.
-  // Pista: Reemplázalo por:
+  // TODO: Transform filteredTasks into a reactive Computed Signal.
+  // It must depend on this.tasks() and this.filter() to automatically filter tasks.
+  // Hint: Replace it with:
   // filteredTasks = computed(() => {
   //   const currentFilter = this.filter();
   //   const allTasks = this.tasks();
@@ -77,57 +77,57 @@ export class TaskFilterComponent extends LearningComponent {
   ];
 
   // ==========================================
-  // RETO 4: Computed Signals para Estadísticas (Counts)
+  // CHALLENGE 4: Computed Signals for Statistics (Counts)
   // ==========================================
-  // TODO: Transforma pendingCount y completedCount en Computed Signals.
-  // - pendingCount debe contar cuántas tareas tienen completed === false.
-  // - completedCount debe contar cuántas tareas tienen completed === true.
-  // Pistas:
+  // TODO: Transform pendingCount and completedCount into Computed Signals.
+  // - pendingCount must count how many tasks have completed === false.
+  // - completedCount must count how many tasks have completed === true.
+  // Hints:
   // pendingCount = computed(() => this.tasks().filter(t => !t.completed).length);
   // completedCount = computed(() => this.tasks().filter(t => t.completed).length);
   pendingCount = 2;
   completedCount = 1;
 
   // ==========================================
-  // RETO 5: Limpieza de Métodos e Inmutabilidad
+  // CHALLENGE 5: Method Clean Up and Immutability
   // ==========================================
   
   addTask(title: string) {
     if (!title || !title.trim()) return;
     
-    // Actualmente funciona mutando directamente el array y recalculando manualmente:
+    // Currently works by directly mutating the array and manually recalculating:
     this.tasks.push({ title: title.trim(), completed: false });
-    this.setFilter(this.filter); // Recálculo manual
+    this.setFilter(this.filter); // Manual recalculation
 
-    // TODO con Signals: Cuando 'tasks' sea una señal, actualízala inmutablemente usando .update()
+    // TODO with Signals: When 'tasks' is a signal, update it immutably using .update()
     // this.tasks.update(list => [...list, { title: title.trim(), completed: false }]);
-    // Y elimina por completo la llamada a setFilter(). ¡El computed se actualizará solo!
+    // And completely remove the call to setFilter(). The computed signal will update itself!
   }
 
   toggleTask(index: number) {
-    // Actualmente funciona mutando directamente el objeto dentro del array y recalculando:
+    // Currently works by directly mutating the object inside the array and recalculating:
     this.tasks[index].completed = !this.tasks[index].completed;
-    this.setFilter(this.filter); // Recálculo manual
+    this.setFilter(this.filter); // Manual recalculation
 
-    // TODO con Signals: Cuando 'tasks' sea una señal, actualízala inmutablemente usando .update():
+    // TODO with Signals: When 'tasks' is a signal, update it immutably using .update():
     // this.tasks.update(list =>
     //   list.map((t, i) => i === index ? { ...t, completed: !t.completed } : t)
     // );
-    // Y elimina la llamada a setFilter().
+    // And remove the call to setFilter().
   }
 
   removeTask(index: number) {
-    // Actualmente funciona mutando directamente el array con splice:
+    // Currently works by directly mutating the array with splice:
     this.tasks.splice(index, 1);
-    this.setFilter(this.filter); // Recálculo manual
+    this.setFilter(this.filter); // Manual recalculation
 
-    // TODO con Signals: Cuando 'tasks' sea una señal, actualízala inmutablemente usando .update():
+    // TODO with Signals: When 'tasks' is a signal, update it immutably using .update():
     // this.tasks.update(list => list.filter((_, i) => i !== index));
-    // Y elimina la llamada a setFilter().
+    // And remove the call to setFilter().
   }
 
   setFilter(f: 'all' | 'pending' | 'completed') {
-    // Actualmente funciona asignando manualmente las variables y recalculando todo:
+    // Currently works by manually assigning variables and recalculating everything:
     this.filter = f;
     
     if (this.filter === 'all') {
@@ -141,8 +141,8 @@ export class TaskFilterComponent extends LearningComponent {
     this.pendingCount = this.tasks.filter(t => !t.completed).length;
     this.completedCount = this.tasks.filter(t => t.completed).length;
 
-    // TODO con Signals: Cuando 'filter' sea una señal, simplemente actualízala con .set():
+    // TODO with Signals: When 'filter' is a signal, simply update it using .set():
     // this.filter.set(f);
-    // ¡Y borra todo el código imperativo de arriba! Las computadas harán el trabajo sucio.
+    // And delete all the imperative code above! Computed properties will do the work.
   }
 }

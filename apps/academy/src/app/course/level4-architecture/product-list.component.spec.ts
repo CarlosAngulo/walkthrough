@@ -8,7 +8,7 @@ import { isSignal } from '@angular/core';
 // Import our custom Vitest matchers to extend expect
 import '@learning-engine/test-integration';
 
-describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartService', () => {
+describe('Level 4: Reactive Architecture 🏗️ - ProductListComponent & CartService', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
   let cartService: CartService;
@@ -27,8 +27,8 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
     fixture.detectChanges();
   });
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones en el Servicio', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with all reactive design rules and avoid anti-patterns in the Service', () => {
       const servicePath = 'src/app/course/level4-architecture/cart.service.ts';
       expect(servicePath).toSatisfyRules([
         'L4_SERVICE_PRIVATE_ITEMS',
@@ -36,7 +36,7 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
       ]);
     });
 
-    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones en el Componente', () => {
+    it('should comply with all reactive design rules and avoid anti-patterns in the Component', () => {
       const componentPath = 'src/app/course/level4-architecture/product-list.component.ts';
       expect(componentPath).toSatisfyRules([
         'L4_PRODUCT_LIST_OUTPUT',
@@ -45,44 +45,43 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
     });
   });
 
-  describe('RETO 1 y 2: CartService - Estado Privado y Solo Lectura', () => {
-    it('debería declarar "_items" como señal mutable privada y exponer "items" de solo lectura', () => {
+  describe('CHALLENGE 1 & 2: CartService - Private and Read-Only State', () => {
+    it('should declare "_items" as a private mutable signal and expose "items" as read-only', () => {
       const serviceKeys = Object.keys(cartService) as string[];
-      // Buscar la propiedad privada (en runtime Angular transpila private properties, pero podemos inspeccionar getters/signals)
       const itemsProp = cartService.items;
       
       expect(itemsProp).toBeDefined();
       expect(isSignal(itemsProp)).withContext(
-        'La propiedad "items" debe ser expuesta como un Signal de Angular.'
+        'The "items" property must be exposed as an Angular Signal.'
       ).toBe(true);
 
-      // Verificar que "items" es de solo lectura (no debe tener el método set o update)
+      // Verify that "items" is read-only (should not have set or update methods)
       expect((itemsProp as any).set).withContext(
-        '¡Alerta de Seguridad! El estado expuesto "items" debe ser de solo lectura usando .asReadonly() para evitar mutaciones externas.'
+        'Security Alert! The exposed "items" state must be read-only using .asReadonly() to avoid external mutations.'
       ).toBeUndefined();
     });
   });
 
-  describe('RETO 3: CartService - Computed Signals para Totales', () => {
-    it('debería declarar "totalCount" y "totalPrice" como Computed Signals reactivos', () => {
+  describe('CHALLENGE 3: CartService - Computed Signals for Totales', () => {
+    it('should declare "totalCount" and "totalPrice" as reactive Computed Signals', () => {
       expect(cartService.totalCount).toBeDefined();
       expect(cartService.totalPrice).toBeDefined();
 
       expect(isSignal(cartService.totalCount)).withContext(
-        'La propiedad "totalCount" debe ser un Computed Signal.'
+        'The "totalCount" property must be a Computed Signal.'
       ).toBe(true);
 
       expect(isSignal(cartService.totalPrice)).withContext(
-        'La propiedad "totalPrice" debe ser un Computed Signal.'
+        'The "totalPrice" property must be a Computed Signal.'
       ).toBe(true);
     });
   });
 
-  describe('RETO 4: CartService - Mutaciones Inmutables', () => {
+  describe('CHALLENGE 4: CartService - Immutable Mutations', () => {
     const prod1: Product = { id: 'p1', name: 'Curso Angular Signals', price: 50 };
     const prod2: Product = { id: 'p2', name: 'Curso RxJS', price: 60 };
 
-    it('debería agregar productos inmutablemente al carrito y recalcular totales', () => {
+    it('should add products immutably to the cart and recalculate totals', () => {
       if (isSignal(cartService.items)) {
         cartService.addToCart(prod1);
         fixture.detectChanges();
@@ -91,19 +90,19 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
         expect((cartService.items as any)()[0].product.id).toBe('p1');
         expect((cartService.items as any)()[0].quantity).toBe(1);
 
-        // Incrementar cantidad del mismo producto
+        // Increase quantity of the same product
         cartService.addToCart(prod1);
         expect((cartService.items as any)()[0].quantity).toBe(2);
 
-        // Totales reactivos
+        // Reactive totals
         expect((cartService.totalCount as any)()).toBe(2);
         expect((cartService.totalPrice as any)()).toBe(100);
       } else {
-        expect.fail('No se puede probar addToCart porque "items" no es una señal aún.');
+        expect.fail('Cannot test addToCart because "items" is not a signal yet.');
       }
     });
 
-    it('debería remover productos inmutablemente del carrito decrementando cantidad o eliminando', () => {
+    it('should remove products immutably from the cart by decrementing quantity or deleting', () => {
       if (isSignal(cartService.items)) {
         cartService.addToCart(prod1);
         cartService.addToCart(prod2);
@@ -112,16 +111,16 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
         cartService.removeFromCart('p2');
         expect((cartService.items as any)().find((item: any) => item.product.id === 'p2')?.quantity).toBe(1);
 
-        cartService.removeFromCart('p2'); // Debería eliminarse del todo
+        cartService.removeFromCart('p2'); // Should be completely removed
         expect((cartService.items as any)().find((item: any) => item.product.id === 'p2')).toBeUndefined();
         expect((cartService.totalCount as any)()).toBe(1);
         expect((cartService.totalPrice as any)()).toBe(50);
       } else {
-        expect.fail('No se puede probar removeFromCart porque "items" no es una señal.');
+        expect.fail('Cannot test removeFromCart because "items" is not a signal.');
       }
     });
 
-    it('debería vaciar por completo el carrito al llamar a clearCart()', () => {
+    it('should completely empty the cart when calling clearCart()', () => {
       if (isSignal(cartService.items)) {
         cartService.addToCart(prod1);
         cartService.clearCart();
@@ -130,19 +129,18 @@ describe('Nivel 4: Reactive Architecture 🏗️ - ProductListComponent & CartSe
         expect((cartService.totalCount as any)()).toBe(0);
         expect((cartService.totalPrice as any)()).toBe(0);
       } else {
-        expect.fail('No se puede probar clearCart sin señales.');
+        expect.fail('Cannot test clearCart without signals.');
       }
     });
   });
 
-  describe('RETO 5: ProductListComponent - output() Signal API', () => {
-    it('debería declarar "productAdded" como un Angular Output reactivo y emitir en agregaciones', () => {
+  describe('CHALLENGE 5: ProductListComponent - output() Signal API', () => {
+    it('should declare "productAdded" as a reactive Angular Output and emit on additions', () => {
       expect(component.productAdded).toBeDefined();
       
-      // En Angular 17.3+, output() es una función/emisor de tipo OutputEmitterRef
       const isOutputSignal = typeof (component.productAdded as any).subscribe === 'function' || typeof (component.productAdded as any).emit === 'function';
       expect(isOutputSignal).withContext(
-        'La propiedad "productAdded" debe ser declarada usando la función moderna "output<Product>()".'
+        'The "productAdded" property must be declared using the modern "output<Product>()" function.'
       ).toBe(true);
 
       const spy = vi.fn();

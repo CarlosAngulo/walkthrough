@@ -16,42 +16,42 @@ export interface CartItem {
 })
 export class CartService {
   // ==========================================
-  // RETO 1: Estado Privado Reactivo con Signals
+  // CHALLENGE 1: Private Reactive State with Signals
   // ==========================================
-  // TODO: Reemplaza esta propiedad tradicional por una Writable Signal privada:
+  // TODO: Replace this traditional property with a private Writable Signal:
   // - _items = signal<CartItem[]>([]);
-  // Asegúrate de usar la convención de guión bajo para indicar que es privada de la clase.
+  // Make sure to use the underscore convention to indicate that it is private to the class.
   private _itemsList: CartItem[] = [];
 
   // ==========================================
-  // RETO 2: Exposición Segura de Solo Lectura
+  // CHALLENGE 2: Secure Read-Only Exposure
   // ==========================================
-  // TODO: Un principio clave de arquitectura reactiva es que el estado no debe poder ser
-  // mutado directamente por componentes externos. Expon el estado usando un Signal de solo lectura:
+  // TODO: A key principle of reactive architecture is that state should not be
+  // mutated directly by external components. Expose the state using a read-only Signal:
   // - items = this._items.asReadonly();
-  // Cuando lo hagas, ¡puedes eliminar este getter tradicional!
+  // When you do so, you can remove this traditional getter!
   get items(): CartItem[] {
     return this._itemsList;
   }
 
   // ==========================================
-  // RETO 3: Estado Derivado con Computed Signals
+  // CHALLENGE 3: Derived State with Computed Signals
   // ==========================================
-  // TODO: Transforma totalCount y totalPrice en Computed Signals reactivos dependientes de items().
-  // - totalCount: Suma de la propiedad quantity de cada item del carrito.
-  // - totalPrice: Suma de la cantidad multiplicada por el precio del producto.
-  // Pistas:
+  // TODO: Transform totalCount and totalPrice into reactive Computed Signals dependent on items().
+  // - totalCount: Sum of the quantity property of each cart item.
+  // - totalPrice: Sum of quantity multiplied by the product price.
+  // Hints:
   // totalCount = computed(() => this.items().reduce((acc, item) => acc + item.quantity, 0));
   // totalPrice = computed(() => this.items().reduce((acc, item) => acc + (item.product.price * item.quantity), 0));
   totalCount = 0;
   totalPrice = 0;
 
   // ==========================================
-  // RETO 4: Mutación Inmutable de Estado
+  // CHALLENGE 4: Immutable State Mutation
   // ==========================================
   
   addToCart(product: Product) {
-    // Actualmente funciona mutando imperativamente el array original:
+    // Currently works by imperatively mutating the original array:
     const existing = this._itemsList.find(item => item.product.id === product.id);
     if (existing) {
       existing.quantity += 1;
@@ -60,8 +60,8 @@ export class CartService {
     }
     this.recalculateTotals();
 
-    // TODO con Signals: Cuando '_items' sea una señal, actualízala inmutablemente usando .update().
-    // Evita métodos destructivos como .push() y crea un nuevo array de estado:
+    // TODO with Signals: When '_items' is a signal, update it immutably using .update().
+    // Avoid destructive methods like .push() and create a new state array:
     //
     // this._items.update(currentItems => {
     //   const existingIndex = currentItems.findIndex(item => item.product.id === product.id);
@@ -72,11 +72,11 @@ export class CartService {
     //   }
     //   return [...currentItems, { product, quantity: 1 }];
     // });
-    // Y elimina por completo la llamada a recalculateTotals(). ¡Las computadas harán el trabajo!
+    // And completely remove the call to recalculateTotals(). Computed properties will do the job!
   }
 
   removeFromCart(productId: string) {
-    // Actualmente funciona mutando imperativamente y recalculando:
+    // Currently works by imperatively mutating and recalculating:
     const existingIndex = this._itemsList.findIndex(item => item.product.id === productId);
     if (existingIndex > -1) {
       const existing = this._itemsList[existingIndex];
@@ -88,7 +88,7 @@ export class CartService {
     }
     this.recalculateTotals();
 
-    // TODO con Signals: Cuando '_items' sea una señal, actualízala inmutablemente usando .update():
+    // TODO with Signals: When '_items' is a signal, update it immutably using .update():
     //
     // this._items.update(currentItems => {
     //   return currentItems.map(item => {
@@ -98,19 +98,19 @@ export class CartService {
     //     return item;
     //   }).filter(item => item.quantity > 0);
     // });
-    // Y elimina recalculateTotals().
+    // And remove recalculateTotals().
   }
 
   clearCart() {
-    // Limpieza imperativa tradicional:
+    // Traditional imperative clearing:
     this._itemsList = [];
     this.recalculateTotals();
 
-    // TODO con Signals: Simplemente limpia el valor asignándole un array vacío:
+    // TODO with Signals: Simply clear the value by assigning an empty array:
     // this._items.set([]);
   }
 
-  // Método utilitario imperativo (A ELIMINAR al refactorizar a computadas)
+  // Imperative utility method (TO BE REMOVED when refactoring to computed properties)
   private recalculateTotals() {
     this.totalCount = this._itemsList.reduce((acc, item) => acc + item.quantity, 0);
     this.totalPrice = this._itemsList.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);

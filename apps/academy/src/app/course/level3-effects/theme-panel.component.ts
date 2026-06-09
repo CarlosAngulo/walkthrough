@@ -17,8 +17,8 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   
 
   // ==========================================
-  // Configuración del Nivel y Recompensa
-  // No modifiques esta sección de código ya que define la lógica de progreso y logros del curso.
+  // Level Configuration and Reward
+  // Do not modify this code section as it defines the course progress and achievements logic.
   // ==========================================
   protected override level = 'nivel-3';
 
@@ -26,48 +26,48 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
     learningStateStore.addAchievement(
       'L3_EFFECTS',
       'Side Effect Architect 💾',
-      'Sincronizaste de forma impecable el DOM y localStorage usando efectos y onCleanup.',
+      'You flawlessly synchronized the DOM and localStorage using effects and onCleanup.',
       '💾'
     );
     learningStateStore.completeLevel(this.level);
   }
 
   // ==========================================
-  // Fin de la sección de configuración del nivel. El resto del código es tu área de trabajo para el reto de este nivel.
+  // End of level configuration section. The rest of the code is your workspace for this level's challenge.
   // ==========================================
   
   // ==========================================
-  // RETO 1: Variables de Configuración como Signals
+  // CHALLENGE 1: Configuration Variables as Signals
   // ==========================================
-  // TODO: Convierte estas tres propiedades en Writable Signals con sus respectivos valores por defecto:
-  // - theme: ThemeMode (inicializada en 'dark')
-  // - fontSize: number (inicializada en 16)
-  // - accentColor: AccentColor (inicializada en 'primary')
-  // Pista: theme = signal<ThemeMode>('dark');
+  // TODO: Convert these three properties into Writable Signals with their respective default values:
+  // - theme: ThemeMode (initialized to 'dark')
+  // - fontSize: number (initialized to 16)
+  // - accentColor: AccentColor (initialized to 'primary')
+  // Hint: theme = signal<ThemeMode>('dark');
   theme: ThemeMode = 'dark';
   fontSize = 16;
   accentColor: AccentColor = 'primary';
 
-  // Analítica simulada para contar cambios (usada para pruebas)
+  // Simulated analytics counter (used for tests)
   analyticsLogCount = 0;
 
   // ==========================================
-  // RETO 2: Inicialización desde LocalStorage
+  // CHALLENGE 2: Initialization from LocalStorage
   // ==========================================
-  // TODO: Al arrancar el componente, debemos cargar las preferencias previas guardadas en localStorage.
-  // La clave que debes usar es: 'academy-theme-preferences'.
-  // Pista: Para hacerlo súper elegante y evitar desajustes iniciales, puedes crear un método privado de ayuda
-  // que intente recuperar las configuraciones, y usarlas directamente para inicializar tus señales:
+  // TODO: When launching the component, we must load the previous preferences saved in localStorage.
+  // The key you must use is: 'academy-theme-preferences'.
+  // Hint: To make it super elegant and avoid initial layout shifts, you can create a private helper method
+  // that attempts to retrieve the settings, and use them directly to initialize your signals:
   //
   // private getSavedPrefs(): ThemePreferences {
   //   const saved = localStorage.getItem('academy-theme-preferences');
   //   return saved ? JSON.parse(saved) : { theme: 'dark', fontSize: 16, accentColor: 'primary' };
   // }
   //
-  // Y luego devuélvete al punto donde están definidas tus varialbes para incializarlas llamando a ese método:
+  // and then return to where your variables are defined to initialize them calling that method:
   // theme = signal<'dark' | 'light'>(this.getSavedPrefs().theme);
-  // (repite para las otras 2).
-  // Si decides usar este enfoque elegante, ¡puedes borrar el código de ngOnInit!
+  // (repeat for the other 2).
+  // If you decide to use this elegant approach, you can delete the code in ngOnInit!
 
   ngOnInit() {
     super.ngOnInit();
@@ -75,7 +75,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
   }
 
   private loadSavedPreferences() {
-    // Actualmente recuperamos y actualizamos de forma manual imperativa al iniciar:
+    // Currently we retrieve and manually update imperatively on startup:
     const saved = localStorage.getItem('academy-theme-preferences');
     if (saved) {
       try {
@@ -84,7 +84,7 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
         this.fontSize = prefs.fontSize;
         this.accentColor = prefs.accentColor;
       } catch (e) {
-        console.error('Error cargando preferencias:', e);
+        console.error('Error loading preferences:', e);
       }
     }
   }
@@ -96,97 +96,97 @@ export class ThemePanelComponent extends LearningComponent implements OnInit {
 
   private setupThemeEffects() {
     // ==========================================
-    // RETO 3: Effect() para Sincronizar Estado (LocalStorage)
+    // CHALLENGE 3: effect() to Synchronize State (LocalStorage)
     // ==========================================
-    // TODO: Registra un effect() en este método. Los efectos observan automáticamente
-    // cualquier señal leída en su interior y se ejecutan cada vez que cambien.
-    // Tu efecto debe realizar esta acción secundaria crítica:
-    // 1. Serializar el estado actual completo ({ theme, fontSize, accentColor })
-    //    y guárdarlo en localStorage con la clave 'academy-theme-preferences'.
+    // TODO: Register an effect() in this method. Effects automatically observe
+    // any signal read inside them and run every time they change.
+    // Your effect should perform this critical side action:
+    // 1. Serialize the full current state ({ theme, fontSize, accentColor })
+    //    and save it in localStorage under the key 'academy-theme-preferences'.
     //
-    // *Nota de Arquitectura:* La sincronización del DOM se realiza de forma 100%
-    // declarativa gracias al nuevo componente autónomo <app-theme-preview> y sus bindings.
-    // ¡Tu efecto ya no necesita manipular el DOM de forma imperativa!
+    // *Architectural Note:* DOM synchronization is done 100% declaratively
+    // thanks to the new autonomous component <app-theme-preview> and its bindings.
+    // Your effect no longer needs to manipulate the DOM imperatively!
     //
-    // Pista de código:
+    // Code Hint:
     // effect(() => {
     //   const currentTheme = this.theme();
     //   const currentSize = this.fontSize();
     //   const currentAccent = this.accentColor();
     //
-    //   // Guardar en LocalStorage
+    //   // Save to LocalStorage
     //   const prefs = { theme: currentTheme, fontSize: currentSize, accentColor: currentAccent };
     //   localStorage.setItem('academy-theme-preferences', JSON.stringify(prefs));
     // });
     //
-    // Una vez que implementes este effect(), ¡puedes borrar el método privado 'saveToLocalStorage'!
+    // Once you implement this effect(), you can delete the private method 'saveToLocalStorage'!
 
     // ==========================================
-    // RETO 4: onCleanup para Analíticas con Debounce
+    // CHALLENGE 4: onCleanup for Analytics with Debounce
     // ==========================================
-    // TODO: En analíticas reales, no queremos reportar al servidor cada pequeño cambio intermedio del usuario
-    // (por ejemplo, si desliza el slider de fuente rápido o clickea colores repetidamente). Queremos aplicar un debounce.
-    // 1. Dentro de un effect() (puede ser un segundo efecto o el mismo), lee los valores de tus señales.
-    // 2. Crea un setTimeout de 800ms que, al cumplirse, incremente 'this.analyticsLogCount' en 1 (simulando el reporte).
-    // 3. Usa la función callback 'onCleanup' que recibe el efecto para borrar (clearTimeout) el timer anterior.
-    //    Esto evitará múltiples reportes y cancelará envíos viejos si el usuario vuelve a cambiar de opinión rápido.
+    // TODO: In real analytics, we do not want to report to the server on every small intermediate change by the user
+    // (for example, if they slide the font slider quickly or click colors repeatedly). We want to apply a debounce.
+    // 1. Inside an effect() (it can be a second effect or the same one), read the values of your signals.
+    // 2. Create a setTimeout of 800ms that, upon completion, increments 'this.analyticsLogCount' by 1 (simulating the report).
+    // 3. Use the callback function 'onCleanup' that the effect receives to clear (clearTimeout) the previous timer.
+    //    This will prevent multiple reports and cancel old submissions if the user changes their mind quickly again.
     //
-    // Pista de código:
+    // Code Hint:
     // effect((onCleanup) => {
-    //   const currentTheme = this.theme(); // Lee la señal para registrar dependencia reactiva
+    //   const currentTheme = this.theme(); // Read the signal to register reactive dependency
     //   const currentSize = this.fontSize();
     //   const currentAccent = this.accentColor();
     //
     //   const timer = setTimeout(() => {
     //     this.analyticsLogCount++;
-    //     console.log(`%c[Analytics] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`);console.log(`%c[Analytics>>] Preferencias enviadas: Tema=${currentTheme}, Fuente=${currentSize}px, Color=${currentAccent}`, 'color: rgb(31, 230, 58); font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 4px;');
+    //     console.log(`%c[Analytics] Preferences sent: Theme=${currentTheme}, Font=${currentSize}px, Color=${currentAccent}`, 'color: rgb(31, 230, 58); font-weight: bold; background: #1a1a1a; padding: 4px 12px; border-radius: 4px;');
     //   }, 800);
     //
     //   onCleanup(() => {
-    //     clearTimeout(timer); // Cancela el envío si el efecto se dispara de nuevo antes de 800ms
+    //     clearTimeout(timer); // Cancels sending if the effect fires again before 800ms
     //   });
     // });
   }
 
   // ==========================================
-  // RETO 5: Simplificación de Setters
+  // CHALLENGE 5: Simplifying Setters
   // ==========================================
 
   setTheme(t: ThemeMode) {
-    // Actualmente funciona mutando la variable primitiva y disparando recálculos de forma manual:
+    // Currently works by mutating the primitive variable and firing recalculations manually:
     this.theme = t;
     this.saveToLocalStorage();
 
-    // TODO con Signals: Cuando 'theme' sea un signal, simplemente actualiza su valor:
+    // TODO with Signals: When 'theme' is a signal, simply update its value:
     // this.theme.set(t);
-    // ¡Y elimina todo el código imperativo manual de arriba! El efecto en el constructor se encargará solo.
+    // And remove all the manual imperative code above! The constructor effect will handle it alone.
   }
 
   setFontSize(size: number) {
-    // Limitar el tamaño de fuente entre 14px y 24px por accesibilidad
+    // Limit font size between 14px and 24px for accessibility
     const clamped = Math.max(14, Math.min(24, size));
     
-    // Asignación tradicional y recálculos manuales:
+    // Traditional assignment and manual recalculations:
     this.fontSize = clamped;
     this.saveToLocalStorage();
 
-    // TODO con Signals: Cuando 'fontSize' sea una señal, actualízala:
+    // TODO with Signals: When 'fontSize' is a signal, update it:
     // this.fontSize.set(clamped);
-    // Y elimina el código manual.
+    // And remove the manual code.
   }
 
   setAccentColor(color: AccentColor) {
-    // Asignación tradicional y recálculos manuales:
+    // Traditional assignment and manual recalculations:
     this.accentColor = color;
     this.saveToLocalStorage();
 
-    // TODO con Signals: Cuando 'accentColor' sea una señal, actualízala:
+    // TODO with Signals: When 'accentColor' is a signal, update it:
     // this.accentColor.set(color);
-    // Y elimina el código manual.
+    // And remove the manual code.
   }
 
   // ==========================================
-  // Métodos Utilitarios Manuales (A ELIMINAR al refactorizar)
+  // Manual Utility Methods (TO BE REMOVED upon refactoring)
   // ==========================================
   private saveToLocalStorage() {
     const prefs: ThemePreferences = {

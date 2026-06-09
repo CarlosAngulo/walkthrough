@@ -12,16 +12,16 @@ import { RxjsMessagesService, Message } from '../rxjs-messages.service';
   templateUrl: './messages-sidebar.component.html'
 })
 export class MessagesSidebarComponent {
-  // Inyectamos de forma segura el store global de @ngrx/signals desde el nivel superior
+  // Safely inject global @ngrx/signals store from top level
   protected store: any = (() => {
     try {
       if (MessagesStore) {
         return inject(MessagesStore);
       }
     } catch (e) {
-      console.warn('MessagesStore no está disponible en MessagesSidebarComponent:', e);
+      console.warn('MessagesStore is not available in MessagesSidebarComponent:', e);
     }
-    // Respaldo reactivo temporal (Opción B: Servicio RxJS Tradicional)
+    // Temporary reactive fallback (Option B: Traditional RxJS Service)
     const service = inject(RxjsMessagesService);
     const messages = toSignal(service.messages$ || of([]), { initialValue: [] as Message[] });
     const filter = toSignal(service.filter$ || of('all'), { initialValue: 'all' as 'all' | 'unread' });

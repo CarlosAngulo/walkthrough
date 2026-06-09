@@ -24,8 +24,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_WRITABLE_SIGNAL',
         success: false,
         anchor: 'counter-value',
-        message: 'No se detectó la propiedad "counter" en tu clase.',
-        hint: 'Asegúrate de que no has eliminado o renombrado la propiedad "counter".'
+        message: 'The "counter" property was not detected in your class.',
+        hint: 'Make sure you have not deleted or renamed the "counter" property.'
       };
     }
     if (counterProp.type !== 'signal') {
@@ -33,8 +33,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_WRITABLE_SIGNAL',
         success: false,
         anchor: 'counter-value',
-        message: 'La propiedad "counter" debe ser declarada como una Writable Signal.',
-        hint: 'Reemplaza "counter = 0;" por "counter = signal<number>(0);" en tu archivo counter.component.ts.'
+        message: 'The "counter" property must be declared as a Writable Signal.',
+        hint: 'Replace "counter = 0;" with "counter = signal<number>(0);" in your counter.component.ts file.'
       };
     }
 
@@ -45,8 +45,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_WRITABLE_SIGNAL',
         success: false,
         anchor: 'counter-value',
-        message: '¡Excelente en TypeScript! Pero te falta actualizar el llamado en el template HTML.',
-        hint: 'Abre "counter.component.html" y cambia la interpolación de "{{ counter }}" a "{{ counter() }}" para poder invocar la señal.'
+        message: 'Excellent in TypeScript! But you still need to update the call in the HTML template.',
+        hint: 'Open "counter.component.html" and change the interpolation from "{{ counter }}" to "{{ counter() }}" to invoke the signal.'
       };
     }
 
@@ -54,7 +54,7 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L1_WRITABLE_SIGNAL',
       success: true,
       anchor: 'counter-value',
-      message: '¡Excelente! "counter" está declarado e invocado correctamente como un Writable Signal.'
+      message: 'Excellent! "counter" is correctly declared and invoked as a Writable Signal.'
     };
   },
 
@@ -65,8 +65,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_SIGNAL_INPUT',
         success: false,
         anchor: 'step-input',
-        message: 'No se detectó la propiedad "step" en tu clase.',
-        hint: 'Asegúrate de declarar la propiedad "step" para representar el incremento.'
+        message: 'The "step" property was not detected in your class.',
+        hint: 'Make sure to declare the "step" property to represent the increment.'
       };
     }
     if (stepProp.type !== 'input') {
@@ -74,8 +74,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_SIGNAL_INPUT',
         success: false,
         anchor: 'step-input',
-        message: 'La propiedad "step" debe ser un Signal Input moderno.',
-        hint: 'Usa la función "input" de Angular: "step = input<number>(1);". Recuerda importar "input" desde "@angular/core".'
+        message: 'The "step" property must be a modern Signal Input.',
+        hint: 'Use Angular\'s "input" function: "step = input<number>(1);". Remember to import "input" from "@angular/core".'
       };
     }
 
@@ -86,8 +86,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_SIGNAL_INPUT',
         success: false,
         anchor: 'step-input',
-        message: '¡Clase de TypeScript correcta! Pero te falta actualizar la interpolación de "step" en tu template.',
-        hint: 'Abre "counter.component.html" y cambia "{{ step }}" por "{{ step() }}" en el texto informativo y dentro de los botones de incremento/decremento.'
+        message: 'TypeScript class is correct! But you need to update the interpolation of "step" in your template.',
+        hint: 'Open "counter.component.html" and change "{{ step }}" to "{{ step() }}" in the informational text and inside the increment/decrement buttons.'
       };
     }
 
@@ -95,7 +95,7 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L1_SIGNAL_INPUT',
       success: true,
       anchor: 'step-input',
-      message: '¡Genial! "step" es ahora un Signal Input reactivo e invocado correctamente.'
+      message: 'Great! "step" is now a reactive Signal Input and is correctly invoked.'
     };
   },
 
@@ -106,8 +106,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_COMPUTED_SIGNAL',
         success: false,
         anchor: 'double-value',
-        message: 'No se detectó la propiedad "doubleCounter" en tu clase.',
-        hint: 'Declara "doubleCounter" para reactivamente doblar el valor de "counter".'
+        message: 'The "doubleCounter" property was not detected in your class.',
+        hint: 'Declare "doubleCounter" to reactively double the value of "counter".'
       };
     }
     if (doubleProp.type !== 'computed') {
@@ -115,8 +115,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_COMPUTED_SIGNAL',
         success: false,
         anchor: 'double-value',
-        message: 'La propiedad "doubleCounter" debe ser un Computed Signal.',
-        hint: 'Usa "doubleCounter = computed(() => this.counter() * 2);" importando "computed" desde "@angular/core".'
+        message: 'The "doubleCounter" property must be a Computed Signal.',
+        hint: 'Use "doubleCounter = computed(() => this.counter() * 2);" importing "computed" from "@angular/core".'
       };
     }
 
@@ -127,8 +127,8 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_COMPUTED_SIGNAL',
         success: false,
         anchor: 'double-value',
-        message: '¡Computed Signal correcto en TS! Pero te falta invocarlo en el HTML.',
-        hint: 'Abre "counter.component.html" y cambia "{{ doubleCounter }}" por "{{ doubleCounter() }}".'
+        message: 'Computed Signal is correct in TS! But you need to invoke it in the HTML.',
+        hint: 'Open "counter.component.html" and change "{{ doubleCounter }}" to "{{ doubleCounter() }}".'
       };
     }
 
@@ -136,7 +136,7 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L1_COMPUTED_SIGNAL',
       success: true,
       anchor: 'double-value',
-      message: '¡Fantástico! "doubleCounter" es un Computed Signal que deriva su estado reactivamente e invocado en el HTML.'
+      message: 'Fantastic! "doubleCounter" is a Computed Signal that derives its state reactively and is invoked in the HTML.'
     };
   },
 
@@ -156,15 +156,15 @@ export const L1_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L1_NO_MANUAL_RECALCULATION',
         success: false,
         anchor: 'double-value',
-        message: `Anti-patrón detectado: Recálculo manual de "doubleCounter" en el método(s) [${methodNames.join(', ')}].`,
-        hint: 'Dado que "doubleCounter" es una señal computada, se actualizará sola automáticamente. Elimina la asignación manual "this.doubleCounter = ..." dentro de tus métodos.'
+        message: `Anti-pattern detected: Manual recalculation of "doubleCounter" in method(s) [${methodNames.join(', ')}].`,
+        hint: 'Since "doubleCounter" is a computed signal, it will update automatically. Remove the manual assignment "this.doubleCounter = ..." inside your methods.'
       };
     }
     return {
       ruleId: 'L1_NO_MANUAL_RECALCULATION',
       success: true,
       anchor: 'double-value',
-      message: '¡Excelente! No hay reasignaciones manuales del estado derivado. Sigues las buenas prácticas de arquitectura reactiva.'
+      message: 'Excellent! No manual reassignments of derived state. You are following reactive architecture best practices.'
     };
   }
 };
@@ -178,8 +178,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_TASKS_SIGNAL',
         success: false,
         anchor: 'task-list',
-        message: 'No se detectó la propiedad "tasks" en tu componente.',
-        hint: 'Asegúrate de no eliminar la propiedad "tasks" al refactorizar.'
+        message: 'The "tasks" property was not detected in your component.',
+        hint: 'Make sure not to delete the "tasks" property when refactoring.'
       };
     }
     if (tasksProp.type !== 'signal') {
@@ -187,15 +187,15 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_TASKS_SIGNAL',
         success: false,
         anchor: 'task-list',
-        message: 'La propiedad "tasks" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: tasks = signal<Task[]>([...]);'
+        message: 'The "tasks" property must be declared as a Writable Signal.',
+        hint: 'Use: tasks = signal<Task[]>([...]);'
       };
     }
     return {
       ruleId: 'L2_TASKS_SIGNAL',
       success: true,
       anchor: 'task-list',
-      message: '¡Excelente! "tasks" es un Writable Signal reactivo.'
+      message: 'Excellent! "tasks" is a reactive Writable Signal.'
     };
   },
 
@@ -206,8 +206,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTER_SIGNAL',
         success: false,
         anchor: 'filters-bar',
-        message: 'No se detectó la propiedad "filter" en tu componente.',
-        hint: 'Declara "filter" para controlar el estado del filtro de tareas.'
+        message: 'The "filter" property was not detected in your component.',
+        hint: 'Declare "filter" to control the state of the task filter.'
       };
     }
     if (filterProp.type !== 'signal') {
@@ -215,8 +215,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTER_SIGNAL',
         success: false,
         anchor: 'filters-bar',
-        message: 'La propiedad "filter" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: filter = signal<\'all\' | \'pending\' | \'completed\'>(\'all\');'
+        message: 'The "filter" property must be declared as a Writable Signal.',
+        hint: 'Use: filter = signal<\'all\' | \'pending\' | \'completed\'>(\'all\');'
       };
     }
 
@@ -227,8 +227,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTER_SIGNAL',
         success: false,
         anchor: 'filters-bar',
-        message: '¡TS correcto! Pero te falta actualizar los llamados a "filter" en tu archivo HTML.',
-        hint: 'Abre "task-filter.component.html" y cambia "filter === \'all\'" por "filter() === \'all\'" en todas las directivas de estilo active.'
+        message: 'TS is correct! But you need to update the calls to "filter" in your HTML file.',
+        hint: 'Open "task-filter.component.html" and change "filter === \'all\'" to "filter() === \'all\'" in all active style directives.'
       };
     }
 
@@ -236,7 +236,7 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L2_FILTER_SIGNAL',
       success: true,
       anchor: 'filters-bar',
-      message: '¡Excelente! El filtro activo está declarado e implementado en el template como una señal.'
+      message: 'Excellent! The active filter is declared and implemented in the template as a signal.'
     };
   },
 
@@ -247,8 +247,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTERED_TASKS_COMPUTED',
         success: false,
         anchor: 'task-list',
-        message: 'No se detectó la propiedad "filteredTasks" en tu componente.',
-        hint: 'Define "filteredTasks" para reactivamente mapear la lista de tareas filtradas.'
+        message: 'The "filteredTasks" property was not detected in your component.',
+        hint: 'Define "filteredTasks" to reactively map the list of filtered tasks.'
       };
     }
     if (filteredProp.type !== 'computed') {
@@ -256,8 +256,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTERED_TASKS_COMPUTED',
         success: false,
         anchor: 'task-list',
-        message: 'La propiedad "filteredTasks" debe ser un Computed Signal.',
-        hint: 'Usa: filteredTasks = computed(() => { ... });'
+        message: 'The "filteredTasks" property must be a Computed Signal.',
+        hint: 'Use: filteredTasks = computed(() => { ... });'
       };
     }
 
@@ -268,8 +268,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_FILTERED_TASKS_COMPUTED',
         success: false,
         anchor: 'task-list',
-        message: '¡Computed Signal correcto en TS! Pero te falta invocarlo en el bucle @for de tu HTML.',
-        hint: 'Abre "task-filter.component.html" y actualiza la iteración a: "@for (task of filteredTasks(); track task.title)".'
+        message: 'Computed Signal is correct in TS! But you need to invoke it in the @for loop of your HTML.',
+        hint: 'Open "task-filter.component.html" and update the iteration to: "@for (task of filteredTasks(); track task.title)".'
       };
     }
 
@@ -277,7 +277,7 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L2_FILTERED_TASKS_COMPUTED',
       success: true,
       anchor: 'task-list',
-      message: '¡Perfecto! filteredTasks deriva reactivamente el estado y se itera correctamente como una función en el template.'
+      message: 'Perfect! filteredTasks reactively derives the state and is correctly iterated as a function in the template.'
     };
   },
 
@@ -288,8 +288,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_PENDING_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: 'No se detectó la propiedad "pendingCount" en tu componente.',
-        hint: 'Declara la Computed Signal "pendingCount" para derivar la cantidad de tareas pendientes.'
+        message: 'The "pendingCount" property was not detected in your component.',
+        hint: 'Declare the "pendingCount" Computed Signal to derive the number of pending tasks.'
       };
     }
     if (countProp.type !== 'computed') {
@@ -297,8 +297,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_PENDING_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: 'La propiedad "pendingCount" debe ser un Computed Signal.',
-        hint: 'Usa: pendingCount = computed(() => ...);'
+        message: 'The "pendingCount" property must be a Computed Signal.',
+        hint: 'Use: pendingCount = computed(() => ...);'
       };
     }
 
@@ -309,8 +309,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_PENDING_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: '¡TypeScript listo! Pero te falta actualizar la interpolación de "pendingCount" en el HTML.',
-        hint: 'Abre "task-filter.component.html" y cambia "{{ pendingCount }}" por "{{ pendingCount() }}" en la etiqueta de pendientes.'
+        message: 'TypeScript is ready! But you still need to update the interpolation of "pendingCount" in the HTML.',
+        hint: 'Open "task-filter.component.html" and change "{{ pendingCount }}" to "{{ pendingCount() }}" in the pending badge.'
       };
     }
 
@@ -318,7 +318,7 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L2_PENDING_COUNT_COMPUTED',
       success: true,
       anchor: 'filters-bar',
-      message: '¡Genial! pendingCount está derivado de forma reactiva e impreso correctamente en el HTML.'
+      message: 'Great! pendingCount is reactively derived and correctly outputted in the HTML.'
     };
   },
 
@@ -329,8 +329,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_COMPLETED_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: 'No se detectó la propiedad "completedCount" en tu componente.',
-        hint: 'Declara la Computed Signal "completedCount" para derivar la cantidad de tareas completadas.'
+        message: 'The "completedCount" property was not detected in your component.',
+        hint: 'Declare the "completedCount" Computed Signal to derive the number of completed tasks.'
       };
     }
     if (countProp.type !== 'computed') {
@@ -338,8 +338,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_COMPLETED_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: 'La propiedad "completedCount" debe ser un Computed Signal.',
-        hint: 'Usa: completedCount = computed(() => ...);'
+        message: 'The "completedCount" property must be a Computed Signal.',
+        hint: 'Use: completedCount = computed(() => ...);'
       };
     }
 
@@ -350,8 +350,8 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L2_COMPLETED_COUNT_COMPUTED',
         success: false,
         anchor: 'filters-bar',
-        message: '¡TypeScript listo! Pero te falta actualizar la interpolación de "completedCount" en el HTML.',
-        hint: 'Abre "task-filter.component.html" y cambia "{{ completedCount }}" por "{{ completedCount() }}" en la etiqueta de completados.'
+        message: 'TypeScript is ready! But you still need to update the interpolation of "completedCount" in the HTML.',
+        hint: 'Open "task-filter.component.html" and change "{{ completedCount }}" to "{{ completedCount() }}" in the completed badge.'
       };
     }
 
@@ -359,7 +359,7 @@ export const L2_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L2_COMPLETED_COUNT_COMPUTED',
       success: true,
       anchor: 'filters-bar',
-      message: '¡Genial! completedCount está derivado de forma reactiva e impreso correctamente en el HTML.'
+      message: 'Great! completedCount is reactively derived and correctly outputted in the HTML.'
     };
   }
 };
@@ -373,8 +373,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_THEME_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'No se detectó la propiedad "theme" en tu componente.',
-        hint: 'Asegúrate de conservar la propiedad "theme" durante la refactorización.'
+        message: 'The "theme" property was not detected in your component.',
+        hint: 'Make sure you keep the "theme" property when refactoring.'
       };
     }
     if (themeProp.type !== 'signal') {
@@ -382,8 +382,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_THEME_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'La propiedad "theme" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: theme = signal<\'dark\' | \'light\'>(\'dark\');'
+        message: 'The "theme" property must be declared as a Writable Signal.',
+        hint: 'Use: theme = signal<\'dark\' | \'light\'>(\'dark\');'
       };
     }
 
@@ -394,8 +394,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_THEME_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: '¡TS correcto! Pero debes actualizar los llamados del tema en el archivo HTML.',
-        hint: 'Abre "theme-panel.component.html" y actualiza "theme === \'dark\'" por "theme() === \'dark\'" y "theme === \'light\'" por "theme() === \'light\'".'
+        message: 'TS is correct! But you need to update the theme calls in the HTML file.',
+        hint: 'Open "theme-panel.component.html" and update "theme === \'dark\'" to "theme() === \'dark\'" and "theme === \'light\'" to "theme() === \'light\'".'
       };
     }
 
@@ -403,7 +403,7 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L3_THEME_SIGNAL',
       success: true,
       anchor: 'preferences-controls',
-      message: '¡Genial! theme es una señal e invocado correctamente en el template.'
+      message: 'Great! theme is a signal and is correctly invoked in the template.'
     };
   },
 
@@ -414,8 +414,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_FONT_SIZE_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'No se detectó la propiedad "fontSize" en tu componente.',
-        hint: 'Conserva "fontSize" para poder dimensionar la fuente de vista previa.'
+        message: 'The "fontSize" property was not detected in your component.',
+        hint: 'Keep "fontSize" in order to size the preview font.'
       };
     }
     if (fontProp.type !== 'signal') {
@@ -423,8 +423,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_FONT_SIZE_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'La propiedad "fontSize" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: fontSize = signal<number>(16);'
+        message: 'The "fontSize" property must be declared as a Writable Signal.',
+        hint: 'Use: fontSize = signal<number>(16);'
       };
     }
 
@@ -435,8 +435,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_FONT_SIZE_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: '¡TS correcto! Pero te falta invocar la señal de tamaño de fuente en el HTML.',
-        hint: 'Abre "theme-panel.component.html" y actualiza todas las expresiones de "fontSize" por "fontSize()" (en las condiciones [disabled] y en la visualización {{ fontSize }}px).'
+        message: 'TS is correct! But you still need to invoke the font size signal in the HTML.',
+        hint: 'Open "theme-panel.component.html" and update all expressions of "fontSize" to "fontSize()" (in the [disabled] conditions and in the {{ fontSize }}px display).'
       };
     }
 
@@ -444,7 +444,7 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L3_FONT_SIZE_SIGNAL',
       success: true,
       anchor: 'preferences-controls',
-      message: '¡Estupendo! fontSize es una Writable Signal y su llamado en el HTML es el correcto.'
+      message: 'Wonderful! fontSize is a Writable Signal and its call in the HTML is correct.'
     };
   },
 
@@ -455,8 +455,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_ACCENT_COLOR_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'No se detectó la propiedad "accentColor" en tu componente.',
-        hint: 'Conserva "accentColor" para matizar la visualización de accent principal.'
+        message: 'The "accentColor" property was not detected in your component.',
+        hint: 'Keep "accentColor" to style the main accent color display.'
       };
     }
     if (accentProp.type !== 'signal') {
@@ -464,8 +464,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_ACCENT_COLOR_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: 'La propiedad "accentColor" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: accentColor = signal<\'purple\' | \'cyan\' | \'pink\'>(\'purple\');'
+        message: 'The "accentColor" property must be declared as a Writable Signal.',
+        hint: 'Use: accentColor = signal<\'purple\' | \'cyan\' | \'pink\'>(\'purple\');'
       };
     }
 
@@ -476,8 +476,8 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L3_ACCENT_COLOR_SIGNAL',
         success: false,
         anchor: 'preferences-controls',
-        message: '¡TypeScript correcto! Pero te falta invocar "accentColor" en el template HTML.',
-        hint: 'Abre "theme-panel.component.html" y cambia "accentColor === \'purple\'" por "accentColor() === \'purple\'" (y repite para \'cyan\' y \'pink\' en los círculos de la paleta).'
+        message: 'TypeScript is correct! But you still need to invoke "accentColor" in the HTML template.',
+        hint: 'Open "theme-panel.component.html" and change "accentColor === \'purple\'" to "accentColor() === \'purple\'" (and repeat for \'cyan\' and \'pink\' on the palette circles).'
       };
     }
 
@@ -485,7 +485,7 @@ export const L3_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L3_ACCENT_COLOR_SIGNAL',
       success: true,
       anchor: 'preferences-controls',
-      message: '¡Genial! El color de acento reactivo está enlazado e invocado correctamente en el template HTML.'
+      message: 'Great! The reactive accent color is correctly bound and invoked in the HTML template.'
     };
   }
 };
@@ -499,8 +499,8 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
         success: false,
         anchor: 'cart-summary',
-        message: 'No se detectó la propiedad privada "_items" en tu clase CartService.',
-        hint: 'Declara la señal mutable como privada usando: private _items = signal<CartItem[]>([]);'
+        message: 'The private property "_items" was not detected in your CartService class.',
+        hint: 'Declare the mutable signal as private using: private _items = signal<CartItem[]>([]);'
       };
     }
     if (privateProp.type !== 'signal') {
@@ -508,15 +508,15 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
         success: false,
         anchor: 'cart-summary',
-        message: 'La propiedad privada "_items" debe ser una Writable Signal.',
-        hint: 'Usa la función signal(): private _items = signal<CartItem[]>([]);'
+        message: 'The private property "_items" must be a Writable Signal.',
+        hint: 'Use the signal() function: private _items = signal<CartItem[]>([]);'
       };
     }
     return {
       ruleId: 'L4_SERVICE_PRIVATE_ITEMS',
       success: true,
       anchor: 'cart-summary',
-      message: '¡Excelente! "_items" es una señal writable privada inmaculada.'
+      message: 'Excellent! "_items" is a pristine private writable signal.'
     };
   },
 
@@ -527,8 +527,8 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_SERVICE_READONLY_ITEMS',
         success: false,
         anchor: 'cart-summary',
-        message: 'No se detectó la propiedad pública "items" en tu clase CartService.',
-        hint: 'Asegúrate de exponer la propiedad pública "items" para los componentes.'
+        message: 'The public property "items" was not detected in your CartService class.',
+        hint: 'Make sure to expose the public property "items" for components.'
       };
     }
     const isReadonlyInit = publicProp.initializerText?.includes('asReadonly') || false;
@@ -537,15 +537,15 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_SERVICE_READONLY_ITEMS',
         success: false,
         anchor: 'cart-summary',
-        message: 'La propiedad pública "items" debe ser expuesta como una señal de solo lectura.',
-        hint: 'Asigna la propiedad pública de esta manera para evitar mutaciones directas: items = this._items.asReadonly();'
+        message: 'The public property "items" must be exposed as a read-only signal.',
+        hint: 'Assign the public property like this to prevent direct mutations: items = this._items.asReadonly();'
       };
     }
     return {
       ruleId: 'L4_SERVICE_READONLY_ITEMS',
       success: true,
       anchor: 'cart-summary',
-      message: '¡Perfecto! El estado expuesto "items" está protegido con asReadonly() para garantizar la inmutabilidad.'
+      message: 'Perfect! The exposed "items" state is protected with asReadonly() to guarantee immutability.'
     };
   },
 
@@ -556,8 +556,8 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_PRODUCT_LIST_OUTPUT',
         success: false,
         anchor: 'cart-summary',
-        message: 'No se detectó la propiedad "productAdded" en tu componente ProductListComponent.',
-        hint: 'Conserva el emisor de agregaciones "productAdded" para notificar clicks.'
+        message: 'The "productAdded" property was not detected in your ProductListComponent.',
+        hint: 'Keep the addition emitter "productAdded" to notify clicks.'
       };
     }
     const usesOutputAPI = outputProp.initializerText?.includes('output(') || outputProp.initializerText?.includes('output<') || false;
@@ -566,15 +566,15 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_PRODUCT_LIST_OUTPUT',
         success: false,
         anchor: 'cart-summary',
-        message: 'La propiedad "productAdded" debe declararse utilizando el nuevo API de eventos output().',
-        hint: 'Reemplaza "@Output() productAdded = new EventEmitter..." por "productAdded = output<Product>();" importando "output" desde "@angular/core".'
+        message: 'The "productAdded" property must be declared using the new output() event API.',
+        hint: 'Replace "@Output() productAdded = new EventEmitter..." with "productAdded = output<Product>();" importing "output" from "@angular/core".'
       };
     }
     return {
       ruleId: 'L4_PRODUCT_LIST_OUTPUT',
       success: true,
       anchor: 'cart-summary',
-      message: '¡Increíble! Utilizas el API de eventos moderno output() basado en señales.'
+      message: 'Amazing! You are using the modern signal-based output() event API.'
     };
   },
 
@@ -585,8 +585,8 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_PRODUCT_LIST_INJECTION',
         success: false,
         anchor: 'cart-summary',
-        message: 'No se detectó el servicio "cartService" inyectado en ProductListComponent.',
-        hint: 'Inyecta la propiedad pública o protegida cartService en tu componente.'
+        message: 'The "cartService" was not detected as injected in ProductListComponent.',
+        hint: 'Inject the public or protected cartService property in your component.'
       };
     }
     const usesInject = diProp.initializerText?.includes('inject(') || false;
@@ -595,15 +595,15 @@ export const L4_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L4_PRODUCT_LIST_INJECTION',
         success: false,
         anchor: 'cart-summary',
-        message: 'Debes inyectar el "cartService" de forma declarativa usando el API inject().',
-        hint: 'Reemplaza la inyección tradicional del constructor por: cartService = inject(CartService); y remueve el constructor.'
+        message: 'You must inject "cartService" declaratively using the inject() API.',
+        hint: 'Replace traditional constructor injection with: cartService = inject(CartService); and remove the constructor.'
       };
     }
     return {
       ruleId: 'L4_PRODUCT_LIST_INJECTION',
       success: true,
       anchor: 'cart-summary',
-      message: '¡Excelente! Utilizas la inyección de dependencias funcional con inject() de forma elegante.'
+      message: 'Excellent! You are using functional dependency injection with inject() elegantly.'
     };
   }
 };
@@ -617,8 +617,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_SEARCH_QUERY_SIGNAL',
         success: false,
         anchor: 'search-input',
-        message: 'No se detectó la propiedad "searchQuery" en tu componente.',
-        hint: 'Asegúrate de declarar la propiedad searchQuery para enlazar el texto de búsqueda.'
+        message: 'The "searchQuery" property was not detected in your component.',
+        hint: 'Make sure to declare the searchQuery property to bind the search input text.'
       };
     }
     if (searchProp.type !== 'signal') {
@@ -626,15 +626,15 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_SEARCH_QUERY_SIGNAL',
         success: false,
         anchor: 'search-input',
-        message: 'La propiedad "searchQuery" debe ser declarada como una Writable Signal.',
-        hint: 'Usa: searchQuery = signal<string>(\'\'); importando signal desde @angular/core.'
+        message: 'The "searchQuery" property must be declared as a Writable Signal.',
+        hint: 'Use: searchQuery = signal<string>(\'\'); importing signal from @angular/core.'
       };
     }
     return {
       ruleId: 'L5_SEARCH_QUERY_SIGNAL',
       success: true,
       anchor: 'search-input',
-      message: '¡Excelente! "searchQuery" es una Writable Signal reactiva.'
+      message: 'Excellent! "searchQuery" is a reactive Writable Signal.'
     };
   },
 
@@ -646,30 +646,30 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_TO_OBSERVABLE',
         success: false,
         anchor: 'search-input',
-        message: 'No se detectó la conversión de "searchQuery" a Observable usando toObservable().',
-        hint: 'Usa la función toObservable(this.searchQuery) de @angular/core/rxjs-interop para crear un flujo Observable.'
+        message: 'The conversion of "searchQuery" to Observable using toObservable() was not detected.',
+        hint: 'Use the toObservable(this.searchQuery) function from @angular/core/rxjs-interop to create an Observable stream.'
       };
     }
     return {
       ruleId: 'L5_TO_OBSERVABLE',
       success: true,
       anchor: 'search-input',
-      message: '¡Perfecto! Has convertido exitosamente la Writable Signal "searchQuery" a Observable con toObservable().'
+      message: 'Perfect! You have successfully converted the "searchQuery" Writable Signal to an Observable with toObservable().'
     };
   },
 
   L5_RXJS_OPERATORS: (analysis) => {
     const fileContent = analysis.fileContent || '';
     
-    // Si la búsqueda clásica sigue activa con searchSubject$, obligamos a que falle la regla
+    // If classic search is still active with searchSubject$, force rule failure
     const usesLegacySubject = /_?searchSubject\$\s*\.pipe/.test(fileContent);
     if (usesLegacySubject) {
       return {
         ruleId: 'L5_RXJS_OPERATORS',
         success: false,
         anchor: 'search-input',
-        message: 'Se detectó que aún se está utilizando el Subject clásico "searchSubject$" en el flujo de búsqueda.',
-        hint: 'Refactoriza el flujo para utilizar toObservable(this.searchQuery) y deshazte de searchSubject$.'
+        message: 'The classic Subject "searchSubject$" is still detected in the search stream.',
+        hint: 'Refactor the stream to use toObservable(this.searchQuery) and get rid of searchSubject$.'
       };
     }
 
@@ -682,8 +682,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_RXJS_OPERATORS',
         success: false,
         anchor: 'search-input',
-        message: 'Falta aplicar el operador de retardo "debounceTime" en el flujo de búsqueda.',
-        hint: 'Aplica .pipe(debounceTime(300), ...) para retrasar la búsqueda mientras el usuario escribe y no saturar el servidor.'
+        message: 'The delay operator "debounceTime" is missing in the search stream.',
+        hint: 'Apply .pipe(debounceTime(300), ...) to delay the search while the user types to avoid flooding the server.'
       };
     }
     if (!hasDistinct) {
@@ -691,8 +691,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_RXJS_OPERATORS',
         success: false,
         anchor: 'search-input',
-        message: 'Falta aplicar el operador "distinctUntilChanged" en el flujo de búsqueda.',
-        hint: 'Añade distinctUntilChanged() a la tubería para evitar búsquedas si el texto no ha cambiado realmente.'
+        message: 'The "distinctUntilChanged" operator is missing in the search stream.',
+        hint: 'Add distinctUntilChanged() to the pipe to avoid duplicate searches if the text hasn\'t actually changed.'
       };
     }
     if (!hasSwitchMap) {
@@ -700,8 +700,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_RXJS_OPERATORS',
         success: false,
         anchor: 'search-input',
-        message: 'Falta aplicar el operador de aplanamiento asíncrono "switchMap" en el flujo de búsqueda.',
-        hint: 'Usa switchMap(query => this.searchService.search(query)) para cancelar búsquedas anteriores en vuelo si se inicia una nueva.'
+        message: 'The asynchronous flattening operator "switchMap" is missing in the search stream.',
+        hint: 'Use switchMap(query => this.searchService.search(query)) to cancel previous in-flight searches if a new one is initiated.'
       };
     }
 
@@ -709,7 +709,7 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L5_RXJS_OPERATORS',
       success: true,
       anchor: 'search-input',
-      message: '¡Espectacular! Implementas las mejores prácticas de optimización de flujos asíncronos con debounceTime, distinctUntilChanged y switchMap.'
+      message: 'Spectacular! You are implementing best practices for optimizing async streams with debounceTime, distinctUntilChanged, and switchMap.'
     };
   },
 
@@ -720,8 +720,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_TO_SIGNAL',
         success: false,
         anchor: 'results-panel',
-        message: 'No se detectó la propiedad "searchResults" en tu clase.',
-        hint: 'Asegúrate de definir la propiedad "searchResults" para almacenar los resultados del buscador.'
+        message: 'The "searchResults" property was not detected in your class.',
+        hint: 'Make sure to define the "searchResults" property to store the search results.'
       };
     }
     const usesToSignal = resultsProp.initializerText?.includes('toSignal(') || false;
@@ -730,8 +730,8 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_TO_SIGNAL',
         success: false,
         anchor: 'results-panel',
-        message: 'La propiedad "searchResults" debe ser convertida a Signal usando toSignal().',
-        hint: 'Usa la función toSignal(queryObservable) importada de @angular/core/rxjs-interop para transformar el observable final a una señal.'
+        message: 'The "searchResults" property must be converted to a Signal using toSignal().',
+        hint: 'Use the toSignal(queryObservable) function imported from @angular/core/rxjs-interop to transform the final observable into a signal.'
       };
     }
     const hasInitialValue = resultsProp.initializerText?.includes('initialValue') || false;
@@ -740,15 +740,15 @@ export const L5_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L5_TO_SIGNAL',
         success: false,
         anchor: 'results-panel',
-        message: 'No has especificado un valor inicial seguro "initialValue" al usar toSignal().',
-        hint: 'Para evitar que "searchResults()" retorne undefined antes del primer valor emitido, añade la opción: toSignal(..., { initialValue: [] })'
+        message: 'You have not specified a safe "initialValue" when using toSignal().',
+        hint: 'To prevent "searchResults()" from returning undefined before the first value is emitted, add the option: toSignal(..., { initialValue: [] })'
       };
     }
     return {
       ruleId: 'L5_TO_SIGNAL',
       success: true,
       anchor: 'results-panel',
-      message: '¡Brillante! Has cerrado la brecha reactiva convirtiendo el flujo de vuelta a una señal de solo lectura "searchResults" y protegiéndola con un initialValue.'
+      message: 'Brilliant! You have closed the reactive gap by converting the stream back to a read-only "searchResults" signal and protecting it with an initialValue.'
     };
   }
 };
@@ -763,15 +763,15 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_DECLARATION',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'No se detectó la declaración del almacén usando la función signalStore() de @ngrx/signals.',
-        hint: 'Declara tu store en messages-store.ts usando: export const MessagesStore = signalStore(...);'
+        message: 'The store declaration using @ngrx/signals\' signalStore() function was not detected.',
+        hint: 'Declare your store in messages-store.ts using: export const MessagesStore = signalStore(...);'
       };
     }
     return {
       ruleId: 'L6_STORE_DECLARATION',
       success: true,
       anchor: 'messages-list-anchor',
-      message: '¡Excelente! Declaraste tu almacén centralizado usando la función signalStore().'
+      message: 'Excellent! You declared your centralized store using the signalStore() function.'
     };
   },
 
@@ -783,15 +783,15 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_STATE',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'No se encontró la inicialización del estado en el Store.',
-        hint: 'Usa la función withState() para configurar el estado inicial: withState({ messages: [] as Message[], filter: \'all\' as \'all\' | \'unread\', loading: false })'
+        message: 'The initial state configuration was not found in the Store.',
+        hint: 'Use the withState() function to configure the initial state: withState({ messages: [] as Message[], filter: \'all\' as \'all\' | \'unread\', loading: false })'
       };
     }
     return {
       ruleId: 'L6_STORE_STATE',
       success: true,
       anchor: 'messages-list-anchor',
-      message: '¡Genial! El estado inicial del almacén está perfectamente configurado con withState().'
+      message: 'Great! The initial state of the store is perfectly configured with withState().'
     };
   },
 
@@ -803,8 +803,8 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_COMPUTED',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'No se detectó el mapeo de estados derivados computados en tu Store.',
-        hint: 'Declara tus computadas usando withComputed((store) => ({ filteredMessages: computed(() => ...), unreadCount: computed(() => ...) }))'
+        message: 'The mapping of computed derived states was not detected in your Store.',
+        hint: 'Declare your computed states using withComputed((store) => ({ filteredMessages: computed(() => ...), unreadCount: computed(() => ...) }))'
       };
     }
     const hasFilteredMessages = /filteredMessages\s*:\s*computed\(/.test(fileContent);
@@ -814,15 +814,15 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_COMPUTED',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'Falta derivar las propiedades computadas "filteredMessages" o "unreadCount" en tu Store.',
-        hint: 'Asegúrate de computar filteredMessages (filtrando por mensaje leído/no leído) y unreadCount (número total de mensajes sin leer).'
+        message: 'The computed properties "filteredMessages" or "unreadCount" are missing in your Store.',
+        hint: 'Make sure you compute filteredMessages (filtering by read/unread messages) and unreadCount (total number of unread messages).'
       };
     }
     return {
       ruleId: 'L6_STORE_COMPUTED',
       success: true,
       anchor: 'messages-list-anchor',
-      message: '¡Espectacular! Declaras y derivas estados computados eficientes usando withComputed().'
+      message: 'Spectacular! You declare and derive efficient computed states using withComputed().'
     };
   },
 
@@ -834,8 +834,8 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_METHODS',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'No se encontraron los métodos de manipulación de estado en tu Store.',
-        hint: 'Usa withMethods((store) => ({ loadMessages(), setFilter(), markAsRead() })) para exponer operaciones inmutables.'
+        message: 'State manipulation methods were not found in your Store.',
+        hint: 'Use withMethods((store) => ({ loadMessages(), setFilter(), markAsRead() })) to expose immutable operations.'
       };
     }
     const hasPatchState = /patchState\s*\(/.test(fileContent);
@@ -844,15 +844,15 @@ export const L6_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L6_STORE_METHODS',
         success: false,
         anchor: 'messages-list-anchor',
-        message: 'No se detectó el uso de la función patchState() para actualizar el Store de forma inmutable.',
-        hint: 'Importa patchState desde @ngrx/signals y úsalo para realizar actualizaciones parciales en tus métodos: patchState(store, { filter }) o patchState(store, (state) => ({ ... }))'
+        message: 'The use of the patchState() function to update the Store immutably was not detected.',
+        hint: 'Import patchState from @ngrx/signals and use it to perform partial updates in your methods: patchState(store, { filter }) or patchState(store, (state) => ({ ... }))'
       };
     }
     return {
       ruleId: 'L6_STORE_METHODS',
       success: true,
       anchor: 'messages-list-anchor',
-      message: '¡Brillante! Expones operaciones controladas y actualizas el estado con patchState() de forma inmutable.'
+      message: 'Brilliant! You expose controlled operations and update the state immutably with patchState().'
     };
   }
 };
@@ -869,15 +869,15 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_ZONELESS_PROVIDER',
         success: false,
         anchor: 'zoneless-provider-anchor',
-        message: 'No se detectó el proveedor de detección de cambios zoneless experimental en tu configuración global.',
-        hint: 'Reemplaza "provideZoneChangeDetection({ eventCoalescing: true })" por "provideExperimentalZonelessChangeDetection()" en app.config.ts e impórtalo desde "@angular/core".'
+        message: 'The experimental zoneless change detection provider was not detected in your global configuration.',
+        hint: 'Replace "provideZoneChangeDetection({ eventCoalescing: true })" with "provideExperimentalZonelessChangeDetection()" in app.config.ts and import it from "@angular/core".'
       };
     }
     return {
       ruleId: 'L7_ZONELESS_PROVIDER',
       success: true,
       anchor: 'zoneless-provider-anchor',
-      message: '¡Excelente! Configuraste Angular en modo Zone-less puro usando provideExperimentalZonelessChangeDetection().'
+      message: 'Excellent! You configured Angular in pure Zone-less mode using provideExperimentalZonelessChangeDetection().'
     };
   },
 
@@ -890,15 +890,15 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_ON_PUSH_STRATEGY',
         success: false,
         anchor: 'onpush-strategy-anchor',
-        message: 'El componente no utiliza la estrategia de detección de cambios OnPush.',
-        hint: 'Agrega "changeDetection: ChangeDetectionStrategy.OnPush" en el decorador @Component de tu performance-monitor.component.ts. Importa ChangeDetectionStrategy desde "@angular/core".'
+        message: 'The component does not use the OnPush change detection strategy.',
+        hint: 'Add "changeDetection: ChangeDetectionStrategy.OnPush" to the @Component decorator in your performance-monitor.component.ts. Import ChangeDetectionStrategy from "@angular/core".'
       };
     }
     return {
       ruleId: 'L7_ON_PUSH_STRATEGY',
       success: true,
       anchor: 'onpush-strategy-anchor',
-      message: '¡Excelente! Configurar OnPush es una buena práctica y vital en aplicaciones de alto rendimiento.'
+      message: 'Excellent! Configuring OnPush is a best practice and vital for high-performance applications.'
     };
   },
 
@@ -912,8 +912,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_AFTER_RENDER_HOOK',
         success: false,
         anchor: 'after-render-anchor',
-        message: 'Aún estás utilizando el hook del ciclo de vida tradicional ngAfterViewChecked, el cual puede disparar bucles infinitos u operaciones de renderizado excesivas en entornos Zoneless.',
-        hint: 'Elimina el método ngAfterViewChecked y el "implements AfterViewChecked" del componente. En su lugar, usa afterRender o afterNextRender en el constructor.'
+        message: 'You are still using the traditional ngAfterViewChecked lifecycle hook, which can trigger infinite loops or excessive rendering operations in Zoneless environments.',
+        hint: 'Remove the ngAfterViewChecked method and "implements AfterViewChecked" from the component. Instead, use afterRender or afterNextRender in the constructor.'
       };
     }
 
@@ -922,8 +922,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_AFTER_RENDER_HOOK',
         success: false,
         anchor: 'after-render-anchor',
-        message: 'No se detectó el uso de afterRender o afterNextRender en el constructor del componente.',
-        hint: 'Importa afterRender o afterNextRender desde "@angular/core" y ejecútalo en el constructor para interactuar de forma segura con el Canvas/DOM: afterRender(() => { ... })'
+        message: 'The use of afterRender or afterNextRender was not detected in the constructor of the component.',
+        hint: 'Import afterRender or afterNextRender from "@angular/core" and run it in the constructor to safely interact with the Canvas/DOM: afterRender(() => { ... })'
       };
     }
 
@@ -931,7 +931,7 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L7_AFTER_RENDER_HOOK',
       success: true,
       anchor: 'after-render-anchor',
-      message: '¡Magnífico! Utilizas afterRender/afterNextRender para garantizar que la manipulación del DOM / Canvas ocurra estrictamente después de que Angular haya terminado de escribir en el DOM, evitando trashing de layouts.'
+      message: 'Magnificent! You use afterRender/afterNextRender to ensure that DOM/Canvas manipulation occurs strictly after Angular has finished writing to the DOM, avoiding layout trashing.'
     };
   },
 
@@ -945,8 +945,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'No se detectó la propiedad "fpsList" en tu componente.',
-        hint: 'Conserva la propiedad "fpsList" al refactorizar para almacenar el historial de frames.'
+        message: 'The "fpsList" property was not detected in your component.',
+        hint: 'Keep the "fpsList" property when refactoring to store the frame history.'
       };
     }
     
@@ -955,8 +955,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'La propiedad "fpsList" debe ser un Writable Signal.',
-        hint: 'Declara fpsList como una señal reactiva: fpsList = signal<number[]>([]);'
+        message: 'The "fpsList" property must be a Writable Signal.',
+        hint: 'Declare fpsList as a reactive signal: fpsList = signal<number[]>([]);'
       };
     }
 
@@ -965,8 +965,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'No se detectó la propiedad "averageFps" en tu componente.',
-        hint: 'Asegúrate de definir "averageFps" para mostrar la media de FPS.'
+        message: 'The "averageFps" property was not detected in your component.',
+        hint: 'Make sure to define "averageFps" to display the average FPS.'
       };
     }
 
@@ -975,8 +975,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'La propiedad "averageFps" debe ser un Computed Signal derivado.',
-        hint: 'Define averageFps usando la función computed: averageFps = computed(() => { ... }); que calcule el promedio del array de fpsList().'
+        message: 'The "averageFps" property must be a derived Computed Signal.',
+        hint: 'Define averageFps using the computed function: averageFps = computed(() => { ... }); which calculates the average of the fpsList() array.'
       };
     }
 
@@ -985,8 +985,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'No se detectó la propiedad "logs" en tu componente.',
-        hint: 'Asegúrate de conservar la propiedad "logs" para registrar la actividad.'
+        message: 'The "logs" property was not detected in your component.',
+        hint: 'Make sure to keep the "logs" property to record activity.'
       };
     }
 
@@ -995,21 +995,20 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: 'La propiedad "logs" debe ser un Writable Signal.',
-        hint: 'Declara logs como una señal reactiva: logs = signal<string[]>([]);'
+        message: 'The "logs" property must be a Writable Signal.',
+        hint: 'Declare logs as a reactive signal: logs = signal<string[]>([]);'
       };
     }
 
-    // Verificar en el HTML si se hace interpolación normal {{ averageFps }} o {{ averageFps }}
-    // en lugar de invocar la señal.
+    // Verify in HTML if normal interpolation {{ averageFps }} is used instead of invoking the signal.
     const usesOldAverageFpsTemplate = /{{\s*averageFps\s*}}/.test(analysis.templateContent || '');
     if (usesOldAverageFpsTemplate) {
       return {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: '¡Estructura TypeScript correcta! Pero falta actualizar la interpolación de "averageFps" en el HTML.',
-        hint: 'Modifica "performance-monitor.component.html" para que invoque la señal computada: "{{ averageFps() }}".'
+        message: 'TypeScript structure is correct! But the interpolation of "averageFps" needs to be updated in the HTML.',
+        hint: 'Modify "performance-monitor.component.html" to invoke the computed signal: "{{ averageFps() }}".'
       };
     }
 
@@ -1019,8 +1018,8 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
         ruleId: 'L7_STATE_SIGNALS',
         success: false,
         anchor: 'state-signals-anchor',
-        message: '¡Estructura TypeScript correcta! Pero falta actualizar la directiva @for de "logs" en el HTML.',
-        hint: 'Modifica "performance-monitor.component.html" para iterar sobre la señal: "@for (log of logs(); track log)".'
+        message: 'TypeScript structure is correct! But the @for directive for "logs" needs to be updated in the HTML.',
+        hint: 'Modify "performance-monitor.component.html" to iterate over the signal: "@for (log of logs(); track log)".'
       };
     }
 
@@ -1028,7 +1027,7 @@ export const L7_RULES: Record<string, PedagogicalRule> = {
       ruleId: 'L7_STATE_SIGNALS',
       success: true,
       anchor: 'state-signals-anchor',
-      message: '¡Excelente! El estado de rendimiento está modelado íntegramente con Signals reactivos.'
+      message: 'Excellent! The performance state is modeled entirely with reactive Signals.'
     };
   }
 };
@@ -1037,8 +1036,8 @@ export function evaluateRules(analysis: AnalysisResult, ruleIds: string[]): Rule
   const evaluations: RuleEvaluation[] = [];
   let isValid = true;
 
-  // Creamos una copia de analysis para no mutar el objeto original, y limpiamos
-  // comentarios en su fileContent para evitar coincidencias falsas con código comentado (pistas)
+  // We create a copy of analysis to avoid mutating the original object, and clean
+  // comments in its fileContent to avoid false matches with commented code (hints)
   const cleanAnalysis = {
     ...analysis,
     fileContent: analysis.fileContent

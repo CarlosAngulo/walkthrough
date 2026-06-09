@@ -12,16 +12,16 @@ import { MessagesStore } from '../messages-store';
 export class MessageItemComponent {
   message = input.required<Message>();
 
-  // Inyectamos de forma segura el store global compartido desde el nivel superior
+  // Safely inject the shared global store from the top level
   protected store: any = (() => {
     try {
       if (MessagesStore) {
         return inject(MessagesStore);
       }
     } catch (e) {
-      console.warn('MessagesStore no está disponible en MessageItemComponent:', e);
+      console.warn('MessagesStore is not available in MessageItemComponent:', e);
     }
-    // Respaldo reactivo temporal (Opción B: Servicio RxJS Tradicional)
+    // Temporary reactive fallback (Option B: Traditional RxJS Service)
     const service = inject(RxjsMessagesService);
     return {
       markAsRead: (id: string) => service.markAsRead(id)

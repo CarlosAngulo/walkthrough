@@ -22,16 +22,16 @@ expect.extend({
       if (!evaluation) {
         return {
           pass: false,
-          message: () => `Regla "${ruleId}" no encontrada en el catálogo.`
+          message: () => `Rule "${ruleId}" not found in the catalog.`
         };
       }
 
       const pass = evaluation.success;
       const message = pass
-        ? () => `🟢 Éxito: El archivo satisface la regla pedagógica "${ruleId}".`
-        : () => `❌ Error de aprendizaje en la regla "${ruleId}":\n\n` +
-                `Detalle: ${evaluation.message}\n` +
-                (evaluation.hint ? `Pista: ${evaluation.hint}\n` : '');
+        ? () => `🟢 Success: The file satisfies pedagogical rule "${ruleId}".`
+        : () => `❌ Learning error in rule "${ruleId}":\n\n` +
+                `Detail: ${evaluation.message}\n` +
+                (evaluation.hint ? `Hint: ${evaluation.hint}\n` : '');
 
       return {
         pass,
@@ -40,7 +40,7 @@ expect.extend({
     } catch (err: any) {
       return {
         pass: false,
-        message: () => `Error al analizar el archivo "${filePath}": ${err.message}`
+        message: () => `Error analyzing file "${filePath}": ${err.message}`
       };
     }
   },
@@ -54,11 +54,11 @@ expect.extend({
       const pass = failed.length === 0;
 
       const message = pass
-        ? () => `🟢 Éxito: El archivo satisface todas las reglas del nivel.`
-        : () => `❌ Errores de aprendizaje detectados en el archivo:\n\n` +
+        ? () => `🟢 Success: The file satisfies all rules for the level.`
+        : () => `❌ Learning errors detected in the file:\n\n` +
                 failed.map((ev, i) => 
                   `${i + 1}. [${ev.ruleId}]: ${ev.message}\n` +
-                  (ev.hint ? `   Pista: ${ev.hint}\n` : '')
+                  (ev.hint ? `   Hint: ${ev.hint}\n` : '')
                 ).join('\n');
 
       return {
@@ -68,7 +68,7 @@ expect.extend({
     } catch (err: any) {
       return {
         pass: false,
-        message: () => `Error al analizar el archivo "${filePath}": ${err.message}`
+        message: () => `Error analyzing file "${filePath}": ${err.message}`
       };
     }
   }

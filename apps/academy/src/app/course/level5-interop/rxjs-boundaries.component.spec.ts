@@ -8,13 +8,13 @@ import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import '@learning-engine/test-integration';
 
-describe('Nivel 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
+describe('Level 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
   let component: RxjsBoundariesComponent;
   let fixture: ComponentFixture<RxjsBoundariesComponent>;
   let searchServiceMock: any;
 
   beforeEach(() => {
-    // Crear un mock del SearchService
+    // Create mock for SearchService
     searchServiceMock = {
       search: vi.fn().mockReturnValue(of([
         { id: 'c1', title: 'Signals Course', category: 'Signals', difficulty: 'Principiante', emoji: '⚡' }
@@ -40,8 +40,8 @@ describe('Nivel 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
     fixture.detectChanges();
   }
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con todas las reglas de diseño reactivo y evitar anti-patrones', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with all reactive design rules and avoid anti-patterns', () => {
       const componentPath = 'src/app/course/level5-interop/rxjs-boundaries.component.ts';
       
       expect(componentPath).toSatisfyRules([
@@ -53,29 +53,29 @@ describe('Nivel 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
     });
   });
 
-  describe('RETO 1: Writable Signal para la Búsqueda', () => {
-    it('debería declarar "searchQuery" como una Writable Signal inicializada en cadena vacía', async () => {
+  describe('CHALLENGE 1: Writable Signal for Searching', () => {
+    it('should declare "searchQuery" as a Writable Signal initialized to an empty string', async () => {
       await createComponent();
 
       expect(component.searchQuery).toBeDefined();
       expect(isSignal(component.searchQuery)).withContext(
-        '¡Alerta! "searchQuery" debe ser un Signal mutable de Angular. Reemplázala usando la función: signal("").'
+        'Alert! "searchQuery" must be a mutable Angular Signal. Replace it using the function: signal("").'
       ).toBe(true);
       expect(component.searchQuery()).toBe('');
     });
   });
 
-  describe('RETO 2, 3 y 4: Puenteo a RxJS y Conversión de Vuelta', () => {
-    it('debería declarar "searchResults" como una Signal de Angular', async () => {
+  describe('CHALLENGE 2, 3 & 4: Bridging to RxJS and Converting Back', () => {
+    it('should declare "searchResults" as an Angular Signal', async () => {
       await createComponent();
 
       expect(component.searchResults).toBeDefined();
       expect(isSignal(component.searchResults)).withContext(
-        '¡Alerta! "searchResults" debe ser un Signal (de solo lectura). Se creará usando la función toSignal().'
+        'Alert! "searchResults" must be a Signal (read-only). It will be created using the toSignal() function.'
       ).toBe(true);
     });
 
-    it('debería inicializar "searchResults" con un valor inicial de array vacío', async () => {
+    it('should initialize "searchResults" with an empty array as initial value', async () => {
       await createComponent();
 
       if (isSignal(component.searchResults)) {
@@ -85,57 +85,57 @@ describe('Nivel 5: RxJS Boundaries 🔄 - RxjsBoundariesComponent', () => {
       }
     });
 
-    it('debería aplicar debounceTime y switchMap correctamente al cambiar searchQuery', async () => {
+    it('should apply debounceTime and switchMap correctly when searchQuery changes', async () => {
       await createComponent();
 
       if (isSignal(component.searchQuery) && typeof (component.searchQuery as any).set === 'function') {
-        // Cambiar searchQuery
+        // Change searchQuery
         (component.searchQuery as any).set('angular');
         fixture.detectChanges();
         
-        // El debounceTime es de 400ms. Si avanzamos 200ms, no debería haber llamado a search() todavía.
+        // debounceTime is 400ms. If we advance 200ms, it should not have called search() yet.
         vi.advanceTimersByTime(200);
         expect(searchServiceMock.search).not.toHaveBeenCalled();
 
-        // Si avanzamos otros 200ms (total 400ms), debería ejecutarse el debounce y llamarse al servicio.
+        // If we advance another 200ms (total 400ms), the debounce should complete and the service should be called.
         vi.advanceTimersByTime(200);
         expect(searchServiceMock.search).toHaveBeenCalledWith('angular');
 
-        // Latencia de simulación de delay(50ms) en el mock
+        // Latency simulation delay(50ms) in the mock
         vi.advanceTimersByTime(50);
         fixture.detectChanges();
 
-        // Los resultados se deben haber propagado a la señal searchResults
+        // Results should have propagated to searchResults signal
         expect(component.searchResults()).toEqual([
           { id: 'c1', title: 'Signals Course', category: 'Signals', difficulty: 'Principiante', emoji: '⚡' }
         ]);
       } else {
-        // Si no son señales todavía, el test se da por superado provisionalmente para no frustrar la compilación.
+        // If not signals yet, pass test provisionally not to break compilation.
         expect(true).toBe(true);
       }
     });
 
-    it('debería cancelar búsquedas anteriores en vuelo si se ingresa un nuevo término rápido (switchMap)', async () => {
+    it('should cancel previous pending searches if a new term is entered quickly (switchMap)', async () => {
       await createComponent();
 
       if (isSignal(component.searchQuery) && typeof (component.searchQuery as any).set === 'function') {
-        // Disparar primer término
+        // Trigger first term
         (component.searchQuery as any).set('rx');
         fixture.detectChanges();
-        vi.advanceTimersByTime(400); // Expiración del primer debounce
+        vi.advanceTimersByTime(400); // Expiration of first debounce
 
         expect(searchServiceMock.search).toHaveBeenCalledTimes(1);
 
-        // Sin dejar terminar la latencia (que demora 50ms), escribimos otro término rápido
+        // Without letting latency finish (which takes 50ms), we write another term quickly
         (component.searchQuery as any).set('rxjs');
         fixture.detectChanges();
-        vi.advanceTimersByTime(400); // Expiración del segundo debounce
+        vi.advanceTimersByTime(400); // Expiration of second debounce
 
-        // switchMap debe cancelar o superponer la petición anterior
+        // switchMap should cancel or overlap the previous request
         expect(searchServiceMock.search).toHaveBeenCalledTimes(2);
         expect(searchServiceMock.search).toHaveBeenLastCalledWith('rxjs');
 
-        vi.advanceTimersByTime(50); // Dejar que termine la segunda petición
+        vi.advanceTimersByTime(50); // Let the second request complete
         fixture.detectChanges();
       } else {
         expect(true).toBe(true);

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "01- Test-Driven Learning 🚀. Angular Signals",
+  "steps": [
+    {
+      "file": "README.md",
+      "line": 1,
+      "description": "### Welcome to Test-Driven Learning 🚀. Angular Signals.\n\nBefore you start touching the code, it is very important that you read this **README.md** carefully.\n\nHere you will understand:\n- What **Test-Driven Learning (TDL)** is.\n- How to install the **CodeTour** extension if you haven't already.\n- How to start the terminals in parallel to see your tests pass in real-time using `pnpm`.\n\nOnce you have your development server up with `pnpm run dev` and your test runner running with `pnpm run test`, click on **Next** to start your journey into Signals."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 13,
+      "description": "### Step 2: Traditional State Exploration 🗺️\n\nLet's first understand how the component is structured in its initial state:\n\nCurrently, the `counter` property is a classic primitive variable (`counter = 0`). Notice that it is displayed in the template using standard interpolation `{{ counter }}` on line 11.\n\n*Try the application in your browser:* If you click the buttons in the UI, you will see that it works perfectly. How does this happen? Let's move to the next step to find out! (This step does not require modifying code)."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 74,
+      "description": "### Step 3: Manual Reactivity of the Past 🕰️\n\nLook at the `increment()` and `decrement()` methods in this block.\n\nHere we increment `this.counter` by adding `this.step`. In addition, we **manually** recalculate the derived state `this.doubleCounter` in both methods to reflect the changes in the template.\n\nIn traditional Angular, we are responsible for manually updating derived state in every interaction method, which is error-prone and not very scalable. Signals will solve this automatically! (This step does not require modifying code)."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 38,
+      "description": "### Step 4: Challenge 1 - Your First Writable Signal ⚡\n\nIt is time to start migrating towards the future!\n\n**Your challenge:**\n1. Transform the `counter` property from a classic number to a mutable signal:\n   ```typescript\n   counter = signal<number>(0);\n   ```\n2. Go to the HTML template on line 11 and update it to read the signal by calling it as a function: `{{ counter() }}`.\n3. Since `counter` is now a signal, update the mutation methods below. Replace `this.counter += this.step;` in `increment()` with:\n   ```typescript\n   this.counter.set(this.counter() + this.step);\n   ```\n   And do the same in `decrement()` subtracting `this.step`.\n\n**Learning Engine Tip 💡:** The interactive learning engine will validate both your TypeScript and HTML code. If you forget to update the template to `counter()`, the tooltip will guide you with a precise real-time hint.\n\n**Learning Verification (TDL):**\nSave the changes and watch your test terminal. The first unit test (`CHALLENGE 1: Writable Signals`) will turn **green/passed**! If you open the browser, do not worry if the application does not work correctly yet, as we are halfway through the required changes."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 46,
+      "description": "### Step 5: Challenge 2 - From Classic Input to Signal Input 🧬\n\nModern Angular introduces **Signal Inputs**, which are similar to classic @Input() decorators that allow values to be assigned from a parent component, but with new inputs, these parameters integrate directly into the reactive flow.\n\n**Your challenge:**\n1. Transform `step = 1;` into a reactive Signal Input:\n   ```typescript\n   step = input<number>(1);\n   ```\n2. In the HTML template, update all references to `step` to call it as a signal: `{{ step() }}` (in the text interpolation on line 23 and in the button texts on lines 28 and 29).\n3. In your `increment()` and `decrement()` methods, read the input signal by calling it as a function: `this.step()`.\n\n**Learning Engine Tip 💡:** Just like with the counter, if you forget to invoke `step()` in the template or in the button texts of the HTML, the system will notify you dynamically with a yellow/red indicator.\n\n**Verification:**\nSave the changes. Check your Vitest test suite! The tests for `CHALLENGE 2` will turn **green**. Do not worry if the application does not work normally yet as some changes are still missing."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 52,
+      "description": "### Step 6: Challenge 3 - Computed Signals (Derived State) ⚙️\n\nWith **Computed Signals**, we define the derived state in a declarative, reactive, and cached manner, without the need for manual recalculations.\n\n**Your challenge:**\n1. Transform `doubleCounter = 0;` into a computed signal dependent on `counter`:\n   ```typescript\n   doubleCounter = computed(() => this.counter() * 2);\n   ```\n2. In the HTML template (line 16), read the computed signal: `{{ doubleCounter() }}`.\n3. **And now clean up the code!** In `increment()` and `decrement()`, completely remove the manual assignments to `this.doubleCounter`.\n\n**Learning Engine Tip 💡:** If the TypeScript is correct but the HTML does not invoke `doubleCounter()`, the semantic rules engine will keep the challenge as pending and show you the floating visual guide.\n\n**Verification:**\nCheck the test suite! Challenge 3 will turn **green**. Observe how the application works flawlessly and the double value is automatically recalculated without your intervention in the methods."
+    },
+    {
+      "file": "apps/academy/src/app/course/level1-counter/counter.component.ts",
+      "line": 64,
+      "description": "### Step 7: Final Challenge - Mutating Signals Idiomatically 🏆\n\nTo update a mutable signal based on its previous value, the best practice in Angular is to use the `.update()` method instead of `.set()`.\n\n**Your challenge:**\nUpdate the `increment()` and `decrement()` methods using the reactive `.update()` method.\n\n- In `increment()`:\n  ```typescript\n  this.counter.update(current => current + this.step());\n  ```\n- In `decrement()`:\n  ```typescript\n  this.counter.update(current => current - this.step());\n  ```\n\n**Victory:**\nSave the changes. Your entire unit test suite in Vitest will shine in **100% green**! You have successfully completed the migration of the component to Angular's modern reactivity. Congratulations!"
+    }
+  ]
+}

@@ -1,18 +1,18 @@
 <div class="messages-container" data-learning-anchor="messages-list-anchor">
   <div class="card">
-    <h1 class="title">Inbox Centralizado <span>🏛️</span></h1>
+    <h1 class="title">Centralized Inbox <span>🏛️</span></h1>
     <p class="subtitle">NgRx Signal Store & Custom Stores</p>
 
     <!-- ========================================================================
-         PARTE 1: DEMOSTRACIÓN DEL CUSTOM STORE (DIY)
+         PART 1: CUSTOM STORE DEMONSTRATION (DIY)
          ======================================================================== -->
     <div class="stat-box" style="margin-bottom: 2rem; background: rgba(255, 90, 0, 0.08); border-color: rgba(255, 90, 0, 0.15); display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
       <div style="text-align: left;">
         <span class="badge" style="background: rgba(255, 90, 0, 0.2); color: var(--color-primary); border-color: rgba(255, 90, 0, 0.3);">
-          PARTE 1: DIY CUSTOM STORE
+          PART 1: DIY CUSTOM STORE
         </span>
         <h4 style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-highlight); font-weight: 600;">
-          Valor de Estado en CustomStore:
+          State Value in CustomStore:
         </h4>
       </div>
       <div style="display: flex; align-items: center; gap: 1rem;">
@@ -20,21 +20,21 @@
           {{ customCounterStore.state().count }}
         </span>
         <button (click)="incrementCustomStore()" class="btn-mark-read" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; font-weight: bold;">
-          Incrementar ➕
+          Increment ➕
         </button>
       </div>
     </div>
 
     <div class="messages-inbox-section">
-      <!-- Pestañas Filtros de Mensajes Centralizados -->
+      <!-- Centralized Messages Filters Tabs -->
       <app-messages-sidebar></app-messages-sidebar>
 
-      <!-- Contenedor Listado de Mensajes -->
+      <!-- Messages List Container -->
       <div class="messages-list-wrapper">
         @if (store.loading()) {
           <div class="loader-spinner">
             <div class="spinner"></div>
-            <p>Conectando con el servidor académico...</p>
+            <p>Connecting to the academic server...</p>
           </div>
         } @else {
           @for (msg of store.filteredMessages(); track msg.id) {
@@ -42,19 +42,19 @@
           } @empty {
             <div class="search-empty-state">
               <span class="empty-icon">✉️</span>
-              <p class="empty-title">Bandeja de entrada vacía</p>
-              <p class="empty-desc">No hay mensajes académicos correspondientes a este filtro.</p>
+              <p class="empty-title">Empty inbox</p>
+              <p class="empty-desc">There are no academic messages matching this filter.</p>
             </div>
           }
         }
       </div>
     </div>
 
-    <!-- Panel Educativo TDL -->
+    <!-- TDL Educational Panel -->
     <div class="educational-footer" style="margin-top: 2rem;">
-      <div class="badge-tdl">METODOLOGÍA CENTRALIZADA</div>
+      <div class="badge-tdl">CENTRALIZED METHODOLOGY</div>
       <p>
-        Para aplicaciones a gran escala, mantener el estado distribuido en componentes produce incoherencias. Con <code>&#64;ngrx/signals</code>, unificamos el estado en un store autónomo mediante <code>signalStore()</code>. Esto permite derivar eficientemente computadas reactivas con <code>withComputed()</code> y mutar de forma segura el estado inmutable usando <code>withMethods()</code> y <code>patchState()</code>.
+        For large-scale applications, keeping state distributed across components causes inconsistencies. With <code>&#64;ngrx/signals</code>, we unify state in an autonomous store using <code>signalStore()</code>. This allows us to efficiently derive reactive computed properties with <code>withComputed()</code> and safely mutate immutable state using <code>withMethods()</code> and <code>patchState()</code>.
       </p>
     </div>
   </div>

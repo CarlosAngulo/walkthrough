@@ -3,17 +3,17 @@ import { Message } from './rxjs-messages.service';
 import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 
 // ============================================================================
-// PARTE 1: DIY (Do It Yourself) Signal Store
+// PART 1: DIY (Do It Yourself) Signal Store
 // ============================================================================
-// Antes de usar la biblioteca oficial @ngrx/signals, implementaremos un contenedor
-// de estado simple basado en señales "hecho por nosotros mismos". Esto te enseñará
-// la base técnica de cómo encapsular estado mutable y exponer solo lecturas reactivas.
+// Before using the official @ngrx/signals library, we will implement a simple
+// state container based on signals "made by ourselves". This will teach you
+// the technical basis of how to encapsulate mutable state and expose only reactive read-onlys.
 // ============================================================================
 export class CustomStore<T> {
-  // TODO: Reto 0 - Haz que este store DIY funcione.
-  // 1. Declara un WritableSignal interno privado para almacenar el estado: private _state
-  // 2. Expón el estado de solo lectura usando un computed(): readonly state
-  // 3. Define un método update(fn) que llame a this._state.update(fn)
+  // TODO: Challenge 0 - Make this DIY store work.
+  // 1. Declare a private internal WritableSignal to store state: private _state
+  // 2. Expose read-only state using computed(): readonly state
+  // 3. Define an update(fn) method that calls this._state.update(fn)
   
   private _state: any;
   readonly state: any;
@@ -29,13 +29,13 @@ export class CustomStore<T> {
 }
 
 // ============================================================================
-// PARTE 2: Store Reactivo Moderno con @ngrx/signals
+// PART 2: Modern Reactive Store with @ngrx/signals
 // ============================================================================
-// Ahora utilizaremos la solución estándar del ecosistema de Angular: @ngrx/signals.
-// El store gestionará la bandeja de entrada con el siguiente estado:
-// - messages: Array de mensajes académicos.
-// - filter: Filtro activo ('all' o 'unread').
-// - loading: Estado de carga asíncrona.
+// Now we will use Angular's standard ecosystem solution: @ngrx/signals.
+// The store will manage the inbox with the following state:
+// - messages: Array of academic messages.
+// - filter: Active filter ('all' or 'unread').
+// - loading: Asynchronous loading state.
 // ============================================================================
 
 export interface MessagesState {
@@ -50,8 +50,8 @@ const initialState: MessagesState = {
   loading: false
 };
 
-// TODO: Retos 1, 2, 3 y 4.
-// Reemplaza la constante MessagesStore temporal por la implementación oficial:
+// TODO: Challenges 1, 2, 3 and 4.
+// Replace the temporary MessagesStore constant with the official implementation:
 //
 // export const MessagesStore = signalStore(
 //   { providedIn: 'root' },
@@ -82,5 +82,5 @@ const initialState: MessagesState = {
 //   }))
 // );
 
-// Boilerplate inicial para evitar errores de compilación antes de la implementación del alumno.
+// Initial boilerplate to avoid compilation errors before the student's implementation.
 export const MessagesStore: any = null;

@@ -3,12 +3,12 @@
     <h1 class="title">Computed Chains <span>🧠</span></h1>
     <p class="subtitle">Angular Signals</p>
 
-    <!-- Caja para agregar tareas -->
+    <!-- Box to add tasks -->
     <div class="add-task-box">
       <input 
         #taskInput 
         type="text" 
-        placeholder="Añadir una nueva tarea..." 
+        placeholder="Add a new task..." 
         (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
         class="input-task"
       />
@@ -16,27 +16,27 @@
         (click)="addTask(taskInput.value); taskInput.value = ''" 
         class="btn btn-primary btn-add"
       >
-        Añadir
+        Add
       </button>
     </div>
 
-    <!-- Barra de filtros -->
+    <!-- Filters bar -->
     <div class="filters-bar" data-learning-anchor="filters-bar">
-      <!-- TODO: Reto 2 - Cuando 'filter' sea una señal, recuerda llamarla como función: filter() === 'all' -->
+      <!-- TODO: Challenge 2 - When 'filter' is a signal, remember to call it as a function: filter() === 'all' -->
       <button 
         class="btn-filter" 
         [class.active]="filter === 'all'" 
         (click)="setFilter('all')"
       >
-        Todos
+        All
       </button>
       <button 
         class="btn-filter" 
         [class.active]="filter === 'pending'" 
         (click)="setFilter('pending')"
       >
-        Pendientes
-        <!-- TODO: Reto 4 - Cuando 'pendingCount' sea computed, llámala como pendingCount() -->
+        Pending
+        <!-- TODO: Challenge 4 - When 'pendingCount' is computed, call it as pendingCount() -->
         <span class="badge-count badge-pending">{{ pendingCount }}</span>
       </button>
       <button 
@@ -44,15 +44,15 @@
         [class.active]="filter === 'completed'" 
         (click)="setFilter('completed')"
       >
-        Completados
-        <!-- TODO: Reto 4 - Cuando 'completedCount' sea computed, llámala como completedCount() -->
+        Completed
+        <!-- TODO: Challenge 4 - When 'completedCount' is computed, call it as completedCount() -->
         <span class="badge-count badge-completed">{{ completedCount }}</span>
       </button>
     </div>
 
-    <!-- Lista de tareas -->
+    <!-- Task list -->
     <div class="task-list" data-learning-anchor="task-list">
-      <!-- TODO: Reto 3 - Cuando 'filteredTasks' sea una computada, recórrela llamando a la función: filteredTasks() -->
+      <!-- TODO: Challenge 3 - When 'filteredTasks' is a computed, loop through it calling the function: filteredTasks() -->
       @for (task of filteredTasks; track task.title; let idx = $index) {
         <div class="task-item" [class.is-completed]="task.completed">
           <label class="checkbox-container">
@@ -66,7 +66,7 @@
             <span class="task-title">{{ task.title }}</span>
           </label>
           
-          <button (click)="removeTask(idx)" class="btn-delete" title="Eliminar tarea">
+          <button (click)="removeTask(idx)" class="btn-delete" title="Delete task">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"></polyline>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -78,16 +78,16 @@
       } @empty {
         <div class="empty-state">
           <span class="empty-icon">🍃</span>
-          <p>No hay tareas que mostrar en esta sección.</p>
+          <p>No tasks to show in this section.</p>
         </div>
       }
     </div>
 
-    <!-- Panel Informativo TDL -->
+    <!-- TDL Informative Panel -->
     <div class="educational-footer">
-      <div class="badge-tdl">TDL METODOLOGÍA</div>
+      <div class="badge-tdl">TDL METHODOLOGY</div>
       <p>
-        El estado actual de la lista de tareas recalcula todos los filtros de forma manual y muta el array directamente (anti-patrón). Tu reto es transformar esto en un sistema reactivo y puramente declarativo con <code>signal()</code> y <code>computed()</code>.
+        The current state of the task list recalculates all filters manually and mutates the array directly (anti-pattern). Your challenge is to transform this into a reactive and purely declarative system with <code>signal()</code> and <code>computed()</code>.
       </p>
     </div>
   </div>

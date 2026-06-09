@@ -5,7 +5,7 @@ import { PerformanceMonitorComponent } from './performance-monitor.component';
 import { isSignal } from '@angular/core';
 import '@learning-engine/test-integration';
 
-describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMonitorComponent', () => {
+describe('Level 7: Zone-less Angular & Optimal Rendering 🚀 - PerformanceMonitorComponent', () => {
   let component: PerformanceMonitorComponent;
   let fixture: ComponentFixture<PerformanceMonitorComponent>;
   let animationCallbacks: FrameRequestCallback[] = [];
@@ -48,13 +48,13 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
     vi.restoreAllMocks();
   });
 
-  describe('Estructura Arquitectónica - Análisis Semántico AST 🧬', () => {
-    it('debería cumplir con la configuración Zoneless en app.config.ts', () => {
+  describe('Architectural Structure - AST Semantic Analysis 🧬', () => {
+    it('should comply with the Zoneless configuration in app.config.ts', () => {
       const configPath = 'src/app/app.config.ts';
       expect(configPath).toSatisfyRules(['L7_ZONELESS_PROVIDER']);
     });
 
-    it('debería cumplir con las reglas de diseño para el componente PerformanceMonitorComponent', () => {
+    it('should comply with design rules for the PerformanceMonitorComponent component', () => {
       const componentPath = 'src/app/course/level7-zoneless/performance-monitor.component.ts';
       expect(componentPath).toSatisfyRules([
         'L7_ON_PUSH_STRATEGY',
@@ -64,14 +64,14 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
     });
   });
 
-  describe('Comportamiento Funcional ⚡', () => {
-    it('debería inicializar la simulación en ngOnInit y poblar el historial de FPS', () => {
-      fixture.detectChanges(); // Ejecuta ngOnInit
+  describe('Functional Behavior ⚡', () => {
+    it('should initialize simulation in ngOnInit and populate FPS history', () => {
+      fixture.detectChanges(); // Executes ngOnInit
       
       expect(component['isSimulating']).toBe(true);
       expect(animationCallbacks.length).toBe(1);
 
-      // Disparamos el primer frame
+      // Trigger first frame
       const cb = animationCallbacks.shift();
       if (cb) cb(performance.now() + 16.67); // ~60fps delta
       
@@ -82,10 +82,10 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
       expect(getAverageFps(component)).toBeGreaterThan(0);
     });
 
-    it('debería limitar el historial de FPS a los últimos 30 registros', () => {
+    it('should limit FPS history to the last 30 records', () => {
       fixture.detectChanges();
 
-      // Forzar 35 ticks de frames de simulación
+      // Force 35 simulation frame ticks
       for (let i = 0; i < 35; i++) {
         const cb = animationCallbacks.shift();
         if (cb) {
@@ -95,10 +95,10 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
 
       fixture.detectChanges();
       const list = getFpsList(component);
-      expect(list.length).toBe(30); // Límite máximo de muestras
+      expect(list.length).toBe(30); // Maximum sample limit
     });
 
-    it('debería alternar el estado de simulación de carga pesada de CPU con toggleCpuLoad()', () => {
+    it('should toggle heavy CPU simulation load state with toggleCpuLoad()', () => {
       fixture.detectChanges();
       
       expect(component['cpuLoadActive']).toBe(false);
@@ -107,17 +107,17 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
       expect(component['cpuLoadActive']).toBe(true);
       
       const logs = getLogs(component);
-      expect(logs[0]).toContain('Carga de CPU simulada ACTIVADA');
+      expect(logs[0]).toContain('Simulated CPU Load ACTIVATED');
 
       component['toggleCpuLoad']();
       expect(component['cpuLoadActive']).toBe(false);
-      expect(getLogs(component)[0]).toContain('Carga de CPU simulada DESACTIVADA');
+      expect(getLogs(component)[0]).toContain('Simulated CPU Load DEACTIVATED');
     });
 
-    it('debería reiniciar correctamente el historial de métricas y los logs en clearStats()', () => {
+    it('should correctly reset metrics history and logs in clearStats()', () => {
       fixture.detectChanges();
 
-      // Añadir algunos frames simulados
+      // Add some simulated frames
       const cb = animationCallbacks.shift();
       if (cb) cb(performance.now() + 16.67);
       fixture.detectChanges();
@@ -129,7 +129,7 @@ describe('Nivel 7: Zone-less Angular & Renderizado Óptimo 🚀 - PerformanceMon
 
       expect(getFpsList(component).length).toBe(0);
       expect(getAverageFps(component)).toBe(0);
-      expect(getLogs(component)[0]).toContain('Historial reiniciado');
+      expect(getLogs(component)[0]).toContain('History reset');
     });
   });
 });
