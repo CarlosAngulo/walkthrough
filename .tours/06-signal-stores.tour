@@ -70,7 +70,7 @@
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-store.ts",
       "description": "### RETO 4: Métodos de Actualización Inmutable con withMethods() y patchState() ⚡\n\nPara modificar el estado en `@ngrx/signals`, definimos métodos controlados que utilizan la función pura `patchState()` para realizar actualizaciones de forma segura e inmutable.\n\n1. Añade `withMethods()` a tu store.\n2. Define los siguientes actualizadores:\n   - `loadMessages(messages)`: Establece los mensajes académicos y desactiva el estado loading.\n   - `setFilter(filter)`: Actualiza el filtro de visualización activo.\n   - `markAsRead(messageId)`: Mapea la colección de mensajes y establece `read: true` en el mensaje correspondiente.\n   - `setLoading(loading)`: Establece el estado de carga del canal asíncrono.\n\n*Pista de código:*  \n```typescript\nwithMethods((store) => ({\n  loadMessages(messages: Message[]) {\n    patchState(store, { messages, loading: false });\n  },\n  setFilter(filter: 'all' | 'unread') {\n    patchState(store, { filter });\n  },\n  markAsRead(messageId: string) {\n    patchState(store, (state) => ({\n      messages: state.messages.map(m => m.id === messageId ? { ...m, read: true } : m)\n    }));\n  },\n  setLoading(loading: boolean) {\n    patchState(store, { loading });\n  }\n}))\n```\n*(¡Asegúrate de remover la declaración dummy `export const MessagesStore: any = null;` al finalizar!)*",
-      "line": 48
+      "line": 82
     },
     {
       "file": "apps/academy/src/app/course/level6-stores/messages-list.component.ts",
